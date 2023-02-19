@@ -13,10 +13,10 @@ public class CI_Coots : MonoBehaviour
     {
         if(GameState.Instance.CurrGameState == GameStates.Playing && (!_SeenControlIndicator && SeenControlIndicator))
         {
-            _SeenControlIndicator = true;
             // gameObject.SetActive(false);
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));
+            _SeenControlIndicator = true;
         }
     }
 }

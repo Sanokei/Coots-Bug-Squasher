@@ -21,21 +21,21 @@ public class CI_Computer : MonoBehaviour
     void Update()
     {
         // inComputerBounds._SeenControlIndicator takes precedent over the native one
-        if(GameState.Instance.CurrGameState == GameStates.NearComputer && !inComputerBounds._SeenControlIndicator && !_SeenControlIndicator)
+        if(GameState.Instance.CurrGameState == GameStates.NearComputer && !inComputerBounds.SeenControlIndicator && !_SeenControlIndicator)
         {
             // gameObject.SetActive(false);
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeIn(Time));
             _SeenControlIndicator = true;
         }
-        if(!(GameState.Instance.CurrGameState == GameStates.NearComputer) && !inComputerBounds._SeenControlIndicator && _SeenControlIndicator)
+        if(!(GameState.Instance.CurrGameState == GameStates.NearComputer) && !inComputerBounds.SeenControlIndicator && _SeenControlIndicator)
         {
-            _SeenControlIndicator = false;
             // gameObject.SetActive(false);
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));
+            _SeenControlIndicator = false;
         }
-        if(_SeenControlIndicator && inComputerBounds._SeenControlIndicator)
+        if(_SeenControlIndicator && inComputerBounds.SeenControlIndicator)
         {
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));

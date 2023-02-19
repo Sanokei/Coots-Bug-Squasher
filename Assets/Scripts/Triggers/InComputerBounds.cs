@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InComputerBounds : MonoBehaviour
 {
-    public bool _SeenControlIndicator;
+    [HideInInspector] public bool SeenControlIndicator;
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,7 +24,7 @@ public class InComputerBounds : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W) && GameState.Instance.CurrGameState == GameStates.NearComputer)
         {
-            _SeenControlIndicator = true;
+            SeenControlIndicator = true;
         }
     }
 }

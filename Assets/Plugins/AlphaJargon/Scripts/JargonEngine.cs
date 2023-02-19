@@ -40,7 +40,7 @@ public abstract class JargonEngine : MonoBehaviour, IPixelObject
         {
             Event e = Event.current;
             if (e.isKey)
-                onKeyDownEvent.Invoke(e.keyCode.ToString());
+                onKeyDownEvent?.Invoke(e.keyCode.ToString());
         }
     }
     

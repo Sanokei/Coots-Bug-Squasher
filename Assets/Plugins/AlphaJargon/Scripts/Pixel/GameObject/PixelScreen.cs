@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,17 +28,11 @@ public class PixelScreen : PixelGameObject
 
     public PixelScreen ConvertSpriteStringToScreen(string SpriteString)
     {
-        for(int index = 0; index < SpriteString.Length; index++)
-        {
-            try
-            {
-                grid[index].CharToPixel(SpriteString[index]);
-            }
-            catch(System.Exception e)
-            {
-                Debug.Log($"SpriteString must be 64 Characters long.\n{e}");
-            }            
-        }
+        Enumerable.Range(0, SpriteString.Length)
+            .ToList()
+            .ForEach(index => grid[index].CharToPixel(SpriteString[index])
+        );
+        
         return this;
     }
 }

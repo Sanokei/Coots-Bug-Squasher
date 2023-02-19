@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameState : MonoBehaviour
+public class LevelState : MonoBehaviour
 {
-    public static GameState Instance{get; private set;}
-    public GameStates CurrGameState;
+    public static LevelState Instance{get; private set;}
+    public LevelStates CurrLevelState;
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -22,11 +22,11 @@ public class GameState : MonoBehaviour
 
     void Start()
     {
-        CurrGameState = GameStates.PreStart;
+        CurrLevelState = LevelStates.PreStart;
     }
 }
 
-public enum GameStates
+public enum LevelStates
 {
     PreStart,
     // Start, // On start playing

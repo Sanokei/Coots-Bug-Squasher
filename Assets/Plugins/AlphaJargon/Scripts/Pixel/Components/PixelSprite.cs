@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
+
 using UnityEngine;
 
 namespace PixelGame
@@ -10,13 +12,17 @@ namespace PixelGame
     {
         // Psuedo Sprite
         PixelScreen sprite; // Only use this to show on screen
-        public string SpriteString = "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
+        public string SpriteString;
         public PixelSprite add(string SpriteString)
         {
             if(SpriteString != "")
             {
                 this.SpriteString = CombineString(SpriteString,this.SpriteString);
                 sprite.ConvertSpriteStringToScreen(this.SpriteString);
+            }
+            else
+            {
+                this.SpriteString = String.Concat(Enumerable.Repeat("o", sprite.grid.Count));
             }
             return this;
         }
@@ -30,7 +36,7 @@ namespace PixelGame
         string CombineString(string s1, string s2)
         {
             string s3 = "";
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < SpriteString.Length; i++)
             {
                 if (s1[i] == 'o' && s2[i] == 'o')
                 {
