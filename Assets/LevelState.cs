@@ -1,9 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using InGameCodeEditor;
 
 public class LevelState : MonoBehaviour
 {
+    public delegate void LevelChange(LevelStates levelStates);
+    public event LevelChange levelChangeEvent;
+    public CodeEditor CodeEditor;
+    public AlphaJargon AlphaJargon;
+
+    public List<Level> Levels;
+    public Level this[int index]
+    {
+        get
+        {
+            return Levels[index];
+        }
+        private set{}
+    }
     public static LevelState Instance{get; private set;}
     public LevelStates CurrLevelState;
     private void Awake() 
@@ -22,17 +37,13 @@ public class LevelState : MonoBehaviour
 
     void Start()
     {
-        CurrLevelState = LevelStates.PreStart;
+        CurrLevelState = LevelStates.Tutorial;
+
     }
 }
 
 public enum LevelStates
 {
-    PreStart,
-    // Start, // On start playing
-    Playing,
-    NearComputer,
-    InComputer,
-    Played,
-    Finish
+    Tutorial,
+    Level_1 //come up with betternames later
 }
