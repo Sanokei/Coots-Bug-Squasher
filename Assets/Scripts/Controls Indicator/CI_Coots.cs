@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,17 @@ public class CI_Coots : MonoBehaviour
     public float Time = 0.5f;
     // FIXME: FLAG VARIABLE BAD PRACTICE
     bool _SeenControlIndicator = false;
-    void Update()
+    void OnEnable()
+    {
+        GameState.gameStateChangeEvent += GameStateChange;
+    }
+
+    void OnDisable()
+    {
+        GameState.gameStateChangeEvent -= GameStateChange;
+    }
+
+    private void GameStateChange()
     {
         if(GameState.Instance.CurrGameState == GameStates.Playing && (!_SeenControlIndicator && SeenControlIndicator))
         {

@@ -5,7 +5,20 @@ using UnityEngine;
 public class GameState : MonoBehaviour
 {
     public static GameState Instance{get; private set;}
-    public GameStates CurrGameState;
+    public GameStates CurrGameState
+    {
+        get
+        {
+            return CurrGameState;
+        }
+        set
+        {
+            CurrGameState = value;
+            gameStateChangeEvent?.Invoke();
+        }
+    }
+    public delegate void GameStateChange();
+    public static event GameStateChange gameStateChangeEvent;
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.

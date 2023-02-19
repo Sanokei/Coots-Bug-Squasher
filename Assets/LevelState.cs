@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using InGameCodeEditor;
+using System;
 
 public class LevelState : MonoBehaviour
 {
-    public delegate void LevelChange(LevelStates levelStates);
-    public event LevelChange levelChangeEvent;
+    public delegate void LevelChange();
+    public static event LevelChange levelChangeEvent;
+    
     public CodeEditor CodeEditor;
     public AlphaJargon AlphaJargon;
 
@@ -20,7 +22,19 @@ public class LevelState : MonoBehaviour
         private set{}
     }
     public static LevelState Instance{get; private set;}
-    public LevelStates CurrLevelState;
+    public LevelStates CurrLevelState
+    {
+        get
+        {
+            return CurrLevelState;
+        }
+        set
+        {
+            CurrLevelState = value;
+            levelChangeEvent?.Invoke();
+        }
+    }
+
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -38,7 +52,6 @@ public class LevelState : MonoBehaviour
     void Start()
     {
         CurrLevelState = LevelStates.Tutorial;
-
     }
 }
 

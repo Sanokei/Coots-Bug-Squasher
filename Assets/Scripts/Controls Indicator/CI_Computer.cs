@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,38 @@ public class CI_Computer : MonoBehaviour
             color = sr.color;
             color.a = 0;
             sr.color = color;
+        }
+    }
+    void OnEnable()
+    {
+        GameState.gameStateChangeEvent += GameStateChange;
+    }
+    void OnDisable()
+    {
+        GameState.gameStateChangeEvent -= GameStateChange;
+    }
+
+    private void GameStateChange()
+    {
+        if(GameState.Instance.CurrGameState == GameStates.NearComputer && !inComputerBounds.SeenControlIndicator && !_SeenControlIndicator)
+        {
+            // gameObject.SetActive(false);
+            foreach(var sr in SpriteRenderers)
+                StartCoroutine(sr.FadeIn(Time));
+            _SeenControlIndicator = true;
+        }
+        if(!(GameState.Instance.CurrGameState == GameStates.NearComputer) && !inComputerBounds.SeenControlIndicator && _SeenControlIndicator)
+        {
+            // gameObject.SetActive(false);
+            foreach(var sr in SpriteRenderers)
+                StartCoroutine(sr.FadeOut(Time));
+            _SeenControlIndicator = false;
+        }
+        if(_SeenControlIndicator && inComputerBounds.SeenControlIndicator)
+        {
+            foreach(var sr in SpriteRenderers)
+                StartCoroutine(sr.FadeOut(Time));
+            GameState.Instance.CurrGameState = GameStates.InComputer;
         }
     }
     void Update()
