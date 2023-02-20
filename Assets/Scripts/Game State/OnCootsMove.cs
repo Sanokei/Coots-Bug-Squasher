@@ -8,7 +8,7 @@ public class OnCootsMove : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        if (horizontalInput != 0 && GameState.Instance.CurrGameState == GameStates.PreStart)
+        if (GameState.Instance.CurrGameState == GameStates.PreStart && horizontalInput != 0)
         {
             GameState.Instance.CurrGameState = GameStates.Playing;
         }

@@ -10,7 +10,15 @@ public class ActivateScreen : MonoBehaviour
     {
         Canvas.SetActive(false);
     }
-    void Update()
+    void OnEnable()
+    {
+        GameState.gameStateChangeEvent += GameStateChange;
+    }
+    void OnDisable()
+    {
+        GameState.gameStateChangeEvent -= GameStateChange;
+    }
+    void GameStateChange()
     {
         if(GameState.Instance.CurrGameState == GameStates.InComputer && !_SeenControlIndicator)
         {

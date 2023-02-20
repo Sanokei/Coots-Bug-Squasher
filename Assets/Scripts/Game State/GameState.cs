@@ -5,15 +5,16 @@ using UnityEngine;
 public class GameState : MonoBehaviour
 {
     public static GameState Instance{get; private set;}
+    GameStates _CurrGameState;
     public GameStates CurrGameState
     {
         get
         {
-            return CurrGameState;
+            return _CurrGameState;
         }
         set
         {
-            CurrGameState = value;
+            _CurrGameState = value;
             gameStateChangeEvent?.Invoke();
         }
     }

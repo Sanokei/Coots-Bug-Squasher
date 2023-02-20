@@ -22,15 +22,16 @@ public class LevelState : MonoBehaviour
         private set{}
     }
     public static LevelState Instance{get; private set;}
+    private LevelStates _CurrLevelState;
     public LevelStates CurrLevelState
     {
         get
         {
-            return CurrLevelState;
+            return _CurrLevelState;
         }
         set
         {
-            CurrLevelState = value;
+            _CurrLevelState = value;
             levelChangeEvent?.Invoke();
         }
     }

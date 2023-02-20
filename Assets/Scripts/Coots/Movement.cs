@@ -6,7 +6,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _movementSpeed = 5f;
 
     private bool _isFacingRight = true;
-
     private void Update()
     {
         if(GameState.Instance.CurrGameState != GameStates.InComputer)
