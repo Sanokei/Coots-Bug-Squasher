@@ -1,4 +1,5 @@
 using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,9 +28,9 @@ namespace PixelGame
         
         void OnEnable()
         {
-            JargonEngine.onKeyDownEvent += KeyDown;
+            AlphaJargon.onKeyDownEvent += KeyDown;
 
-            JargonEngine.onUpdateEvent += OnUpdateEventHandler;
+            AlphaJargon.onUpdateEvent += OnUpdateEventHandler;
 
             PixelCollider.onTriggerEnter += TriggerEnter;
             PixelCollider.onTriggerStay += TriggerStay;
@@ -42,9 +43,9 @@ namespace PixelGame
 
         void OnDisable()
         {
-            JargonEngine.onKeyDownEvent -= KeyDown;
+            AlphaJargon.onKeyDownEvent -= KeyDown;
             
-            JargonEngine.onUpdateEvent -= OnUpdateEventHandler;
+            AlphaJargon.onUpdateEvent -= OnUpdateEventHandler;
 
             PixelCollider.onTriggerEnter -= TriggerEnter;
             PixelCollider.onTriggerStay -= TriggerStay;
@@ -93,7 +94,7 @@ namespace PixelGame
 
             onStart = script.Globals.Get("Start") != DynValue.Nil ? script.Globals.Get("Start").Function.GetDelegate() : null;
 
-            onKeyDown = script.Globals.Get("KeyDown") != DynValue.Nil ? script.Globals.Get("KeyDown").Function.GetDelegate() : null;
+            onKeyDown = script.Globals.Get("OnKeyDown") != DynValue.Nil ? script.Globals.Get("KeyDown").Function.GetDelegate() : null;
 
             onCollisionEnter = script.Globals.Get("OnCollisionEnter") != DynValue.Nil ? script.Globals.Get("OnCollisionEnter").Function.GetDelegate() : null;
             onCollisionStay = script.Globals.Get("OnCollisionStay") != DynValue.Nil ? script.Globals.Get("OnCollisionStay").Function.GetDelegate() : null;

@@ -18,7 +18,7 @@ namespace PixelGame
     [MoonSharpUserData]
     public class PixelGameObject : MonoBehaviour, IPixelObject
     {
-        public InspectableDictionary<string,PixelComponent> PixelComponents{get; protected set;}
+        public InspectableDictionary<string,PixelComponent> PixelComponents{get; private set;}
         void OnEnable()
         {
             PixelComponents = new InspectableDictionary<string, PixelComponent>(); 
@@ -39,6 +39,11 @@ namespace PixelGame
 
         public dynamic add(string key, dynamic value)
         {
+            return add(key,value,gameObject);
+        }
+        
+        public dynamic add(string key, dynamic value, GameObject go)
+        {
             if(value is string)
             {
                 try
@@ -53,8 +58,7 @@ namespace PixelGame
                         // https://learn.microsoft.com/en-us/dotnet/api/system.type.assemblyqualifiedname
 
                     // assembly qualified name of the type, throws error, ignores case
-                    System.Type newValue = System.Type.GetType($"PixelGame.{value}",true,true); 
-                    return add(key,newValue,gameObject);
+                    System.Type typeValue = System.Type.GetType($"PixelGame.{value}",true,true); 
                 }
                 catch(Exception e)
                 {
@@ -62,12 +66,7 @@ namespace PixelGame
                     throw new MoonSharp.Interpreter.ScriptRuntimeException("Tried to add component that does not exist in namespace PixelGame. Check spelling.");
                 }
             }
-            return add(key,value,gameObject);
-        }
-        
-        public dynamic add(string key, dynamic value, GameObject go)
-        {
-            dynamic newValue = go.AddComponent(value);
+            dynamic newValue = go.AddComponent(System.Type.GetType($"PixelGame.{value}",true,true));
             if(newValue)
             {
                 // FIXME: Bad place to put this

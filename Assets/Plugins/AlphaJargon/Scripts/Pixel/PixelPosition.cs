@@ -21,5 +21,10 @@ namespace PixelGame
             this.x = x;
             this.y = y;
         }
+        public PixelPosition(Vector2Int pos)
+        {
+            this.x = pos.x;
+            this.y = pos.y;
+        }
     }
 }

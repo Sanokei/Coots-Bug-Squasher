@@ -19,6 +19,7 @@ public class CI_Computer : MonoBehaviour
             sr.color = color;
         }
     }
+    
     private void Update()
     {
         if(GameState.Instance.CurrGameState == GameStates.NearComputer && !inComputerBounds.SeenControlIndicator && !_SeenControlIndicator)

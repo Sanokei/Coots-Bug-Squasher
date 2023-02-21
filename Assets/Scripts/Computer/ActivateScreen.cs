@@ -5,10 +5,10 @@ using UnityEngine;
 public class ActivateScreen : MonoBehaviour
 {
     private bool _SeenControlIndicator = false;
-    public GameObject Canvas;
+    public Canvas Canvas;
     void Awake()
     {
-        Canvas.SetActive(false);
+        Canvas.renderMode = RenderMode.WorldSpace;
     }
     void OnEnable()
     {
@@ -22,7 +22,7 @@ public class ActivateScreen : MonoBehaviour
     {
         if(GameState.Instance.CurrGameState == GameStates.InComputer && !_SeenControlIndicator)
         {
-            Canvas.SetActive(true);
+            Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             _SeenControlIndicator = true;
         }
     }

@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using InGameCodeEditor;
+
 using System;
+
 
 public class LevelState : MonoBehaviour
 {
     public delegate void LevelChange();
     public static event LevelChange levelChangeEvent;
-    
-    public CodeEditor CodeEditor;
-    public AlphaJargon AlphaJargon;
 
-    public List<Level> Levels;
+    public List<Level> Levels = new List<Level>();
     public Level this[int index]
     {
         get

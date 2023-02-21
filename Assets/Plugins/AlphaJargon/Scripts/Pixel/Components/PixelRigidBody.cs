@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace PixelGame
 {
+    [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelRigidBody : PixelComponent
     {
         public Rigidbody2D rb {get; protected set;}

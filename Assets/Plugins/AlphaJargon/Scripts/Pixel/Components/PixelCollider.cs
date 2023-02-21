@@ -1,13 +1,16 @@
 using System.Collections;
-
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
+
 using Habrador_Computational_Geometry;
+using MoonSharp.Interpreter;
 
-using MoonSharp.Interpreter.Interop;
-
+// FIXME: THIS STUFF IS ALL HARD CODED
 namespace PixelGame
 {
+    [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelCollider : PixelComponent
     {
         public delegate void OnTriggerDelegate(Collider2D other, PixelGameObject parent);
@@ -24,7 +27,21 @@ namespace PixelGame
             pixelCollider = new List<PolygonCollider2D>();
             this.parent = parent;
         }
-
+        public PixelComponent add(DynValue ColliderString, bool isTrigger = false)
+        {
+            string collstr = ColliderString.ToString();
+            collstr = new string(collstr.Where(c => !char.IsWhiteSpace(c)).ToArray());
+            List<PixelPosition> pixelPositions = new List<PixelPosition>();
+            for(int row = 0; row < 12; row++)
+                    for(int col = 0; col < 12; col++)
+                        {
+                            int index = row * 12 + col;
+                            char[] str = collstr.ToCharArray();
+                            if(str[index] == 'x')
+                                pixelPositions.Add(new PixelPosition(new Vector2Int(row,col)));
+                        }
+            return add(pixelPositions);
+        }
         public PixelComponent add(List<PixelPosition> pixelPositions, bool isTrigger = false)
         {
             // convert all the pixel positions to coords

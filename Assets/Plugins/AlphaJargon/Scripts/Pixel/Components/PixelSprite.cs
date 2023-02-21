@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using MoonSharp.Interpreter;
 
 using UnityEngine;
 
@@ -11,14 +12,20 @@ namespace PixelGame
     public class PixelSprite : PixelComponent
     {
         // Psuedo Sprite
-        PixelScreen sprite; // Only use this to show on screen
+        public PixelScreen sprite; // Only use this to show on screen
+        [TextArea(20,20)] // arbatrary number
         public string SpriteString;
+        public PixelSprite add(Table dynValue)
+        {
+            return add(dynValue.ToString());
+        }
         public PixelSprite add(string SpriteString)
         {
+            SpriteString = new string(SpriteString.Where(c => !char.IsWhiteSpace(c)).ToArray());
             if(SpriteString != "")
             {
-                this.SpriteString = CombineString(SpriteString,this.SpriteString);
-                sprite.ConvertSpriteStringToScreen(this.SpriteString);
+                this.SpriteString = SpriteString;
+                sprite.ConvertSpriteStringToScreen(SpriteString);
             }
             else
             {
@@ -31,31 +38,6 @@ namespace PixelGame
         {
             // FIXME: add to PixelGameObject instead as "Child"
             sprite = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
-        }
-
-        string CombineString(string s1, string s2)
-        {
-            string s3 = "";
-            for (int i = 0; i < SpriteString.Length; i++)
-            {
-                if (s1[i] == 'o' && s2[i] == 'o')
-                {
-                    s3 += "o";
-                }
-                else if (s1[i] == 'o' && s2[i] != 'o')
-                {
-                    s3 += s2[i];
-                }
-                else if (s1[i] != 'o' && s2[i] == 'o')
-                {
-                    s3 += s1[i];
-                }
-                else
-                {
-                    s3 += s1[i];
-                }
-            }
-            return s3;
         }
     }
 }
