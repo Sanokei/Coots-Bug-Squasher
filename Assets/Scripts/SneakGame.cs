@@ -40,18 +40,19 @@ public class SneakGame : MonoBehaviour
         {
             AlphaJargon.FileData = webRequest.downloadHandler.text;
             AlphaJargon.Set();
-            AlphaJargon.Run();
         }
     }
 
     void OnEnable()
     {
         LevelState.levelChangeEvent += LevelStateChange;
+        GameState.gameStateChangeEvent += GameStateChange;
     }
 
     void OnDisable()
     {
         LevelState.levelChangeEvent -= LevelStateChange;
+        GameState.gameStateChangeEvent -= GameStateChange;
     }
 
     void LevelStateChange()
@@ -60,5 +61,19 @@ public class SneakGame : MonoBehaviour
         StartCoroutine(LoadLuaFile(filePath));
 
         CodeEditor.Text = LevelState.Instance[((int)LevelState.Instance.CurrLevelState)].FileData;
+    }
+
+    void GameStateChange()
+    {
+        if(AlphaJargon.CurrAJState == AJState.Set && GameState.Instance.CurrGameState == GameStates.InComputer)
+        {
+            StartCoroutine(RunAJ());
+        }
+    }
+
+    IEnumerator RunAJ()
+    {
+        AlphaJargon.Run();
+        yield return null; 
     }
 }

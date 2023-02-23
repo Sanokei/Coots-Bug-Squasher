@@ -14,7 +14,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
     // Button Delegates
     public delegate void OnButtonClickDelegate(string KeyCode);
     public static OnButtonClickDelegate onKeyDownEvent;
-    
+    public AJState CurrAJState = AJState.PreSet;  
     [TextArea(15,20)]
     public string FileData;
 
@@ -48,10 +48,12 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         Compiler = gameObject.AddComponent<JargonCompiler>();
         Compiler.Init(Engine);
         Compiler.add(FileData);
+        CurrAJState = AJState.Set;
     }
 
     public void Run()
     {
+        CurrAJState = AJState.Running;
         Compiler.RunScript();
         AwakeGame();
         InitializeGame();
@@ -99,7 +101,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
 
     public PixelGameObject add(string key)
     {
-        return add(key,gameObject.transform);
+        return add(key,GetComponent<Transform>());
     }
     // add components to gameobjects
     public PixelGameObject add(string key, Transform parent)
@@ -108,7 +110,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         {
             PixelGameObject value = Instantiate<PixelGameObject>(Resources.Load<PixelGameObject>("Prefabs/Game/PixelGameObject"), parent);
             value.name = key;
-            Compiler.addPixelGameObjectToScriptGlobals(key,value);
+            Compiler.addPixelGameObjectToJargonScriptGlobals(key,value);
             PixelGameObjects.Add(key, value);
             return value;
         }
@@ -135,3 +137,9 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
 //     }
 }
 
+public enum AJState
+{
+    PreSet,
+    Set,
+    Running
+}

@@ -5,6 +5,7 @@ using UnityEngine;
 
 using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
+using MoonSharp.Interpreter.Interop;
 
 /*
 script.Globals["test"] = new Action<string, MyEnum>(this.TestMethod);
@@ -56,18 +57,26 @@ namespace PixelGame
             PixelCollider.onCollisionExit -= CollisionExit;
         }
 
+        public void add(DynValue FileData)
+        {
+            string multiliteralString = FileData.ToString(); // Get the multiliteral string from the DynValue
+            string normalString = multiliteralString.Substring(1, multiliteralString.Length - 2); // Remove the first and last quotes enclosing the string
+            Debug.Log(normalString);
+            add(normalString);
+        }
         public void add(string FileData)
         {
-            // FileData = System.Text.RegularExpressions.Regex.Replace(FileData, @"\t", "");
-            // this.FileData = FileData.Replace("[[", "").Replace("]]", "");
+            this.FileData = FileData;
         }
         public void addPixelGameObjectToScriptGlobals(string key, IPixelObject value)
         {
+            // Debug.Log($"key: {key} + value: {value}");
             UserData.RegisterAssembly();
             script.Globals[key] = value;
         }
         public override void Create(PixelGameObject parent)
         {
+            addPixelGameObjectToScriptGlobals(parent.name,parent); 
         }
 
         public void RunScript()
@@ -94,7 +103,8 @@ namespace PixelGame
 
             onStart = script.Globals.Get("Start") != DynValue.Nil ? script.Globals.Get("Start").Function.GetDelegate() : null;
 
-            onKeyDown = script.Globals.Get("OnKeyDown") != DynValue.Nil ? script.Globals.Get("KeyDown").Function.GetDelegate() : null;
+            onKeyDown = script.Globals.Get("OnKeyDown") != DynValue.Nil ? script.Globals.Get("OnKeyDown").Function.GetDelegate(): null;
+
 
             onCollisionEnter = script.Globals.Get("OnCollisionEnter") != DynValue.Nil ? script.Globals.Get("OnCollisionEnter").Function.GetDelegate() : null;
             onCollisionStay = script.Globals.Get("OnCollisionStay") != DynValue.Nil ? script.Globals.Get("OnCollisionStay").Function.GetDelegate() : null;
@@ -120,7 +130,8 @@ namespace PixelGame
         // Key up and down
         private void KeyDown(string KeyCode)
         {
-            onKeyDown?.Invoke(KeyCode);
+            if(KeyCode != "None")
+                onKeyDown?.Invoke(DynValue.NewString(KeyCode));
         }
         //
         private void TriggerEnter(Collider2D other, PixelGameObject parent)

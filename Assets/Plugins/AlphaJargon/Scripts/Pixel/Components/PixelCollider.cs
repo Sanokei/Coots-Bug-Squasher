@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,10 @@ using UnityEngine;
 
 using Habrador_Computational_Geometry;
 using MoonSharp.Interpreter;
-
-// FIXME: THIS STUFF IS ALL HARD CODED
+/*
+    I think this will only work for this specific layout of Anchors
+    So if you are going to change the rect transforms and stuff keep that in mind
+*/
 namespace PixelGame
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
@@ -30,30 +33,45 @@ namespace PixelGame
         public PixelComponent add(DynValue ColliderString, bool isTrigger = false)
         {
             string collstr = ColliderString.ToString();
-            collstr = new string(collstr.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            List<PixelPosition> pixelPositions = new List<PixelPosition>();
-            for(int row = 0; row < 12; row++)
-                    for(int col = 0; col < 12; col++)
-                        {
-                            int index = row * 12 + col;
-                            char[] str = collstr.ToCharArray();
-                            if(str[index] == 'x')
-                                pixelPositions.Add(new PixelPosition(new Vector2Int(row,col)));
-                        }
-            return add(pixelPositions);
+            string grid = (new string((collstr.Split('\n')).ToList()[0].Where(c => !char.IsWhiteSpace(c)).ToArray())).Replace("\"","");
+            collstr = new string(collstr.Where(c => !char.IsWhiteSpace(c)).ToArray()).Replace("\"","");
+            return add(collstr,grid.Length);
         }
-        public PixelComponent add(List<PixelPosition> pixelPositions, bool isTrigger = false)
+
+        public PixelComponent add(string ColliderString, int grid, bool isTrigger = false)
+        {
+            List<PixelPosition> pixelPositions = new List<PixelPosition>();
+            if (parent.PixelComponents.Values.Any(x => x is PixelSprite))
+            {
+                char[] str = ColliderString.ToCharArray();
+                for (int i = 0; i < str.Length; i++)  
+                {
+                    if (str[i] == 'x')
+                    {
+                        int row = i / grid;
+                        int col = i % grid;
+                        pixelPositions.Add(new PixelPosition(new Vector2Int(col, row)));
+                    }
+                }
+            }
+            return add(pixelPositions, grid);
+        }
+        public PixelComponent add(List<PixelPosition> pixelPositions, int grid, bool isTrigger = false)
         {
             // convert all the pixel positions to coords
             List<MyVector2> Points = new List<MyVector2>();
+            PixelScreen sprite = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
+            float _cellSize = sprite.gridLayout.cellSize.x;
+            float _offSet = (sprite.gridLayout.constraintCount * _cellSize) / 2.000f;;
+            Destroy(sprite.gameObject);
             foreach (PixelPosition pixelPosition in pixelPositions)
             {
-                Points.Add(new MyVector2(pixelPosition.x * 100 - 400, pixelPosition.y * 100 - 400));
-                Points.Add(new MyVector2(pixelPosition.x * 100 - 400, (pixelPosition.y + 1) * 100 - 400));
-                Points.Add(new MyVector2((pixelPosition.x + 1) * 100 - 400, (pixelPosition.y + 1) * 100 - 400));
-                Points.Add(new MyVector2((pixelPosition.x + 1) * 100 - 400, pixelPosition.y * 100 - 400));
+                Points.Add(new MyVector2(pixelPosition.x * _cellSize - _offSet, (grid - pixelPosition.y - 1) * _cellSize - _offSet));
+                Points.Add(new MyVector2(pixelPosition.x * _cellSize - _offSet, (grid - pixelPosition.y) * _cellSize - _offSet));
+                Points.Add(new MyVector2((pixelPosition.x + 1) * _cellSize - _offSet, (grid - pixelPosition.y) * _cellSize - _offSet));
+                Points.Add(new MyVector2((pixelPosition.x + 1) * _cellSize - _offSet, (grid - pixelPosition.y - 1) * _cellSize - _offSet));
             }
-            
+
             // get the perimeter using 'quickhull' convex hull algorithm
             PolygonCollider2D pc2d = gameObject.AddComponent<PolygonCollider2D>();
             pc2d.SetPath(0, MyVector2ToVector2(QuickhullAlgorithm2D.GenerateConvexHull(Points, false)));

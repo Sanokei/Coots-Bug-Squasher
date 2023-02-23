@@ -36,10 +36,11 @@ public class CI_Computer : MonoBehaviour
                 StartCoroutine(sr.FadeOut(Time));
             _SeenControlIndicator = false;
         }
-        if(_SeenControlIndicator && inComputerBounds.SeenControlIndicator)
+        if(GameState.Instance.CurrGameState != GameStates.InComputer && _SeenControlIndicator && inComputerBounds.SeenControlIndicator)
         {
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));
+            Debug.Log("Culprate");
             GameState.Instance.CurrGameState = GameStates.InComputer;
         }
     }

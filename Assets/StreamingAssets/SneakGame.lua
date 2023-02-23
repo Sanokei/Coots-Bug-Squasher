@@ -6,25 +6,8 @@ end
 -- Add pixelComponents to the objects
 function InitializeGame()
     -- Add player
-    player.add('trans','PixelTransform')
     player.add('rb', 'PixelRigidBody') -- add gravity
-    player.add('pc','PixelCollider')
-    player['pc'].add(
-        [[
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        xooooooooooo
-        xooooooooooo
-        ]]
-    )
+    player.add('trans','PixelTransform')
     player.add('still', 'PixelSprite')
     player['still'].add(
         [[
@@ -42,23 +25,58 @@ function InitializeGame()
         oooooooooooo
         ]]
     )
-    -- Auto adds the pixelGameObject its on to the globals
-    player.add('PlayerMovement', 'PixelBehaviourScript').add
-    (
+    player.add('pc','PixelCollider') -- needs a pixelsprite to work
+    player['pc'].add(
         [[
-        function OnKeyDown(keydown)
-            if(keydown == 'd')
-                player['trans'].move(0,1)
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        xooooooooooo
+        xooooooooooo
+        oooooooooooo
+        ]]
+    )
+    -- Auto adds the pixelGameObject its on to the globals
+    player.add('PlayerMovement', 'PixelBehaviourScript').add(
+        [[
+        function Start()
+            print('start')
+        end
+        function OnKeyDown(keycode)
+            if keycode == 'A' then
+                player['trans'].move(0, -1)
             end
-            if(keydown == 'a')
-                player['trans'].move(0,-1)
+            if keycode == 'D' then
+                player['trans'].move(0, 1)
             end
         end
         ]]
         
     )
-
     -- Add Floor
+    floor.add('floor', 'PixelSprite')
+    floor['floor'].add(
+        [[
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        crcrcrcrcrcr
+        ]]
+    )
     floor.add('pc','PixelCollider')
     floor['pc'].add(
         [[
@@ -76,26 +94,8 @@ function InitializeGame()
         xxxxxxxxxxxx
         ]]
     )
-    floor.add('floor', 'PixelSprite')
-    floor['floor'].add(
-        [[
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        oooooooooooo
-        cccccccccccc
-        ]]
-    )
 end
 -- add references to scripts that need it and run scripts
 function StartGame()
-    PlayerMovement.addPixelGameObjectToScriptGlobals('jargon',jargon)
-    PlayerMovement.RunScript()
+    player['PlayerMovement'].RunScript()
 end

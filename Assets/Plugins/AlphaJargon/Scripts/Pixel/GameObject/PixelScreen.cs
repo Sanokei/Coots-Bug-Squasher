@@ -13,10 +13,10 @@ public class PixelScreen : PixelGameObject
 {
     void OnEnable()
     {
-        gridLayout = gameObject.GetComponent<GridLayout>();
+        gridLayout = gameObject.GetComponent<GridLayoutGroup>();
     }
     // Every Physical Pixel 
-    public GridLayout gridLayout;
+    public GridLayoutGroup gridLayout;
     public InspectableDictionary<int, Pixel> grid;
 
     public Pixel this[int index]
@@ -32,7 +32,7 @@ public class PixelScreen : PixelGameObject
     }
     public PixelScreen ConvertSpriteStringToScreen(string SpriteString)
     {
-        Enumerable.Range(0, SpriteString.Length - 1)
+        Enumerable.Range(0, SpriteString.Length)
             .ToList()
             .ForEach(index => grid[index].CharToPixel(SpriteString[index])
         );

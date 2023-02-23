@@ -13,30 +13,27 @@ namespace PixelGame
     {
         // Psuedo Sprite
         public PixelScreen sprite; // Only use this to show on screen
-        [TextArea(20,20)] // arbatrary number
-        public string SpriteString;
-        public PixelSprite add(Table dynValue)
+        public PixelSprite add(DynValue dynValue)
         {
-            return add(dynValue.ToString());
+            string SpriteString = dynValue.ToString();
+            SpriteString = new string(SpriteString.Where(c => !char.IsWhiteSpace(c)).ToArray()).Replace("\"","");   
+            return add(SpriteString);
         }
         public PixelSprite add(string SpriteString)
         {
-            SpriteString = new string(SpriteString.Where(c => !char.IsWhiteSpace(c)).ToArray());
             if(SpriteString != "")
             {
-                this.SpriteString = SpriteString;
                 sprite.ConvertSpriteStringToScreen(SpriteString);
             }
             else
             {
-                this.SpriteString = String.Concat(Enumerable.Repeat("o", sprite.grid.Count));
+                sprite.ConvertSpriteStringToScreen(String.Concat(Enumerable.Repeat("o", sprite.grid.Count)));
             }
             return this;
         }
 
         public override void Create(PixelGameObject parent)
         {
-            // FIXME: add to PixelGameObject instead as "Child"
             sprite = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
         }
     }

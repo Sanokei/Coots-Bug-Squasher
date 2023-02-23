@@ -38,7 +38,7 @@ public class JargonCompiler : MonoBehaviour
     {
         this.FileData = FileData;
     }
-    public void addPixelGameObjectToScriptGlobals(string key, IPixelObject value)
+    public void addPixelGameObjectToJargonScriptGlobals(string key, IPixelObject value)
     {
         UserData.RegisterAssembly();
         script.Globals[key] = value;
@@ -54,7 +54,7 @@ public class JargonCompiler : MonoBehaviour
         // sets default options
         script.Options.DebugPrint = (x) => {Debug.Log(x);};
         ((ScriptLoaderBase)script.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
-        ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = ScriptLoaderBase.UnpackStringPaths(System.IO.Path.Combine(Application.persistentDataPath,"/modules/","?") + ".lua");
+        // ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = ScriptLoaderBase.UnpackStringPaths(System.IO.Path.Combine(Application.persistentDataPath,"/modules/","?") + ".lua");
         try
         {
             DynValue fn = script.LoadString(FileData);

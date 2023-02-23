@@ -7,12 +7,17 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelTransform : PixelComponent
     {
-        PixelGameObject self;
         PixelPosition position;
+        PixelGameObject parent;
+        float _cellSize;
 
         public override void Create(PixelGameObject parent)
         {
             position = new PixelPosition(0,0);
+            
+            PixelScreen sprite = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
+            _cellSize = sprite.gridLayout.cellSize.x;
+            Destroy(sprite.gameObject);
         }
 
         public PixelTransform add(PixelPosition pp /*hehe*/)
@@ -38,9 +43,8 @@ namespace PixelGame
             // funky stuff happens when I try to make this 
             // gameobject.transform.Translate
             // no idea why
-            PixelPosition target = new PixelPosition(x,y);
-            transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition,new Vector3(target.x,target.y), Time.deltaTime * 1f);
-            position = new PixelPosition((int)(gameObject.transform.localPosition.x / 100f),(int)(gameObject.transform.localPosition.y / 100f));
+            transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition,new Vector3(x * _cellSize,y * _cellSize), Time.deltaTime * 1f);
+            position = new PixelPosition((int)(gameObject.transform.localPosition.x / _cellSize),(int)(gameObject.transform.localPosition.y / _cellSize));
             return position;
         }
     }

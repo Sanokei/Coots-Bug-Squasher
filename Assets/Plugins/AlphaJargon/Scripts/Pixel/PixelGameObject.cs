@@ -69,9 +69,7 @@ namespace PixelGame
             dynamic newValue = go.AddComponent(System.Type.GetType($"PixelGame.{value}",true,true));
             if(newValue)
             {
-                // FIXME: Bad place to put this
-                if(newValue is PixelBehaviourScript) // if its a script
-                    newValue.addPixelGameObjectToScriptGlobals(go.name,this); // Add the game object to the scripts globals
+                // Add the game object to the scripts globals
                 PixelComponents.Add(key,newValue);
                 if(newValue is ISpawnable)
                     newValue.Create(this);
