@@ -67,13 +67,23 @@ public class SneakGame : MonoBehaviour
     {
         if(AlphaJargon.CurrAJState == AJState.Set && GameState.Instance.CurrGameState == GameStates.InComputer)
         {
-            StartCoroutine(RunAJ());
+            AlphaJargon.Run();
+            StartCoroutine(RunAJScripts());
         }
     }
 
-    IEnumerator RunAJ()
+    IEnumerator RunAJScripts()
     {
-        AlphaJargon.Run();
-        yield return null; 
+        yield return new WaitForEndOfFrame();
+        try
+        {
+            foreach(PixelGame.PixelGameObject pgo in AlphaJargon.PixelGameObjects.Values)
+                foreach(PixelGame.PixelBehaviourScript scripts in pgo.PixelComponents.Values)
+                    scripts.RunScript();
+        }
+        catch
+        {
+
+        }
     }
 }

@@ -55,6 +55,9 @@ function InitializeGame()
             if keycode == 'D' then
                 player['trans'].move(1, 0)
             end
+            if keycode == 'W' then
+                player['trans'].move(0, 1)
+            end
         end
         ]]
         
@@ -97,5 +100,4 @@ function InitializeGame()
 end
 -- add references to scripts that need it and run scripts
 function StartGame()
-    player['PlayerMovement'].RunScript()
 end
