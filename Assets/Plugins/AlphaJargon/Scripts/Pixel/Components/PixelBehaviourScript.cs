@@ -61,7 +61,6 @@ namespace PixelGame
         {
             string multiliteralString = FileData.ToString(); // Get the multiliteral string from the DynValue
             string normalString = multiliteralString.Substring(1, multiliteralString.Length - 2); // Remove the first and last quotes enclosing the string
-            Debug.Log(normalString);
             add(normalString);
         }
         public void add(string FileData)

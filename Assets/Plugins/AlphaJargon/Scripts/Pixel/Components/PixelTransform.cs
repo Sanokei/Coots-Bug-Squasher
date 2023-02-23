@@ -43,7 +43,7 @@ namespace PixelGame
             // funky stuff happens when I try to make this 
             // gameobject.transform.Translate
             // no idea why
-            transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition,new Vector3(x * _cellSize,y * _cellSize), Time.deltaTime * 1f);
+            transform.Translate(new Vector3((x) * _cellSize,y * _cellSize));
             position = new PixelPosition((int)(gameObject.transform.localPosition.x / _cellSize),(int)(gameObject.transform.localPosition.y / _cellSize));
             return position;
         }

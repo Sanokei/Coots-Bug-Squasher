@@ -50,10 +50,10 @@ function InitializeGame()
         end
         function OnKeyDown(keycode)
             if keycode == 'A' then
-                player['trans'].move(0, -1)
+                player['trans'].move(-1, 0)
             end
             if keycode == 'D' then
-                player['trans'].move(0, 1)
+                player['trans'].move(1, 0)
             end
         end
         ]]

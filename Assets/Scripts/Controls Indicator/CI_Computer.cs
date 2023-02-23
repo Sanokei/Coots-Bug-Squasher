@@ -40,7 +40,6 @@ public class CI_Computer : MonoBehaviour
         {
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));
-            Debug.Log("Culprate");
             GameState.Instance.CurrGameState = GameStates.InComputer;
         }
     }
