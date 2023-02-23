@@ -9,7 +9,7 @@ using BuildingBlocks.DataTypes;
 
 using PixelGame;
 
-public class PixelScreen : PixelGameObject
+public class PixelScreen : MonoBehaviour, IPixelObject
 {
     void OnEnable()
     {

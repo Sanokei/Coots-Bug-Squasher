@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using PixelGame;
 
 // Physical Pixels
-public class Pixel : PixelGameObject
+public class Pixel : MonoBehaviour, IPixelObject
 {
     public bool isOn
     {

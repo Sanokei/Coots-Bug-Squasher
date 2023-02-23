@@ -51,13 +51,26 @@ namespace PixelGame
         }
 
 
-        // check all other pixelColliders in jargon and see if they match
-        // if its itself then dont count it
+        // FIXME: this is so unoptomized 
         private bool CheckCollision(Vector3 translation)
         {
-            foreach(PixelCollider pgo in parent.PixelComponents.Values.OfType<PixelCollider>().ToArray())
-                foreach(PolygonCollider2D poly in pgo.pixelCollider)
-                    return _Intersections.PointPolygon(poly.ToMyVector2List(), translation.ToMyVector2());    
+            foreach(PixelGameObject pgo in FindObjectsOfType(typeof(PixelGameObject)))
+            {
+                try
+                {
+                    if (!pgo.Equals(this) && !pgo.PixelComponents.Values.Any(x => x.GetType() == typeof(PixelCollider)));
+                }
+                catch
+                {
+                    continue;
+                }
+                    foreach(PixelCollider pc in pgo.PixelComponents.Values.OfType<PixelCollider>().ToArray())
+                        foreach(PolygonCollider2D poly in pc.pixelCollider)
+                        {
+                            Debug.Log($"Poly: {poly.ToMyVector2List()}\nPoints: {translation.ToMyVector2()}");
+                            return _Intersections.PointPolygon(poly.ToMyVector2List(), translation.ToMyVector2());    
+                        }
+            }
             return false;
         }
     }
