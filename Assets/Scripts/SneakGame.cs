@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.Networking;
 using InGameCodeEditor;
@@ -45,21 +47,20 @@ public class SneakGame : MonoBehaviour
 
     void OnEnable()
     {
-        LevelState.levelChangeEvent += LevelStateChange;
-        GameState.gameStateChangeEvent += GameStateChange;
+        LevelState.onlevelChangeEvent += LevelStateChange;
+        GameState.ongameStateChangeEvent += GameStateChange;
     }
 
     void OnDisable()
     {
-        LevelState.levelChangeEvent -= LevelStateChange;
-        GameState.gameStateChangeEvent -= GameStateChange;
+        LevelState.onlevelChangeEvent -= LevelStateChange;
+        GameState.ongameStateChangeEvent -= GameStateChange;
     }
 
     void LevelStateChange()
     {
         string filePath = "SneakGame.lua";
         StartCoroutine(LoadLuaFile(filePath));
-
         CodeEditor.Text = LevelState.Instance[((int)LevelState.Instance.CurrLevelState)].FileData;
     }
 
@@ -67,7 +68,7 @@ public class SneakGame : MonoBehaviour
     {
         if(AlphaJargon.CurrAJState == AJState.Set && GameState.Instance.CurrGameState == GameStates.InComputer)
         {
-            AlphaJargon.Run();
+           StartCoroutine(RunAJ());
             StartCoroutine(RunAJScripts());
         }
     }
@@ -77,13 +78,23 @@ public class SneakGame : MonoBehaviour
         yield return new WaitForEndOfFrame();
         try
         {
-            foreach(PixelGame.PixelGameObject pgo in AlphaJargon.PixelGameObjects.Values)
-                foreach(PixelGame.PixelBehaviourScript scripts in pgo.PixelComponents.Values)
+            foreach(PixelGame.PixelGameObject pgo in AlphaJargon.PixelGameObjects.Values.OfType<PixelGame.PixelGameObject>().ToArray())
+                foreach(PixelGame.PixelBehaviourScript scripts in pgo.PixelComponents.Values.OfType<PixelGame.PixelBehaviourScript>().ToArray())
                     scripts.RunScript();
         }
         catch
         {
 
         }
+    }
+    IEnumerator RunAJ()
+    {
+        yield return new WaitForEndOfFrame();
+        AlphaJargon.Run();
+    }
+
+    IEnumerator CreateRoomsForScript(string filePath)
+    {
+        yield return new WaitForEndOfFrame();
     }
 }

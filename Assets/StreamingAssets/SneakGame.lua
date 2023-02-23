@@ -58,6 +58,9 @@ function InitializeGame()
             if keycode == 'W' then
                 player['trans'].move(0, 1)
             end
+            if keycode == 'S' then
+                player['trans'].move(0, -1)
+            end
         end
         ]]
         

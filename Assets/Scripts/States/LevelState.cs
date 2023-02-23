@@ -4,11 +4,11 @@ using UnityEngine;
 
 using System;
 
-
+[MoonSharp.Interpreter.MoonSharpUserData]
 public class LevelState : MonoBehaviour
 {
-    public delegate void LevelChange();
-    public static event LevelChange levelChangeEvent;
+    public delegate void onLevelChange();
+    public static event onLevelChange onlevelChangeEvent;
 
     public List<Level> Levels = new List<Level>();
     public Level this[int index]
@@ -30,7 +30,7 @@ public class LevelState : MonoBehaviour
         set
         {
             _CurrLevelState = value;
-            levelChangeEvent?.Invoke();
+            onlevelChangeEvent?.Invoke();
         }
     }
 

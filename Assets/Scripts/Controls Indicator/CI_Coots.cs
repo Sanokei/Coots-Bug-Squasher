@@ -12,12 +12,12 @@ public class CI_Coots : MonoBehaviour
     bool _SeenControlIndicator = false;
     void OnEnable()
     {
-        GameState.gameStateChangeEvent += GameStateChange;
+        GameState.ongameStateChangeEvent += GameStateChange;
     }
 
     void OnDisable()
     {
-        GameState.gameStateChangeEvent -= GameStateChange;
+        GameState.ongameStateChangeEvent -= GameStateChange;
     }
 
     private void GameStateChange()

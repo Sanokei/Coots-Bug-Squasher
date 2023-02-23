@@ -12,11 +12,11 @@ public class ActivateScreen : MonoBehaviour
     }
     void OnEnable()
     {
-        GameState.gameStateChangeEvent += GameStateChange;
+        GameState.ongameStateChangeEvent += GameStateChange;
     }
     void OnDisable()
     {
-        GameState.gameStateChangeEvent -= GameStateChange;
+        GameState.ongameStateChangeEvent -= GameStateChange;
     }
     void GameStateChange()
     {

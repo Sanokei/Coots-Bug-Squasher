@@ -15,11 +15,11 @@ public class GameState : MonoBehaviour
         set
         {
             _CurrGameState = value;
-            gameStateChangeEvent?.Invoke();
+            ongameStateChangeEvent?.Invoke();
         }
     }
-    public delegate void GameStateChange();
-    public static event GameStateChange gameStateChangeEvent;
+    public delegate void onGameStateChange();
+    public static event onGameStateChange ongameStateChangeEvent;
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
