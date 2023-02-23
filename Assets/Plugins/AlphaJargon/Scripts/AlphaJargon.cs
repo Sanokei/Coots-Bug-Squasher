@@ -46,7 +46,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
     public void Set()
     {
         Compiler = gameObject.AddComponent<JargonCompiler>();
-        Compiler.Init(Engine);
+        Compiler.Init(this);
         Compiler.add(FileData);
         CurrAJState = AJState.Set;
     }
@@ -74,17 +74,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
     {
         startGameEvent?.Invoke();
     }
-
-/*****************************************************/
-    public AlphaJargon Engine
-    {
-        get
-        {
-            return this;
-        }
-    }
     
-/*****************************************************/
     public Image Skybox;
     public InspectableDictionary<string,PixelGameObject> PixelGameObjects = new InspectableDictionary<string, PixelGameObject>();
 

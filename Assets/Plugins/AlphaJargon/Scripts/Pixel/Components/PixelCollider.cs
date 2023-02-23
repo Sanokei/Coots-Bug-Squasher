@@ -23,7 +23,7 @@ namespace PixelGame
 
         //
         PixelGameObject parent;
-        List<PolygonCollider2D> pixelCollider;
+        public List<PolygonCollider2D> pixelCollider;
 
         public override void Create(PixelGameObject parent)
         {
@@ -60,16 +60,13 @@ namespace PixelGame
         {
             // convert all the pixel positions to coords
             List<MyVector2> Points = new List<MyVector2>();
-            PixelScreen sprite = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
-            float _cellSize = sprite.gridLayout.cellSize.x;
-            float _offSet = (sprite.gridLayout.constraintCount * _cellSize) / 2.000f;;
-            Destroy(sprite.gameObject);
+            float _offSet = (PixelScreen.GridSideSize * PixelScreen.CellSize) / 2.000f;
             foreach (PixelPosition pixelPosition in pixelPositions)
             {
-                Points.Add(new MyVector2(pixelPosition.x * _cellSize - _offSet, (grid - pixelPosition.y - 1) * _cellSize - _offSet));
-                Points.Add(new MyVector2(pixelPosition.x * _cellSize - _offSet, (grid - pixelPosition.y) * _cellSize - _offSet));
-                Points.Add(new MyVector2((pixelPosition.x + 1) * _cellSize - _offSet, (grid - pixelPosition.y) * _cellSize - _offSet));
-                Points.Add(new MyVector2((pixelPosition.x + 1) * _cellSize - _offSet, (grid - pixelPosition.y - 1) * _cellSize - _offSet));
+                Points.Add(new MyVector2(pixelPosition.x * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y - 1) * PixelScreen.CellSize - _offSet));
+                Points.Add(new MyVector2(pixelPosition.x * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y) * PixelScreen.CellSize - _offSet));
+                Points.Add(new MyVector2((pixelPosition.x + 1) * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y) * PixelScreen.CellSize - _offSet));
+                Points.Add(new MyVector2((pixelPosition.x + 1) * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y - 1) * PixelScreen.CellSize - _offSet));
             }
 
             // get the perimeter using 'quickhull' convex hull algorithm

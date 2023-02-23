@@ -145,5 +145,17 @@ namespace Habrador_Computational_Geometry
                 new Vector4(a[0, 3] * b, a[1, 3] * b, a[2, 3] * b, a[3, 3] * b)
             );
         }
+
+        public static List<MyVector2> ToMyVector2List(this PolygonCollider2D polygonCollider)
+        {
+            List<MyVector2> points = new List<MyVector2>();
+            foreach (Vector2 point in polygonCollider.points)
+            {
+                // Convert local space points to world space points
+                MyVector2 worldPoint = polygonCollider.transform.TransformPoint(point).ToMyVector2();
+                points.Add(worldPoint);
+            }
+            return points;
+        }
     }
 }

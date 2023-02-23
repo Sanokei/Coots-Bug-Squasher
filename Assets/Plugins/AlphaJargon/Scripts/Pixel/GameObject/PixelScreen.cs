@@ -14,10 +14,14 @@ public class PixelScreen : PixelGameObject
     void OnEnable()
     {
         gridLayout = gameObject.GetComponent<GridLayoutGroup>();
+        CellSize = (int)gridLayout.cellSize.x;
+        GridSideSize = (int)gridLayout.constraintCount;
     }
     // Every Physical Pixel 
     public GridLayoutGroup gridLayout;
     public InspectableDictionary<int, Pixel> grid;
+    public static int CellSize;
+    public static int GridSideSize;
 
     public Pixel this[int index]
     {

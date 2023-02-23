@@ -8,16 +8,18 @@ using InGameCodeEditor;
 
 public class SneakGame : MonoBehaviour
 {
-    private AlphaJargon CurrAJ;
+    public static SneakGame Instance{private set; get;}
+
+    private AlphaJargon _AlphaJargon;
     public AlphaJargon AlphaJargon
     {
         get
         {
-            if(!CurrAJ)
+            if(!_AlphaJargon)
             {
-                CurrAJ = gameObject.AddComponent<AlphaJargon>();
+                _AlphaJargon = gameObject.AddComponent<AlphaJargon>();
             }
-            return CurrAJ;
+            return _AlphaJargon;
         }
         set
         {
@@ -25,9 +27,7 @@ public class SneakGame : MonoBehaviour
             gameObject.AddComponent<AlphaJargon>();
         }
     }
-
     public CodeEditor CodeEditor;
-
     IEnumerator LoadLuaFile(string filePath)
     {
         string fileUrl = System.IO.Path.Combine(Application.streamingAssetsPath, filePath);
@@ -68,7 +68,7 @@ public class SneakGame : MonoBehaviour
     {
         if(AlphaJargon.CurrAJState == AJState.Set && GameState.Instance.CurrGameState == GameStates.InComputer)
         {
-           StartCoroutine(RunAJ());
+            AlphaJargon.Run();
             StartCoroutine(RunAJScripts());
         }
     }
@@ -87,14 +87,13 @@ public class SneakGame : MonoBehaviour
 
         }
     }
-    IEnumerator RunAJ()
-    {
-        yield return new WaitForEndOfFrame();
-        AlphaJargon.Run();
-    }
+    // FIXME:
+    // this bug is stupid and its whatever for now.
+        // bug is that when pressing W to get into the computer the lua code also intakes W with the onKeyDown delegate
+    // see: https://forum.unity.com/threads/do-not-use-waitforendofframe.883648/
 
     IEnumerator CreateRoomsForScript(string filePath)
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
     }
 }

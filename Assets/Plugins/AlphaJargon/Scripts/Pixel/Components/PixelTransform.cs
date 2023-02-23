@@ -1,6 +1,10 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Habrador_Computational_Geometry;
 
 namespace PixelGame
 {
@@ -9,15 +13,11 @@ namespace PixelGame
     {
         PixelPosition position;
         PixelGameObject parent;
-        float _cellSize;
 
         public override void Create(PixelGameObject parent)
         {
             position = new PixelPosition(0,0);
-            
-            PixelScreen sprite = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
-            _cellSize = sprite.gridLayout.cellSize.x;
-            Destroy(sprite.gameObject);
+            this.parent = parent;
         }
 
         public PixelTransform add(PixelPosition pp /*hehe*/)
@@ -43,9 +43,22 @@ namespace PixelGame
             // funky stuff happens when I try to make this 
             // gameobject.transform.Translate
             // no idea why
-            transform.Translate(new Vector3((x) * _cellSize,y * _cellSize));
-            position = new PixelPosition((int)(gameObject.transform.localPosition.x / _cellSize),(int)(gameObject.transform.localPosition.y / _cellSize));
+            Vector3 trans = new Vector3(x * PixelScreen.CellSize,y * PixelScreen.CellSize);
+            if(!CheckCollision(trans))
+                transform.Translate(trans);
+            position = new PixelPosition((int)(transform.position.x / PixelScreen.CellSize),(int)(transform.position.y / PixelScreen.CellSize));
             return position;
+        }
+
+
+        // check all other pixelColliders in jargon and see if they match
+        // if its itself then dont count it
+        private bool CheckCollision(Vector3 translation)
+        {
+            foreach(PixelCollider pgo in parent.PixelComponents.Values.OfType<PixelCollider>().ToArray())
+                foreach(PolygonCollider2D poly in pgo.pixelCollider)
+                    return _Intersections.PointPolygon(poly.ToMyVector2List(), translation.ToMyVector2());    
+            return false;
         }
     }
 }
