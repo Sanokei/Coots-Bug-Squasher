@@ -9,7 +9,7 @@ using PixelGame;
 public class SneakGame : MonoBehaviour
 {
     public static SneakGame Instance{private set; get;}
-    
+    private GameObject AJGO;
     private AlphaJargon _AlphaJargon;
     public AlphaJargon AlphaJargon
     {
@@ -17,14 +17,17 @@ public class SneakGame : MonoBehaviour
         {
             if(!_AlphaJargon)
             {
-                _AlphaJargon = gameObject.AddComponent<AlphaJargon>();
+                AJGO = new GameObject("AlphaJargon");
+                AJGO.transform.parent = transform;
+                AJGO.transform.localPosition = new Vector3(0,0,0);
+                _AlphaJargon = AJGO.AddComponent<AlphaJargon>();
             }
             return _AlphaJargon;
         }
-        set
+        private set
         {
-            Destroy(AlphaJargon);
-            gameObject.AddComponent<AlphaJargon>();
+            // Destroy(AlphaJargon);
+            // gameObject.AddComponent<AlphaJargon>();
         }
     }
     // UI STUFF
@@ -49,6 +52,7 @@ public class SneakGame : MonoBehaviour
     
     void WinLevel()
     {
+        Destroy(AJGO);
         LevelState.Instance.CurrLevel += 1;
     }
     void LevelStateChange()
@@ -72,6 +76,7 @@ public class SneakGame : MonoBehaviour
     {
         AlphaJargon.FileData = text;
         AlphaJargon.Set();
+        AlphaJargon.Run();
     }
     void GameStateChange()
     {

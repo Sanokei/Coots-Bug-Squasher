@@ -38,7 +38,6 @@ namespace PixelGame
         }
         public override void Remove()
         {
-            parent.PixelComponents.Remove(this.ToString());
             Destroy(this);
         }
     }

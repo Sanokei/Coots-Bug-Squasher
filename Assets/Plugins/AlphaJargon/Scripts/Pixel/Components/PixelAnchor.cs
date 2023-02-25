@@ -20,7 +20,6 @@ namespace PixelGame
         }
         public override void Remove()
         {
-            parent.PixelComponents.Remove(this.ToString());
             Destroy(this);
         }
         public static PixelPosition GetPixelAnchorForCollider(PolygonCollider2D collider)

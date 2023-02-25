@@ -68,7 +68,6 @@ namespace PixelGame
         }
         public override void Remove()
         {
-            parent.PixelComponents.Remove(this.ToString());
             Destroy(this);
         }
         public void addPixelGameObjectToScriptGlobals(string key, IPixelObject value)

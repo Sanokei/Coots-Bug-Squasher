@@ -109,7 +109,7 @@ public class PixelScreenManager : MonoBehaviour
         {
             if (PixelPosition.FromIndex(layer.Key) == position)
             {
-                pixels.Add(new KeyValuePair<PixelPosition,Pixel>(PixelPosition.FromIndex(layer.Key),layer.Value));
+                pixels.Add(new KeyValuePair<PixelPosition,Pixel>(PixelPosition.FromIndex(layer.Key) + pgo.position + position,layer.Value));
             }
         }
 

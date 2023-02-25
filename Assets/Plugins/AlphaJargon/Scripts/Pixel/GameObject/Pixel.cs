@@ -20,6 +20,8 @@ public class Pixel : MonoBehaviour, IPixelObject
             Image.color = C;
         }
     }
+    
     public Image Image;
     public PixelCollider Collider;
+    public PixelSprite Sprite;
 }

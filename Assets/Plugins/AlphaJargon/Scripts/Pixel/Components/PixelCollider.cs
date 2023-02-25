@@ -49,7 +49,6 @@ namespace PixelGame
         public override void Remove()
         {
             PixelScreen.onPixelScreenDeleteEvent?.Invoke(parent,screen);
-            parent.PixelComponents.Remove(this.ToString());
             Destroy(screen);
             Destroy(this);
         }

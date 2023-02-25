@@ -52,6 +52,9 @@ namespace PixelGame
             // List<KeyValuePair<PixelPosition, Pixel>>
             List<KeyValuePair<PixelPosition, Pixel>> selfpixels = PixelScreenManager.Instance.GetPixelsWithCollider(parent, translation);
             List<KeyValuePair<PixelPosition, Pixel>> otherpixels = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent);
+
+            List<KeyValuePair<PixelPosition, Pixel>> spritepixels = PixelScreenManager.Instance.GetSpritePixelsAtPosition(parent, translation);
+
             foreach(KeyValuePair<PixelPosition, Pixel> self in selfpixels)
             {
                 foreach(KeyValuePair<PixelPosition, Pixel> other in otherpixels)
@@ -60,15 +63,17 @@ namespace PixelGame
                     {
                         if(other.Value.Collider.isTrigger)
                         {
-                            // FIXME
-                            foreach(KeyValuePair<PixelPosition, Pixel> sprite in PixelScreenManager.Instance.GetSpritePixelsAtPosition(parent, translation))
+                            foreach(KeyValuePair<PixelPosition, Pixel> sprite in spritepixels)
                             {
-                                if(sprite.Value.Image.color.Equals(PixelSprite.RGBToColor(1164219232255)))
+                                if(sprite.Key == other.Key)
                                 {
-                                    OnWinLevelEvent?.Invoke();
+                                    if(sprite.Value.Image.color.Equals(PixelSprite.RGBToColor(1164219232255)))
+                                    {
+                                        PixelTransform.OnWinLevelEvent?.Invoke();
+                                    }
                                 }
                             }
-                            
+                            OnWinLevelEvent?.Invoke();   
                             PixelCollider.onTriggerEvent?.Invoke(other.Value, parent);
                             return false;
                         }
@@ -84,7 +89,6 @@ namespace PixelGame
         }
         public override void Remove()
         {
-            parent.PixelComponents.Remove(this.ToString());
             Destroy(this);
         }
     }
