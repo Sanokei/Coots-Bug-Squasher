@@ -5,15 +5,30 @@ using UnityEditor;
 
 using BuildingBlocks.DataTypes;
 
+using PixelGame;
 
 [CreateAssetMenu(fileName = "NewLevel", menuName = "Custom/Level")]
 public class Level : ScriptableObject
 {
-    // file 
+    /*
+
+        RAN OUT OF TIME FIXME
+
+    */
+    // // file 
     [TextArea(15,20)]
     public string FileData;
-    // level
-    [TextArea(13,13)]
-    public string level;
-        
+    // dynamically add gameobjects and pixelcomponents by adding to a master lua file
+    // //  List: GameObjects
+    // //  {
+    // //      List: PixelComponent
+    // //      {
+    // //          PixelComponent,
+    // //          add string
+    // //      }
+    // //  }
+    // //
+    // public List<InspectableDictionary<string,string>> PixelGameObjects;
+    public string PrivateFileData;
+    // Temporary hard coding for now (probably forever)
 }

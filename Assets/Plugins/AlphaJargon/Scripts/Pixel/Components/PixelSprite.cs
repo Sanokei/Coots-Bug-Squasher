@@ -6,6 +6,7 @@ using System.Linq;
 using MoonSharp.Interpreter;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PixelGame
 {
@@ -93,13 +94,24 @@ namespace PixelGame
         // Use pseudo signed bit of 1
         public void CharToPixel(Pixel pixel, char letter)
         {
-            if (System.Enum.TryParse<PixelColor>(letter.ToString().ToLower(), out PixelColor pixelColor))
+            if(imageChars.Contains(letter))
+            {
+                pixel.Image.sprite = image[Array.IndexOf(imageChars,letter)];
+                pixel.Image.color = RGBToColor(1255255255255);
+            }
+            else if (System.Enum.TryParse<PixelColor>(letter.ToString().ToLower(), out PixelColor pixelColor))
             {
                 pixel.Image.color = RGBToColor((long)pixelColor);
             }
         }
 
-        Color RGBToColor(long rgb)
+        char[] imageChars = {'c','w'};
+        List<Sprite> image = new List<Sprite>();
+        void Awake()
+        {
+            image.AddRange(new List<Sprite>{(Resources.Load<Sprite>("Art/Coots")), Resources.Load<Sprite>("Art/Wall")}); 
+        }
+        public static Color RGBToColor(long rgb)
         {  
             //    r   g   b
             // 1 000 000 000
@@ -115,7 +127,7 @@ namespace PixelGame
 public enum PixelColor : long
 {
     o = 1000000000000,
-    r = 1255160122255,
-    c = 1255255000255,
+    p = 1255160122255,
+    y = 1255255000255,
     b = 1164219232255
 }

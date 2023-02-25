@@ -41,74 +41,6 @@ public class PixelScreenManager : MonoBehaviour
         Layers.Remove(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.ToDictionary()));
     }
 
-    private static Dictionary<int, Pixel> FilterPixelsWithColliders(Dictionary<int, Pixel> pixels)
-    {
-        var filteredPixels = new Dictionary<int, Pixel>();
-
-        foreach (KeyValuePair<int, Pixel> pixel in pixels)
-        {
-            if (pixel.Value.Collider != null)
-            {
-                filteredPixels.Add(pixel.Key, pixel.Value);
-            }
-        }
-
-        return filteredPixels;
-    }
-
-    private List<KeyValuePair<PixelPosition, Dictionary<int, Pixel>>> FindPixelsWithColliders()
-    {
-        List<KeyValuePair<PixelPosition, Dictionary<int, Pixel>>> filtered = new List<KeyValuePair<PixelPosition, Dictionary<int, Pixel>>>();
-
-        foreach (KeyValuePair<PixelGameObject, Dictionary<int, Pixel>> layer in Layers)
-        {
-            Dictionary<int, Pixel> pixelsWithColliders = FilterPixelsWithColliders(layer.Value);
-
-            if (pixelsWithColliders.Count > 0)
-            {
-                filtered.Add(new KeyValuePair<PixelPosition, Dictionary<int, Pixel>>(layer.Key.position, pixelsWithColliders));
-            }
-        }
-
-        return filtered;
-    }
-
-    // use this stuff
-    public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithCollider()
-    {
-        List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
-
-        foreach (KeyValuePair<PixelPosition, Dictionary<int, Pixel>> layer in FindPixelsWithColliders())
-        {
-            PixelPosition layerPosition = layer.Key;
-
-            foreach (KeyValuePair<int, Pixel> pixel in layer.Value)
-            {
-                PixelPosition pixelPosition = PixelPosition.FromIndex(pixel.Key);
-                PixelPosition absolutePosition = layerPosition + pixelPosition;
-
-                pixels.Add(new KeyValuePair<PixelPosition, Pixel>(absolutePosition, pixel.Value));
-            }
-        }
-
-        return pixels;
-    }
-
-    public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithCollider(PixelPosition pixelPosition)
-    {
-        List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
-
-        foreach (KeyValuePair<PixelPosition, Pixel> pixel in GetPixelsWithCollider())
-        {
-            if (pixel.Key.Equals(pixelPosition))
-            {
-                pixels.Add(pixel);
-            }
-        }
-
-        return pixels;
-    }
-
     public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithCollider(PixelGameObject pgo, PixelPosition translation)
     {
         List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
@@ -147,6 +79,40 @@ public class PixelScreenManager : MonoBehaviour
                 }
             }
         }
+        return pixels;
+    }
+
+    public List<KeyValuePair<int, Pixel>> GetSpriteLayerPixels(PixelGameObject pgo)
+    {
+        List<KeyValuePair<int, Pixel>> pixels = new List<KeyValuePair<int, Pixel>>();
+
+        foreach (KeyValuePair<PixelGameObject, Dictionary<int, Pixel>> layer in Layers)
+        {
+            if (layer.Key.Equals(pgo))
+            {
+                foreach (KeyValuePair<int, Pixel> pixel in layer.Value)
+                {
+                    if(pixel.Value.isOn)
+                        pixels.Add(new KeyValuePair<int, Pixel>(pixel.Key, pixel.Value));
+                }
+            }
+        }
+
+        return pixels;
+    }
+
+    public List<KeyValuePair<PixelPosition, Pixel>> GetSpritePixelsAtPosition(PixelGameObject pgo, PixelPosition position)
+    {
+        List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
+
+        foreach (KeyValuePair<int, Pixel> layer in GetSpriteLayerPixels(pgo))
+        {
+            if (PixelPosition.FromIndex(layer.Key) == position)
+            {
+                pixels.Add(new KeyValuePair<PixelPosition,Pixel>(PixelPosition.FromIndex(layer.Key),layer.Value));
+            }
+        }
+
         return pixels;
     }
 }

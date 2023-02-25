@@ -34,13 +34,8 @@ namespace PixelGame
 
             AlphaJargon.onUpdateEvent += OnUpdateEventHandler;
 
-            PixelCollider.onTriggerEnter += TriggerEnter;
-            PixelCollider.onTriggerStay += TriggerStay;
-            PixelCollider.onTriggerExit += TriggerExit;
-
-            PixelCollider.onCollisionEnter += CollisionEnter;
-            PixelCollider.onCollisionStay += CollisionStay;
-            PixelCollider.onCollisionExit += CollisionExit;
+            PixelCollider.onTriggerEvent += TriggerEvent;
+            PixelCollider.onCollisionEvent  += CollisionEvent;
         }
 
         void OnDisable()
@@ -49,24 +44,27 @@ namespace PixelGame
             
             AlphaJargon.onUpdateEvent -= OnUpdateEventHandler;
 
-            PixelCollider.onTriggerEnter -= TriggerEnter;
-            PixelCollider.onTriggerStay -= TriggerStay;
-            PixelCollider.onTriggerExit -= TriggerExit;
-
-            PixelCollider.onCollisionEnter -= CollisionEnter;
-            PixelCollider.onCollisionStay -= CollisionStay;
-            PixelCollider.onCollisionExit -= CollisionExit;
+            PixelCollider.onTriggerEvent -= TriggerEvent;
+            PixelCollider.onCollisionEvent  -= CollisionEvent;
         }
 
         public void add(DynValue FileData)
         {
             string multiliteralString = FileData.ToString(); // Get the multiliteral string from the DynValue
             string normalString = multiliteralString.Substring(1, multiliteralString.Length - 2); // Remove the first and last quotes enclosing the string
-            add(normalString);
+            this.FileData = normalString;
         }
-        public void add(string FileData)
+        public void addFile(DynValue FileData)
         {
-            this.FileData = FileData;
+            StartCoroutine(GetLuaFile(FileData.ToPrintString()));
+        }
+        private IEnumerator GetLuaFile(string filePath)
+        {
+            yield return LoadLuaFile.GetLuaFile(filePath, HandleLuaFile);
+        }
+        private void HandleLuaFile(string text)
+        {
+            this.FileData = text;
         }
         public override void Remove()
         {
@@ -140,30 +138,14 @@ namespace PixelGame
                 onKeyDown?.Invoke(DynValue.NewString(KeyCode));
         }
         //
-        private void TriggerEnter(Collider2D other, PixelGameObject parent)
+        private void TriggerEvent(Pixel other, PixelGameObject parent)
         {
             onTriggerEnter?.Invoke(DynValue.NewString(parent.name));
         }
-        private void TriggerStay(Collider2D other, PixelGameObject parent)
-        {
-            onTriggerStay?.Invoke(DynValue.NewString(parent.name));
-        }
-        private void TriggerExit(Collider2D other, PixelGameObject parent)
-        {
-            onTriggerExit?.Invoke(DynValue.NewString(parent.name));
-        }
         //
-        private void CollisionEnter(Collision2D other, PixelGameObject parent)
+        private void CollisionEvent(Pixel other, PixelGameObject parent)
         {
             onCollisionEnter?.Invoke(DynValue.NewString(parent.name));
         } 
-        private void CollisionStay(Collision2D other, PixelGameObject parent)
-        {
-            onCollisionStay?.Invoke(DynValue.NewString(parent.name));
-        }
-        private void CollisionExit(Collision2D other, PixelGameObject parent)
-        {
-            onCollisionExit?.Invoke(DynValue.NewString(parent.name));
-        }
     }
 }

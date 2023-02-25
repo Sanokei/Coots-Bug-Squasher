@@ -66,9 +66,12 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         Compiler.RunScript();
         AwakeGame();
         InitializeGame();
-        StartGame();
-        RunInGameScripts();
+        StartCoroutine(StartGame());
+
+        // StartCoroutine(RunInGameScripts());
     }
+
+    
 
     public void AwakeGame()
     {
@@ -80,12 +83,14 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         initializeGameEvent?.Invoke();
     }
 
-    public void StartGame()
+    public IEnumerator StartGame()
     {
+        yield return null;
         startGameEvent?.Invoke();
     }
-    void RunInGameScripts()
+    public IEnumerator RunInGameScripts()
     {
+        yield return null;
         foreach(PixelGameObject pgo in PixelGameObjects.Values)
             foreach(PixelComponent comp in pgo.PixelComponents.Values)
                 if(comp is PixelBehaviourScript)

@@ -12,6 +12,8 @@ namespace PixelGame
     public class PixelTransform : PixelComponent
     {
         public override PixelGameObject parent{get;set;}
+        public delegate void OnWinLevel();
+        public static OnWinLevel OnWinLevelEvent;
 
         public override void Create(PixelGameObject parent)
         {
@@ -37,7 +39,6 @@ namespace PixelGame
         {
             Vector3 trans = new Vector3(x * PixelScreen.CellSize,y * PixelScreen.CellSize);
             PixelPosition translation = new PixelPosition(x,y);
-            Debug.Log($"Position: {(parent.position + translation).x},{(parent.position + translation).y}");
             if(!CheckCollision(translation))
             {
                 transform.Translate(trans);
@@ -58,9 +59,24 @@ namespace PixelGame
                     if(self.Key == other.Key)
                     {
                         if(other.Value.Collider.isTrigger)
-                            Debug.Log("Pixel at PixelPosition is trigger");
+                        {
+                            // FIXME
+                            foreach(KeyValuePair<PixelPosition, Pixel> sprite in PixelScreenManager.Instance.GetSpritePixelsAtPosition(parent, translation))
+                            {
+                                if(sprite.Value.Image.color.Equals(PixelSprite.RGBToColor(1164219232255)))
+                                {
+                                    OnWinLevelEvent?.Invoke();
+                                }
+                            }
+                            
+                            PixelCollider.onTriggerEvent?.Invoke(other.Value, parent);
+                            return false;
+                        }
                         else
+                        {
+                            PixelCollider.onCollisionEvent?.Invoke(other.Value, parent);
                             return true;
+                        }
                     }
                 }
             }

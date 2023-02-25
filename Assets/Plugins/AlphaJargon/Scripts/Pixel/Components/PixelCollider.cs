@@ -18,10 +18,10 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelCollider : PixelComponent
     {
-        public delegate void OnTriggerDelegate(Collider2D other, PixelGameObject parent);
-        public static OnTriggerDelegate onTriggerEnter, onTriggerStay, onTriggerExit;
-        public delegate void OnCollisionDelegate(Collision2D other, PixelGameObject parent);
-        public static OnCollisionDelegate onCollisionEnter, onCollisionStay, onCollisionExit;
+        public delegate void OnTriggerDelegate(Pixel other, PixelGameObject parent);
+        public static OnTriggerDelegate onTriggerEvent;
+        public delegate void OnCollisionDelegate(Pixel other, PixelGameObject parent);
+        public static OnCollisionDelegate onCollisionEvent;
         //
         public bool isTrigger = false;
         //
@@ -53,11 +53,16 @@ namespace PixelGame
             Destroy(screen);
             Destroy(this);
         }
+        public PixelComponent add(DynValue ColliderString, DynValue Boolean)
+        {
+            return add(ColliderString, Boolean.CastToBool());
+        }
+        
         public PixelComponent add(DynValue ColliderString, bool isTrigger = false)
         {
             string collstr = ColliderString.ToString();
             collstr = new string(collstr.Where(c => !char.IsWhiteSpace(c)).ToArray()).Replace("\"","");
-            return add(collstr);
+            return add(collstr, isTrigger);
         }
 
         public PixelComponent add(string ColliderString, bool isTrigger = false)
@@ -73,10 +78,10 @@ namespace PixelGame
                     pixelPositions.Add(new PixelPosition(new Vector2Int(col, row)));
                 }
             }
-            AddColliderToScreen(ColliderString);
+            AddColliderToScreen(ColliderString, isTrigger);
             return this;
         }
-        public PixelScreen AddColliderToScreen(string ColliderString)
+        public PixelScreen AddColliderToScreen(string ColliderString, bool isTrigger = false)
         {
             // foreach(PixelPosition pp in pixelPositions)
             //     ColliderToPixel(screen.grid[pp.ToIndex()], this);
@@ -102,15 +107,16 @@ namespace PixelGame
             for(int i = 0; i < finalString.Count(); i++)
             {
                 if(finalString[i] != 'o')
-                    ColliderToPixel(screen.grid[i], this);
+                    ColliderToPixel(screen.grid[i], this, isTrigger);
             }
             return screen;
         }
 
         // did this for condormity sake with pixelsprite
-        public void ColliderToPixel(Pixel pixel, PixelCollider pc)
+        public void ColliderToPixel(Pixel pixel, PixelCollider pc, bool isTrigger = false)
         {
             pixel.Collider = pc;
+            pixel.Collider.isTrigger = isTrigger;
         }
 
         List<Vector2> MyVector2ToVector2(List<MyVector2> myVector2List)
@@ -121,33 +127,6 @@ namespace PixelGame
                 vector2List.Add(new Vector2(myVector2.x, myVector2.y));
             }
             return vector2List;
-        }
-
-        // Trigger and Collision
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            onTriggerEnter?.Invoke(other, this.parent);
-        }
-        void OnTriggerStay2D(Collider2D other)
-        {
-            onTriggerStay?.Invoke(other, this.parent);
-        }
-        void OnTriggerExit2D(Collider2D other)
-        {
-            onTriggerExit?.Invoke(other, this.parent);
-        }
-
-        void OnCollisionEnter2D(Collision2D other)
-        {
-            onCollisionEnter?.Invoke(other, this.parent);
-        }
-        void OnCollisionStay2D(Collision2D other)
-        {
-            onCollisionStay?.Invoke(other, this.parent);
-        }
-        void OnCollisionExit2D(Collision2D other)
-        {
-            onCollisionExit?.Invoke(other, this.parent);
         }
     }
 }
