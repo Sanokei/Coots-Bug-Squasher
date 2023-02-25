@@ -25,8 +25,8 @@ namespace PixelGame
         }
         public override void Create(PixelGameObject parent)
         {
-            screen = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
             this.parent = parent;
+            screen = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
         }
         public void AddScreenToScreenManager()
         {
@@ -36,6 +36,7 @@ namespace PixelGame
         {
             PixelScreen.onPixelScreenDeleteEvent?.Invoke(parent,screen);
             parent.PixelComponents.Remove(this.ToString());
+            Destroy(screen);
             Destroy(this);
         }
         public PixelSprite add(DynValue dynValue)

@@ -16,7 +16,6 @@ namespace PixelGame
         public override void Create(PixelGameObject parent)
         {
             this.parent = parent;
-            move(parent.position);
         }
         public PixelTransform add(PixelPosition pp /*hehe*/)
         {

@@ -14,6 +14,7 @@ namespace PixelGame
         bool useGravity = false;
         public override void Create(PixelGameObject parent)
         {
+            this.parent = parent;
             rb = gameObject.AddComponent<Rigidbody2D>();
             rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             rb.bodyType = RigidbodyType2D.Dynamic;

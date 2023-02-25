@@ -38,9 +38,9 @@ namespace PixelGame
         }
         public override void Create(PixelGameObject parent)
         {
+            this.parent = parent;
             screen = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
             pixelCollider = new List<PolygonCollider2D>();
-            this.parent = parent;
         }
         public void AddScreenToScreenManager()
         {
@@ -50,6 +50,7 @@ namespace PixelGame
         {
             PixelScreen.onPixelScreenDeleteEvent?.Invoke(parent,screen);
             parent.PixelComponents.Remove(this.ToString());
+            Destroy(screen);
             Destroy(this);
         }
         public PixelComponent add(DynValue ColliderString, bool isTrigger = false)

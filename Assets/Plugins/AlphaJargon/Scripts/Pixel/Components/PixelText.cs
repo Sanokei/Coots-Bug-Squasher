@@ -9,14 +9,14 @@ namespace PixelGame
     public class PixelText : PixelComponent
     {
         public override PixelGameObject parent{get;set;}
-        PixelTextBox textBox;
+        PixelTextBox pixelTextBox;
         TextMeshProUGUI TextBox;
         public string content;
 
         public override void Create(PixelGameObject parent)
         {
-            // FIXME: add to PixelGameObject instead as "Child"
-            textBox = Instantiate<PixelTextBox>(Resources.Load<PixelTextBox>("Prefabs/Game/PixelTextBox"),parent.gameObject.transform);
+            this.parent = parent;
+            pixelTextBox = Instantiate<PixelTextBox>(Resources.Load<PixelTextBox>("Prefabs/Game/PixelTextBox"),parent.gameObject.transform);
         }
         public PixelText add(string content, PixelPosition PP)
         {
@@ -25,12 +25,13 @@ namespace PixelGame
         public PixelText add(string content, int x, int y)
         {
             this.content = content;
-            textBox.InstantiateContent(content, x, y);
+            pixelTextBox.InstantiateContent(content, x, y);
             return this;
         }
         public override void Remove()
         {
             parent.PixelComponents.Remove(this.ToString());
+            Destroy(pixelTextBox);
             Destroy(this);
         }
     }
