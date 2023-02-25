@@ -31,7 +31,7 @@ function InitializeGame()
         oooooooooooo
         oooooooooooo
         oooooooooooo
-        oooooooooooos
+        oooooooooooo
         oooooooooooo
         oooooooooooo
         oooooooooooo
@@ -78,7 +78,7 @@ function InitializeGame()
         oooooooooooo
         oooooooooooo
         oooooooooooo
-        oorsoooooooo
+        oorooooooooo
         ocoooooooooo
         crcrcrcrcrcr
         ]]

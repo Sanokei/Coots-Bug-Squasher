@@ -11,8 +11,8 @@ using PixelGame;
 
 public class PixelScreen : MonoBehaviour, IPixelObject
 {
-    public delegate void onPixelScreenCreateDelegate(PixelGameObject parent,PixelScreen pixelScreen);
-    public static onPixelScreenCreateDelegate onPixelScreenCreateEvent;
+    public delegate void onPixelScreenChangeDelegate(PixelGameObject parent,PixelScreen pixelScreen);
+    public static onPixelScreenChangeDelegate onPixelScreenCreateEvent, onPixelScreenDeleteEvent;
     void OnEnable()
     {
         gridLayout = gameObject.GetComponent<GridLayoutGroup>();

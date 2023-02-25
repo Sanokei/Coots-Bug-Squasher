@@ -14,7 +14,7 @@ namespace PixelGame
     {
         // Psuedo Sprite
         public PixelScreen screen; // Only use this to show on screen
-        public PixelGameObject parent;
+        public override PixelGameObject parent{get;set;}
         void OnEnable()
         {
             AlphaJargon.startGameEvent += AddScreenToScreenManager;
@@ -31,6 +31,12 @@ namespace PixelGame
         public void AddScreenToScreenManager()
         {
             PixelScreen.onPixelScreenCreateEvent?.Invoke(parent,screen);
+        }
+        public override void Remove()
+        {
+            PixelScreen.onPixelScreenDeleteEvent?.Invoke(parent,screen);
+            parent.PixelComponents.Remove(this.ToString());
+            Destroy(this);
         }
         public PixelSprite add(DynValue dynValue)
         {

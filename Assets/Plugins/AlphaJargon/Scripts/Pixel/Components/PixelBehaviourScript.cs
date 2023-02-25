@@ -19,6 +19,7 @@ namespace PixelGame
     public class PixelBehaviourScript : PixelComponent
     {
         string FileData;
+        public override PixelGameObject parent{get;set;}
         Script script = new Script();
         ScriptFunctionDelegate onKeyDown, onKeyUp;
         ScriptFunctionDelegate onUpdate, onStart;
@@ -67,6 +68,11 @@ namespace PixelGame
         {
             this.FileData = FileData;
         }
+        public override void Remove()
+        {
+            parent.PixelComponents.Remove(this.ToString());
+            Destroy(this);
+        }
         public void addPixelGameObjectToScriptGlobals(string key, IPixelObject value)
         {
             // Debug.Log($"key: {key} + value: {value}");
@@ -75,6 +81,7 @@ namespace PixelGame
         }
         public override void Create(PixelGameObject parent)
         {
+            this.parent = parent;
             addPixelGameObjectToScriptGlobals(parent.name,parent); 
         }
 

@@ -8,6 +8,7 @@ namespace PixelGame
     public class PixelRigidBody : PixelComponent
     {
         public Rigidbody2D rb {get; protected set;}
+        public override PixelGameObject parent {get;set;}
         int gravityScale = 1;
         float mass = 0.01f;
         bool useGravity = false;
@@ -33,6 +34,11 @@ namespace PixelGame
             
             this.useGravity = useGravity ?? this.useGravity;
             rb.isKinematic = !this.useGravity;
+        }
+        public override void Remove()
+        {
+            parent.PixelComponents.Remove(this.ToString());
+            Destroy(this);
         }
     }
 }

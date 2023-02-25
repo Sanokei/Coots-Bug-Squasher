@@ -8,9 +8,11 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelText : PixelComponent
     {
+        public override PixelGameObject parent{get;set;}
         PixelTextBox textBox;
         TextMeshProUGUI TextBox;
         public string content;
+
         public override void Create(PixelGameObject parent)
         {
             // FIXME: add to PixelGameObject instead as "Child"
@@ -25,6 +27,11 @@ namespace PixelGame
             this.content = content;
             textBox.InstantiateContent(content, x, y);
             return this;
+        }
+        public override void Remove()
+        {
+            parent.PixelComponents.Remove(this.ToString());
+            Destroy(this);
         }
     }
 }

@@ -21,11 +21,13 @@ public class PixelScreenManager : MonoBehaviour
     void OnEnable()
     {
         PixelScreen.onPixelScreenCreateEvent += AddToPixelScreen;
+        PixelScreen.onPixelScreenDeleteEvent += RemoveFromPixelScreen;
     }
 
     void OnDisable()
     {
         PixelScreen.onPixelScreenCreateEvent -= AddToPixelScreen;
+        PixelScreen.onPixelScreenDeleteEvent -= RemoveFromPixelScreen;
     }
 
     public List<KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>> Layers = new List<KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>>();
@@ -33,6 +35,10 @@ public class PixelScreenManager : MonoBehaviour
     void AddToPixelScreen(PixelGameObject parent, PixelScreen pixelScreen)
     {
         Layers.Add(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.ToDictionary()));
+    }
+    void RemoveFromPixelScreen(PixelGameObject parent, PixelScreen pixelScreen)
+    {
+        Layers.Remove(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.ToDictionary()));
     }
 
     private static Dictionary<int, Pixel> FilterPixelsWithColliders(Dictionary<int, Pixel> pixels)
@@ -115,7 +121,6 @@ public class PixelScreenManager : MonoBehaviour
                 {
                     if (pixel.Value.Collider != null)
                     {
-                         Debug.Log($"This({(pixel.Key + pgo.position + translation).x},{(pixel.Key + pgo.position + translation).y})");
                         pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + pgo.position + translation, pixel.Value));
                     }
                 }
@@ -137,7 +142,6 @@ public class PixelScreenManager : MonoBehaviour
                 {
                     if (pixel.Value.Collider != null)
                     {
-                        Debug.Log($"Other({(pixel.Key + layer.Key.position).x},{(pixel.Key + layer.Key.position).y})");
                         pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + layer.Key.position, pixel.Value));
                     }
                 }

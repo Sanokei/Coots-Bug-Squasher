@@ -11,15 +11,15 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelTransform : PixelComponent
     {
-        PixelGameObject parent;
+        public override PixelGameObject parent{get;set;}
 
         public override void Create(PixelGameObject parent)
         {
             this.parent = parent;
+            move(parent.position);
         }
         public PixelTransform add(PixelPosition pp /*hehe*/)
         {
-            parent.position = pp;
             move(pp);
             return this;
         }
@@ -67,6 +67,10 @@ namespace PixelGame
             }
             return false;
         }
-
+        public override void Remove()
+        {
+            parent.PixelComponents.Remove(this.ToString());
+            Destroy(this);
+        }
     }
 }

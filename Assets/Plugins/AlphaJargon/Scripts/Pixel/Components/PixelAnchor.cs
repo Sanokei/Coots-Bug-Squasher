@@ -7,6 +7,7 @@ namespace PixelGame
     [System.Obsolete("Dont use these")]
     public class PixelAnchor : PixelComponent
     {
+        public override PixelGameObject parent{get;set;}
         public PixelPosition position;
         public void add(PixelSprite ps, PixelPosition pp)
         {
@@ -14,7 +15,13 @@ namespace PixelGame
         }
         public override void Create(PixelGameObject parent)
         {
+            this.parent = parent;
             position = new PixelPosition(0,0);
+        }
+        public override void Remove()
+        {
+            parent.PixelComponents.Remove(this.ToString());
+            Destroy(this);
         }
         public static PixelPosition GetPixelAnchorForCollider(PolygonCollider2D collider)
         {
