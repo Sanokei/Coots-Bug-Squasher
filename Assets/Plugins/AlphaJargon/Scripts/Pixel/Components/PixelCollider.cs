@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using System.Text;
+
 using UnityEngine;
 
 using Habrador_Computational_Geometry;
@@ -20,62 +22,118 @@ namespace PixelGame
         public static OnTriggerDelegate onTriggerEnter, onTriggerStay, onTriggerExit;
         public delegate void OnCollisionDelegate(Collision2D other, PixelGameObject parent);
         public static OnCollisionDelegate onCollisionEnter, onCollisionStay, onCollisionExit;
-
+        //
+        public bool isTrigger = false;
         //
         PixelGameObject parent;
+        // FIXME
+        string ORIGINALDYNVALUE = "";
         public List<PolygonCollider2D> pixelCollider;
-
+        public PixelScreen screen; // Only use this to show on screen
+        void OnEnable()
+        {
+            AlphaJargon.startGameEvent += AddScreenToScreenManager;
+        }
+        void OnDisable()
+        {
+            AlphaJargon.startGameEvent -= AddScreenToScreenManager;
+        }
         public override void Create(PixelGameObject parent)
         {
+            screen = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
             pixelCollider = new List<PolygonCollider2D>();
             this.parent = parent;
+        }
+        public void AddScreenToScreenManager()
+        {
+            PixelScreen.onPixelScreenCreateEvent?.Invoke(parent,screen);
         }
         public PixelComponent add(DynValue ColliderString, bool isTrigger = false)
         {
             string collstr = ColliderString.ToString();
-            string grid = (new string((collstr.Split('\n')).ToList()[0].Where(c => !char.IsWhiteSpace(c)).ToArray())).Replace("\"","");
             collstr = new string(collstr.Where(c => !char.IsWhiteSpace(c)).ToArray()).Replace("\"","");
-            return add(collstr,grid.Length);
+            return add(collstr);
         }
 
-        public PixelComponent add(string ColliderString, int grid, bool isTrigger = false)
+        public PixelComponent add(string ColliderString, bool isTrigger = false)
         {
+            ORIGINALDYNVALUE = ColliderString;
             List<PixelPosition> pixelPositions = new List<PixelPosition>();
-            if (parent.PixelComponents.Values.Any(x => x is PixelSprite))
+            char[] str = ColliderString.ToCharArray();
+            for (int i = 0; i < str.Length; i++)  
             {
-                char[] str = ColliderString.ToCharArray();
-                for (int i = 0; i < str.Length; i++)  
+                if (str[i] == 'x')
                 {
-                    if (str[i] == 'x')
-                    {
-                        int row = i / grid;
-                        int col = i % grid;
-                        pixelPositions.Add(new PixelPosition(new Vector2Int(col, row)));
-                    }
+                    int row = i / PixelScreen.GridSideSize;
+                    int col = i % PixelScreen.GridSideSize;
+                    pixelPositions.Add(new PixelPosition(new Vector2Int(col, row)));
                 }
             }
-            return add(pixelPositions, grid);
+            return add(pixelPositions);
         }
-        public PixelComponent add(List<PixelPosition> pixelPositions, int grid, bool isTrigger = false)
+        public PixelComponent add(List<PixelPosition> pixelPositions, bool isTrigger = false)
         {
             // convert all the pixel positions to coords
             List<MyVector2> Points = new List<MyVector2>();
             float _offSet = (PixelScreen.GridSideSize * PixelScreen.CellSize) / 2.000f;
             foreach (PixelPosition pixelPosition in pixelPositions)
             {
-                Points.Add(new MyVector2(pixelPosition.x * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y - 1) * PixelScreen.CellSize - _offSet));
-                Points.Add(new MyVector2(pixelPosition.x * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y) * PixelScreen.CellSize - _offSet));
-                Points.Add(new MyVector2((pixelPosition.x + 1) * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y) * PixelScreen.CellSize - _offSet));
-                Points.Add(new MyVector2((pixelPosition.x + 1) * PixelScreen.CellSize - _offSet, (grid - pixelPosition.y - 1) * PixelScreen.CellSize - _offSet));
+                
+                Points.Add(new MyVector2(pixelPosition.x * PixelScreen.CellSize - _offSet, (PixelScreen.GridSideSize - pixelPosition.y - 1) * PixelScreen.CellSize - _offSet));
+                Points.Add(new MyVector2(pixelPosition.x * PixelScreen.CellSize - _offSet, (PixelScreen.GridSideSize - pixelPosition.y) * PixelScreen.CellSize - _offSet));
+                Points.Add(new MyVector2((pixelPosition.x + 1) * PixelScreen.CellSize - _offSet, (PixelScreen.GridSideSize - pixelPosition.y) * PixelScreen.CellSize - _offSet));
+                Points.Add(new MyVector2((pixelPosition.x + 1) * PixelScreen.CellSize - _offSet, (PixelScreen.GridSideSize - pixelPosition.y - 1) * PixelScreen.CellSize - _offSet));
             }
 
             // get the perimeter using 'quickhull' convex hull algorithm
             PolygonCollider2D pc2d = gameObject.AddComponent<PolygonCollider2D>();
             pc2d.SetPath(0, MyVector2ToVector2(QuickhullAlgorithm2D.GenerateConvexHull(Points, false)));
             pc2d.isTrigger = isTrigger;
+            this.isTrigger = isTrigger;
             pixelCollider.Add(pc2d);
 
+            // adds the polygoncollider2d to all the pixels it contains so the pixel
+            // can be used to know which collider its apart of
+            AddColliderToScreen(pixelPositions);
+
             return this;
+        }
+        public PixelScreen AddColliderToScreen(List<PixelPosition> pixelPositions)
+        {
+            // foreach(PixelPosition pp in pixelPositions)
+            //     ColliderToPixel(screen.grid[pp.ToIndex()], this);
+            // return screen;
+
+            // FIXME:
+            var outputStrings = Enumerable.Range(0, ORIGINALDYNVALUE.Length / PixelScreen.GridSideSize)
+                .Select(i => ORIGINALDYNVALUE.Substring(i * PixelScreen.GridSideSize, PixelScreen.GridSideSize));
+
+            string[] stringArray = outputStrings.ToArray();
+
+            Array.Reverse(stringArray); 
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var str in stringArray)
+            {
+                sb.Append(str);
+            }
+            string reversedString = sb.ToString();
+
+            // char[] charArray = reversedString.ToCharArray();
+            // Array.Reverse(charArray);
+            string finalString = new string(reversedString);
+            for(int i = 0; i < finalString.Count(); i++)
+            {
+                if(finalString[i] != 'o')
+                    ColliderToPixel(screen.grid[i], this);
+            }
+            return screen;
+        }
+
+        // did this for condormity sake with pixelsprite
+        public void ColliderToPixel(Pixel pixel, PixelCollider pc)
+        {
+            pixel.Collider = pc;
         }
 
         List<Vector2> MyVector2ToVector2(List<MyVector2> myVector2List)

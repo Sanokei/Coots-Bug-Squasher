@@ -11,18 +11,15 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelTransform : PixelComponent
     {
-        PixelPosition position;
         PixelGameObject parent;
 
         public override void Create(PixelGameObject parent)
         {
-            position = new PixelPosition(0,0);
             this.parent = parent;
         }
-
         public PixelTransform add(PixelPosition pp /*hehe*/)
         {
-            position = pp;
+            parent.position = pp;
             move(pp);
             return this;
         }
@@ -44,34 +41,37 @@ namespace PixelGame
             // gameobject.transform.Translate
             // no idea why
             Vector3 trans = new Vector3(x * PixelScreen.CellSize,y * PixelScreen.CellSize);
-            if(!CheckCollision(trans))
+            PixelPosition translation = new PixelPosition(x,y);
+            Debug.Log($"Position: {(parent.position + translation).x},{(parent.position + translation).y}");
+            if(!CheckCollision(translation))
+            {
                 transform.Translate(trans);
-            position = new PixelPosition((int)(transform.position.x / PixelScreen.CellSize),(int)(transform.position.y / PixelScreen.CellSize));
-            return position;
+                parent.position += translation;
+            }
+            return parent.position;
         }
 
-
-        // FIXME: this is so unoptomized 
-        private bool CheckCollision(Vector3 translation)
+        private bool CheckCollision(PixelPosition translation)
         {
-            foreach(PixelGameObject pgo in FindObjectsOfType(typeof(PixelGameObject)))
+            // List<KeyValuePair<PixelPosition, Pixel>>
+            List<KeyValuePair<PixelPosition, Pixel>> box = PixelScreenManager.Instance.GetPixelsWithCollider(parent, translation);
+            foreach(KeyValuePair<PixelPosition, Pixel> cell in box)
             {
-                try
-                {
-                    if (!pgo.Equals(this) && !pgo.PixelComponents.Values.Any(x => x.GetType() == typeof(PixelCollider)));
-                }
-                catch
-                {
-                    continue;
-                }
-                    foreach(PixelCollider pc in pgo.PixelComponents.Values.OfType<PixelCollider>().ToArray())
-                        foreach(PolygonCollider2D poly in pc.pixelCollider)
-                        {
-                            Debug.Log($"Poly: {poly.ToMyVector2List()}\nPoints: {translation.ToMyVector2()}");
-                            return _Intersections.PointPolygon(poly.ToMyVector2List(), translation.ToMyVector2());    
-                        }
+                Debug.Log($"Cell: {cell.Key.x},{cell.Key.y}");
             }
+            // List<KeyValuePair<PixelPosition, Pixel>> other = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent,translation + parent.position);
+
+            // foreach(KeyValuePair<PixelPosition, Pixel> cell in box)
+            // {
+            //     Debug.Log($"Cell: {cell.Key.x},{cell.Key.y}");
+            //     foreach(KeyValuePair<PixelPosition, Pixel> othercell in other)
+            //     {
+            //         Debug.Log($"Other: {othercell.Key.x},{othercell.Key.y}");
+            //         return (cell.Key == othercell.Key);
+            //     }
+            // }
             return false;
         }
+
     }
 }

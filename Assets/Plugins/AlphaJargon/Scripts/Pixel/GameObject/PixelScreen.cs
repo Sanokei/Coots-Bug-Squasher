@@ -11,6 +11,8 @@ using PixelGame;
 
 public class PixelScreen : MonoBehaviour, IPixelObject
 {
+    public delegate void onPixelScreenCreateDelegate(PixelGameObject parent,PixelScreen pixelScreen);
+    public static onPixelScreenCreateDelegate onPixelScreenCreateEvent;
     void OnEnable()
     {
         gridLayout = gameObject.GetComponent<GridLayoutGroup>();
@@ -33,14 +35,5 @@ public class PixelScreen : MonoBehaviour, IPixelObject
         {
             grid[index] = value;
         }
-    }
-    public PixelScreen ConvertSpriteStringToScreen(string SpriteString)
-    {
-        Enumerable.Range(0, SpriteString.Length)
-            .ToList()
-            .ForEach(index => grid[index].CharToPixel(SpriteString[index])
-        );
-        
-        return this;
     }
 }

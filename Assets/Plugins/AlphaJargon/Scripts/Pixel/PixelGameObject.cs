@@ -19,13 +19,13 @@ namespace PixelGame
     public class PixelGameObject : MonoBehaviour, IPixelObject
     {
         public InspectableDictionary<string,PixelComponent> PixelComponents{get; private set;}
+        public PixelPosition position = new PixelPosition(0,0);
         void OnEnable()
         {
             PixelComponents = new InspectableDictionary<string, PixelComponent>(); 
             UserData.RegisterAssembly();
 
         }
-        
         public dynamic this[string key] {
             get 
             {
@@ -37,12 +37,12 @@ namespace PixelGame
             }
         }
 
-        public dynamic add(string key, dynamic value)
+        public dynamic add(string key, string value)
         {
             return add(key,value,gameObject);
         }
         
-        public dynamic add(string key, dynamic value, GameObject go)
+        public dynamic add(string key, string value, GameObject go)
         {
             if(value is string)
             {

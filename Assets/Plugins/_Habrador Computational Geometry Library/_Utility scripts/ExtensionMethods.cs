@@ -151,9 +151,9 @@ namespace Habrador_Computational_Geometry
             List<MyVector2> points = new List<MyVector2>();
             foreach (Vector2 point in polygonCollider.points)
             {
-                // Convert local space points to world space points
-                MyVector2 worldPoint = polygonCollider.transform.TransformPoint(point).ToMyVector2();
-                points.Add(worldPoint);
+                Vector2 worldPoint = polygonCollider.transform.TransformPoint(point);
+                MyVector2 screenPoint = worldPoint.ToMyVector2();
+                points.Add(screenPoint);
             }
             return points;
         }

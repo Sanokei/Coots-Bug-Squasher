@@ -627,5 +627,57 @@ namespace Habrador_Computational_Geometry
 
             return isIntersecting;
         }
+        public static bool ConvexHullIntersection(List<MyVector2> hull1, List<MyVector2> hull2)
+        {
+            // Concatenate the vertices of both hulls
+            List<MyVector2> vertices = new List<MyVector2>();
+            vertices.AddRange(hull1);
+            vertices.AddRange(hull2);
+
+            // Get the axes to test
+            List<MyVector2> axes = GetAxes(vertices);
+
+            // Test each axis
+            foreach (MyVector2 axis in axes)
+            {
+                // Project the vertices of both hulls onto the axis
+                float min1 = float.MaxValue, max1 = float.MinValue;
+                foreach (MyVector2 vertex in hull1)
+                {
+                    float projection = MyVector2.Dot(vertex, axis);
+                    if (projection < min1) min1 = projection;
+                    if (projection > max1) max1 = projection;
+                }
+
+                float min2 = float.MaxValue, max2 = float.MinValue;
+                foreach (MyVector2 vertex in hull2)
+                {
+                    float projection = MyVector2.Dot(vertex, axis);
+                    if (projection < min2) min2 = projection;
+                    if (projection > max2) max2 = projection;
+                }
+
+                // If the projections do not overlap, the hulls do not intersect
+                if (max1 < min2 || max2 < min1) return false;
+            }
+
+            // If all axes overlap, the hulls intersect
+            return true;
+        }
+
+        private static List<MyVector2> GetAxes(List<MyVector2> vertices)
+        {
+            List<MyVector2> axes = new List<MyVector2>();
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                MyVector2 vertex1 = vertices[i];
+                MyVector2 vertex2 = vertices[(i + 1) % vertices.Count];
+                MyVector2 edge = vertex2 - vertex1;
+                MyVector2 normal = (new Vector2(edge.y, -edge.x).normalized).ToMyVector2();
+                axes.Add(normal);
+            }
+            return axes;
+        }
+
     }
 }

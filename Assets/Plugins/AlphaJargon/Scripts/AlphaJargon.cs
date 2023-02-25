@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using BuildingBlocks.DataTypes;
@@ -25,8 +26,16 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
 
     // Execution Order
     public delegate void TotalityExecutionOrder();
-    public static TotalityExecutionOrder awakeGameEvent, initializeGameEvent, startGameEvent; 
-    
+    public static TotalityExecutionOrder awakeGameEvent, initializeGameEvent, startGameEvent;
+
+    // Managers
+    PixelScreenManager PixelScreenManager;
+
+    void OnEnable()
+    {
+        PixelScreenManager = gameObject.AddComponent<PixelScreenManager>();
+    }
+
     void FixedUpdate()
     {
         // Input and FixedUpdate dont play nicely
@@ -58,6 +67,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         AwakeGame();
         InitializeGame();
         StartGame();
+        RunInGameScripts();
     }
 
     public void AwakeGame()
@@ -74,7 +84,16 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
     {
         startGameEvent?.Invoke();
     }
-    
+    void RunInGameScripts()
+    {
+        foreach(PixelGameObject pgo in PixelGameObjects.Values)
+            foreach(PixelComponent comp in pgo.PixelComponents.Values)
+                if(comp is PixelBehaviourScript)
+                {
+                    PixelBehaviourScript script = (PixelBehaviourScript)comp;
+                    script.RunScript();
+                }
+    }
     public Image Skybox;
     public InspectableDictionary<string,PixelGameObject> PixelGameObjects = new InspectableDictionary<string, PixelGameObject>();
 
@@ -91,14 +110,14 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
 
     public PixelGameObject add(string key)
     {
-        return add(key,GetComponent<Transform>());
+        return add(key,transform);
     }
     // add components to gameobjects
-    public PixelGameObject add(string key, Transform parent)
+    public PixelGameObject add(string key, Transform parentTransform)
     {
         if(!PixelGameObjects.Keys.Contains(key))  
         {
-            PixelGameObject value = Instantiate<PixelGameObject>(Resources.Load<PixelGameObject>("Prefabs/Game/PixelGameObject"), parent);
+            PixelGameObject value = Instantiate<PixelGameObject>(Resources.Load<PixelGameObject>("Prefabs/Game/PixelGameObject"), parentTransform);
             value.name = key;
             Compiler.addPixelGameObjectToJargonScriptGlobals(key,value);
             PixelGameObjects.Add(key, value);

@@ -11,7 +11,11 @@ namespace PixelGame
         PixelTextBox textBox;
         TextMeshProUGUI TextBox;
         public string content;
-
+        public override void Create(PixelGameObject parent)
+        {
+            // FIXME: add to PixelGameObject instead as "Child"
+            textBox = Instantiate<PixelTextBox>(Resources.Load<PixelTextBox>("Prefabs/Game/PixelTextBox"),parent.gameObject.transform);
+        }
         public PixelText add(string content, PixelPosition PP)
         {
             return add(content, PP.x, PP.y);
@@ -21,12 +25,6 @@ namespace PixelGame
             this.content = content;
             textBox.InstantiateContent(content, x, y);
             return this;
-        }
-
-        public override void Create(PixelGameObject parent)
-        {
-            // FIXME: add to PixelGameObject instead as "Child"
-            textBox = Instantiate<PixelTextBox>(Resources.Load<PixelTextBox>("Prefabs/Game/PixelTextBox"),parent.gameObject.transform);
         }
     }
 }

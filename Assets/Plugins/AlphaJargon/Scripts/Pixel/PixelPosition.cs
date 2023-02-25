@@ -26,5 +26,23 @@ namespace PixelGame
             this.x = pos.x;
             this.y = pos.y;
         }
+        public static PixelPosition FromIndex(int pixelPosition)
+        {
+            return new PixelPosition(pixelPosition % PixelScreen.GridSideSize, pixelPosition / PixelScreen.GridSideSize);
+        }
+        public static PixelPosition operator +(PixelPosition a, PixelPosition b) => new PixelPosition(a.x + b.x, a.y + b.y);
+        public static PixelPosition operator +(PixelPosition a, int b) => new PixelPosition(a.x + b % PixelScreen.GridSideSize, a.y + b / PixelScreen.GridSideSize);
+        public static PixelPosition operator +(int b, PixelPosition a) => new PixelPosition(a.x + b % PixelScreen.GridSideSize, a.y + b / PixelScreen.GridSideSize);
+        public static bool operator ==(PixelPosition a, PixelPosition b)
+        {
+            if (a.x == b.x && a.y == b.y) 
+                return true;
+            if (ReferenceEquals(a, null)) 
+                return false;
+            if (ReferenceEquals(b, null))
+                return false;
+            return a.Equals(b);
+        }
+        public static bool operator !=(PixelPosition a, PixelPosition b) => !(a == b);
     }
 }
