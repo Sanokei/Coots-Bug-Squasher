@@ -38,8 +38,6 @@ public class SneakGame : MonoBehaviour
     {
         LevelState.onlevelChangeEvent += LevelStateChange;
         GameState.ongameStateChangeEvent += GameStateChange;
-        PixelCollider.onTriggerEvent += ColliderTrigger;
-        // FIXME
         PixelTransform.OnWinLevelEvent += WinLevel;
     }
 
@@ -57,15 +55,38 @@ public class SneakGame : MonoBehaviour
     }
     void LevelStateChange()
     { // FIXME THIS IS AWFUL
-        PrivateCodeEditor.Text = "";
+        PrivateCodeEditor.Text = "-- Scroll to see more\n";
         string Level_filePath = LevelState.Instance.CurrLevel + ".lua";
         StartCoroutine(GetLuaFile(Level_filePath, HandleLuaFile));
 
         // CodeEditor.Text = LevelState.Instance[((int)LevelState.Instance.CurrLevelState)].FileData;
         string Level_MyCodeEditor_filePath = LevelState.Instance.CurrLevel + "MCE.lua";
         StartCoroutine(GetLuaFile(Level_MyCodeEditor_filePath, luaFileContent => { MyCodeEditor.Text = luaFileContent; }));
-        foreach (KeyValuePair<int, string> Level_PrivateCodeEditor_filePath in (LevelState.Instance.PCE_Files.Where(x => x.Key == LevelState.Instance.CurrLevel)))
-            StartCoroutine(GetLuaFile(Level_PrivateCodeEditor_filePath.Value, luaFileContent => { PrivateCodeEditor.Text += $"\n-- {Level_PrivateCodeEditor_filePath.Value}\n" + luaFileContent; }));
+
+        // LINQ is sometimes impossible to freaking read man 
+        // foreach (KeyValuePair<int, string> Level_PrivateCodeEditor_filePath in (LevelState.Instance.PCE_Files.Where(x => x.Key == LevelState.Instance.CurrLevel).ToList()))
+        //     StartCoroutine(GetLuaFile(Level_PrivateCodeEditor_filePath.Value, luaFileContent => { PrivateCodeEditor.Text += $"-- {Level_PrivateCodeEditor_filePath.Value}\n" + luaFileContent + "\n"; }));
+        // Get the PCE_Files that match the current level.
+
+        List<KeyValuePair<int, string>> matchingFiles = new List<KeyValuePair<int, string>>();
+        foreach (KeyValuePair<int, string> file in LevelState.Instance.PCE_Files)
+        {
+            if (file.Key == LevelState.Instance.CurrLevel)
+            {
+                matchingFiles.Add(file);
+            }
+        }
+
+        // Iterate over the matching files and start a coroutine for each one.
+        foreach (KeyValuePair<int, string> file in matchingFiles)
+        {
+            string filePath = file.Value;
+            StartCoroutine(GetLuaFile(filePath, luaFileContent =>
+            {
+                PrivateCodeEditor.Text = PrivateCodeEditor.Text + $"-- {filePath}\n" + luaFileContent + "\n";
+            }));
+        }
+
     }
     private IEnumerator GetLuaFile(string filePath, System.Action<string> callback)
     {
@@ -75,28 +96,26 @@ public class SneakGame : MonoBehaviour
     private void HandleLuaFile(string text)
     {
         AlphaJargon.FileData = text;
+        AlphaJargon.Ready();
         AlphaJargon.Set();
-        AlphaJargon.Run();
+            AlphaJargon.add("CodeEditor").add("CodeEditor","PixelBehaviourScript");
+        AlphaJargon.Go();
     }
     void GameStateChange()
     {
         if(AlphaJargon.CurrAJState == AJState.Set && GameState.Instance.CurrGameState == GameStates.InComputer)
         {
-            AlphaJargon.Run();
+            AlphaJargon.Set();
             // StartCoroutine(RunAlphaJargonScripts());
         }
     }
 
-    void ColliderTrigger(Pixel other, PixelGameObject pgo)
+    public void RunSelfCode()
     {
-        foreach(KeyValuePair<PixelPosition, Pixel> pixels in PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(pgo))
-        {
-            if(pixels.Value.Equals(other))
-            {
-
-            }
-        }
+        AlphaJargon["CodeEditor"]["CodeEditor"].add(MoonSharp.Interpreter.DynValue.NewString(MyCodeEditor.Text));
+        AlphaJargon["CodeEditor"]["CodeEditor"].RunScript();
     }
+
     // FIXME:
     // this bug is stupid and its whatever for now.
         // bug is that when pressing W to get into the computer the lua code also intakes W with the onKeyDown delegate

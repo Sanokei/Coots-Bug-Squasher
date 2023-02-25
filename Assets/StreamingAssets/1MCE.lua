@@ -1,6 +1,5 @@
--- This comment hides ur bad code xd
-    -- there has to be a way to move coots, I bet
-    -- the private code under the screen has some hints
+-- I just realized did he really use a terminal theme for his code..
+    -- what a nerd
 
--- AAAAAAA THIS DOESNT WORK HELP HOW HACK
--- movecoots(1,1)
+-- Opening the door has to a button????
+-- dum portal clone

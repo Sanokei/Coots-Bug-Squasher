@@ -52,7 +52,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         }
     }
     [HideInInspector] public JargonCompiler Compiler;
-    public void Set()
+    public void Ready()
     {
         Compiler = gameObject.AddComponent<JargonCompiler>();
         Compiler.Init(this);
@@ -60,17 +60,19 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         CurrAJState = AJState.Set;
     }
 
-    public void Run()
+    public void Set()
     {
         CurrAJState = AJState.Running;
         Compiler.RunScript();
-        AwakeGame();
-        InitializeGame();
-        StartCoroutine(StartGame());
-
         // StartCoroutine(RunInGameScripts());
     }
 
+    public void Go()
+    {
+        AwakeGame();
+        InitializeGame();
+        StartCoroutine(StartGame());
+    }
     
 
     public void AwakeGame()

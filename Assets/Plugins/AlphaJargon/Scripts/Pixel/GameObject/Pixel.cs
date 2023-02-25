@@ -20,6 +20,19 @@ public class Pixel : MonoBehaviour, IPixelObject
             Image.color = C;
         }
     }
+    public bool isWin
+    {
+        get
+        {
+            return Image.color.Equals(PixelSprite.RGBToColor(1164219232255));
+        }
+        set
+        {
+            Color C = Image.color;
+            C = value ? PixelSprite.RGBToColor(1164219232255) : PixelSprite.RGBToColor(1000000000000); 
+            Image.color = C;
+        }
+    }
     
     public Image Image;
     public PixelCollider Collider;

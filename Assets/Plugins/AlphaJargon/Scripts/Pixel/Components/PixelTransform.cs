@@ -53,7 +53,6 @@ namespace PixelGame
             List<KeyValuePair<PixelPosition, Pixel>> selfpixels = PixelScreenManager.Instance.GetPixelsWithCollider(parent, translation);
             List<KeyValuePair<PixelPosition, Pixel>> otherpixels = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent);
 
-            List<KeyValuePair<PixelPosition, Pixel>> spritepixels = PixelScreenManager.Instance.GetSpritePixelsAtPosition(parent, translation);
 
             foreach(KeyValuePair<PixelPosition, Pixel> self in selfpixels)
             {
@@ -63,17 +62,14 @@ namespace PixelGame
                     {
                         if(other.Value.Collider.isTrigger)
                         {
-                            foreach(KeyValuePair<PixelPosition, Pixel> sprite in spritepixels)
+                            foreach(Pixel sprite in PixelScreenManager.Instance.GetSpritePixelsAtPosition(other.Key))
                             {
-                                if(sprite.Key == other.Key)
+                                if(sprite.isWin)
                                 {
-                                    if(sprite.Value.Image.color.Equals(PixelSprite.RGBToColor(1164219232255)))
-                                    {
-                                        PixelTransform.OnWinLevelEvent?.Invoke();
-                                    }
+                                    PixelTransform.OnWinLevelEvent?.Invoke();
+                                    return false;
                                 }
                             }
-                            OnWinLevelEvent?.Invoke();   
                             PixelCollider.onTriggerEvent?.Invoke(other.Value, parent);
                             return false;
                         }

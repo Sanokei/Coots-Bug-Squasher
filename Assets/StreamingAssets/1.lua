@@ -3,6 +3,7 @@ function AwakeGame()
     jargon.add('coots')
     jargon.add('wall')
     jargon.add('goal')
+    jargon.add('door')
 end
 -- Add pixelComponents to the objects
 function InitializeGame()
@@ -49,16 +50,16 @@ function InitializeGame()
     wall['wall'].add(
         [[
         wwwwwwwwwwww
+        woooowooooow
+        woooowooooow
+        woooowooooow
         woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
-        woooooooooow
+        woooowooooow
+        woooowooooow
+        woooowooooow
+        woooowooooow
+        woooowooooow
+        woooowooooow
         wwwwwwwwwwww
         ]]
     )
@@ -66,16 +67,16 @@ function InitializeGame()
     wall['pc'].add(
         [[
         xxxxxxxxxxxx
+        xooooxooooox
+        xooooxooooox
+        xooooxooooox
         xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
-        xoooooooooox
+        xooooxooooox
+        xooooxooooox
+        xooooxooooox
+        xooooxooooox
+        xooooxooooox
+        xooooxooooox
         xxxxxxxxxxxx
         ]]
     )
@@ -115,8 +116,61 @@ function InitializeGame()
         oooooooooooo
         ]]
     )
+
+    door.add('door', 'PixelSprite')
+    door['door'].add(
+        [[
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        ooooodoooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        ]]
+    )
+
+    door.add('pc','PixelCollider')
+    door['pc'].add(
+        [[
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooxoooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        oooooooooooo
+        ]]
+    )
+    
+    door.add('doorBehaviour', 'PixelBehaviourScript').addFile("DoorBehave.lua")
 end
 -- add references to scripts that need it and run scripts
 function StartGame()
     coots['cootsMovement'].RunScript();
 end
+
+-- [[
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- oooooooooooo
+-- ]]

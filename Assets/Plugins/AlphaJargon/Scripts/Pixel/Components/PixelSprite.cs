@@ -102,13 +102,15 @@ namespace PixelGame
             {
                 pixel.Image.color = RGBToColor((long)pixelColor);
             }
+            pixel.Sprite = this;
         }
 
-        char[] imageChars = {'c','w'};
+        char[] imageChars = {'c','w','d','f','u','m'};
         List<Sprite> image = new List<Sprite>();
         void Awake()
         {
-            image.AddRange(new List<Sprite>{(Resources.Load<Sprite>("Art/Coots")), Resources.Load<Sprite>("Art/Wall")}); 
+            //                                                           'c',                                'w',                                    'd',                                     'f',                                     'u',                                      'm'
+            image.AddRange(new List<Sprite>{(Resources.Load<Sprite>("Art/Coots")), Resources.Load<Sprite>("Art/Wall"), Resources.Load<Sprite>("Art/Door_Closed"), Resources.Load<Sprite>("Art/Door_Open"), Resources.Load<Sprite>("Art/Camera_On"), Resources.Load<Sprite>("Art/Camera_Off")}); 
         }
         public static Color RGBToColor(long rgb)
         {  
