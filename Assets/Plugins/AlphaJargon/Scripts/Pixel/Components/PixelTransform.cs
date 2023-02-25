@@ -36,10 +36,6 @@ namespace PixelGame
 
         public PixelPosition move(int x, int y)
         {
-            // FIXME:
-            // funky stuff happens when I try to make this 
-            // gameobject.transform.Translate
-            // no idea why
             Vector3 trans = new Vector3(x * PixelScreen.CellSize,y * PixelScreen.CellSize);
             PixelPosition translation = new PixelPosition(x,y);
             Debug.Log($"Position: {(parent.position + translation).x},{(parent.position + translation).y}");
@@ -54,22 +50,21 @@ namespace PixelGame
         private bool CheckCollision(PixelPosition translation)
         {
             // List<KeyValuePair<PixelPosition, Pixel>>
-            List<KeyValuePair<PixelPosition, Pixel>> box = PixelScreenManager.Instance.GetPixelsWithCollider(parent, translation);
-            foreach(KeyValuePair<PixelPosition, Pixel> cell in box)
+            List<KeyValuePair<PixelPosition, Pixel>> selfpixels = PixelScreenManager.Instance.GetPixelsWithCollider(parent, translation);
+            List<KeyValuePair<PixelPosition, Pixel>> otherpixels = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent);
+            foreach(KeyValuePair<PixelPosition, Pixel> self in selfpixels)
             {
-                Debug.Log($"Cell: {cell.Key.x},{cell.Key.y}");
+                foreach(KeyValuePair<PixelPosition, Pixel> other in otherpixels)
+                {
+                    if(self.Key == other.Key)
+                    {
+                        if(other.Value.Collider.isTrigger)
+                            Debug.Log("Pixel at PixelPosition is trigger");
+                        else
+                            return true;
+                    }
+                }
             }
-            // List<KeyValuePair<PixelPosition, Pixel>> other = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent,translation + parent.position);
-
-            // foreach(KeyValuePair<PixelPosition, Pixel> cell in box)
-            // {
-            //     Debug.Log($"Cell: {cell.Key.x},{cell.Key.y}");
-            //     foreach(KeyValuePair<PixelPosition, Pixel> othercell in other)
-            //     {
-            //         Debug.Log($"Other: {othercell.Key.x},{othercell.Key.y}");
-            //         return (cell.Key == othercell.Key);
-            //     }
-            // }
             return false;
         }
 

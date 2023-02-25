@@ -115,7 +115,7 @@ public class PixelScreenManager : MonoBehaviour
                 {
                     if (pixel.Value.Collider != null)
                     {
-                        Debug.Log($"int {pixel.Key}\nPGO: (x:{pgo.position.x},y:{pgo.position.y})\n Collider with PGO: (x:{(pixel.Key + pgo.position).x},y:{(pixel.Key + pgo.position).y})");
+                         Debug.Log($"This({(pixel.Key + pgo.position + translation).x},{(pixel.Key + pgo.position + translation).y})");
                         pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + pgo.position + translation, pixel.Value));
                     }
                 }
@@ -125,33 +125,24 @@ public class PixelScreenManager : MonoBehaviour
         return pixels;
     }
     //
-    public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithColliderOtherThan(PixelGameObject pgo, PixelPosition pixelPosition)
-    {
-        List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
-        foreach(KeyValuePair<PixelPosition, Pixel> pixel in GetPixelsWithColliderOtherThan(pgo))
-        {
-            if((pixel.Key.x > PixelScreen.GridSideSize ||  pixel.Key.y > PixelScreen.GridSideSize) || (pixel.Key.x < 0 ||  pixel.Key.y < 0))
-                continue;
-            // pixel.Key is an already added positional pixelposition
-            if(pixel.Key == pixelPosition)
-                pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key, pixel.Value));
-        }
-        return pixels;
-    }
-
-    //
-
-    // 0.
     public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithColliderOtherThan(PixelGameObject pgo)
     {
         List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
-        foreach (KeyValuePair<PixelGameObject,Dictionary<int, Pixel>> layer in Layers)
-            if(!layer.Key.Equals(pgo))
-                foreach(KeyValuePair<int, Pixel> pixel in layer.Value)
+
+        foreach (KeyValuePair<PixelGameObject, Dictionary<int, Pixel>> layer in Layers)
+        {
+            if (!layer.Key.Equals(pgo))
+            {
+                foreach (KeyValuePair<int, Pixel> pixel in layer.Value)
                 {
-                    if(pixel.Value.Collider != null)
-                        pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + layer.Key.position,pixel.Value));
+                    if (pixel.Value.Collider != null)
+                    {
+                        Debug.Log($"Other({(pixel.Key + layer.Key.position).x},{(pixel.Key + layer.Key.position).y})");
+                        pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + layer.Key.position, pixel.Value));
+                    }
                 }
+            }
+        }
         return pixels;
     }
 }
