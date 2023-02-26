@@ -3,3 +3,5 @@
 
 -- Opening the door has to a button????
 -- dum portal clone
+
+-- door['DoorBehave'].something?

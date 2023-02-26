@@ -98,7 +98,6 @@ public class SneakGame : MonoBehaviour
         AlphaJargon.FileData = text;
         AlphaJargon.Ready();
         AlphaJargon.Set();
-            AlphaJargon.add("CodeEditor").add("CodeEditor","PixelBehaviourScript");
         AlphaJargon.Go();
     }
     void GameStateChange()
@@ -112,8 +111,7 @@ public class SneakGame : MonoBehaviour
 
     public void RunSelfCode()
     {
-        AlphaJargon["CodeEditor"]["CodeEditor"].add(MoonSharp.Interpreter.DynValue.NewString(MyCodeEditor.Text));
-        AlphaJargon["CodeEditor"]["CodeEditor"].RunScript();
+        AlphaJargon.CodeEditor.RunScript(MyCodeEditor.Text);
     }
 
     // FIXME:

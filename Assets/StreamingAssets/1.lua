@@ -44,7 +44,7 @@ function InitializeGame()
         ]]
     )
     -- Auto adds the pixelGameObject its on to the globals
-    coots.add('cootsMovement', 'PixelBehaviourScript').addFile("MoveCoots.lua")
+    coots.add('MoveCoots', 'PixelBehaviourScript').addFile("MoveCoots.lua")
     -- Add wall
     wall.add('wall', 'PixelSprite')
     wall['wall'].add(
@@ -153,11 +153,12 @@ function InitializeGame()
         ]]
     )
     
-    door.add('doorBehaviour', 'PixelBehaviourScript').addFile("DoorBehave.lua")
+    door.add('DoorBehave', 'PixelBehaviourScript').addFile("DoorBehave.lua")
 end
 -- add references to scripts that need it and run scripts
 function StartGame()
-    coots['cootsMovement'].RunScript();
+    coots['MoveCoots'].RunScript();
+    door['DoorBehave'].RunScript();
 end
 
 -- [[

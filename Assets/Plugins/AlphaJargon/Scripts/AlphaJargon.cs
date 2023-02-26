@@ -52,9 +52,11 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         }
     }
     [HideInInspector] public JargonCompiler Compiler;
+    [HideInInspector] public AlhaJargonCodeEditor CodeEditor;
     public void Ready()
     {
         Compiler = gameObject.AddComponent<JargonCompiler>();
+        CodeEditor = gameObject.AddComponent<AlhaJargonCodeEditor>(); 
         Compiler.Init(this);
         Compiler.add(FileData);
         CurrAJState = AJState.Set;
@@ -66,7 +68,6 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         Compiler.RunScript();
         // StartCoroutine(RunInGameScripts());
     }
-
     public void Go()
     {
         AwakeGame();
@@ -127,6 +128,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
             PixelGameObject value = Instantiate<PixelGameObject>(Resources.Load<PixelGameObject>("Prefabs/Game/PixelGameObject"), parentTransform);
             value.name = key;
             Compiler.addPixelGameObjectToJargonScriptGlobals(key,value);
+            CodeEditor.addPixelGameObjectToJargonScriptGlobals(key,value);
             PixelGameObjects.Add(key, value);
             return value;
         }

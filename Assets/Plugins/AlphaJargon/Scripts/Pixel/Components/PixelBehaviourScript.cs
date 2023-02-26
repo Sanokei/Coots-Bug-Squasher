@@ -18,9 +18,9 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelBehaviourScript : PixelComponent
     {
-        string FileData;
+        public string FileData;
         public override PixelGameObject parent{get;set;}
-        Script script = new Script();
+        public Script script = new Script();
         ScriptFunctionDelegate onKeyDown, onKeyUp;
         ScriptFunctionDelegate onUpdate, onStart;
 
@@ -71,6 +71,12 @@ namespace PixelGame
             Destroy(this);
         }
         public void addPixelGameObjectToScriptGlobals(string key, IPixelObject value)
+        {
+            // Debug.Log($"key: {key} + value: {value}");
+            UserData.RegisterAssembly();
+            script.Globals[key] = value;
+        }
+        public void addAllPixelGameObjectToScriptGlobals(string key, IPixelObject value)
         {
             // Debug.Log($"key: {key} + value: {value}");
             UserData.RegisterAssembly();

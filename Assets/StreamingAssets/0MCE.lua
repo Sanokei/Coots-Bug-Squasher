@@ -3,4 +3,4 @@
     -- the private code under my code can tell me a little more
 
 -- AAAAAAA THIS DOESNT WORK HELP HOW HACK
--- coots.move__Koots(1,number?) idk code i have 2 lib art majors ;-;
+-- coots['MoveCoots'].move() -- this should move it?
