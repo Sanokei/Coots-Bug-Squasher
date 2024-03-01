@@ -41,14 +41,24 @@ namespace PixelGame
         }
         public PixelSprite add(DynValue dynValue)
         {
-            string inputString = new string(dynValue.ToString()
-                .Where(c => !Char.IsWhiteSpace(c) && c != '\"')
+            // This is all done because the written 
+            /**
+                000
+                000
+                000
+
+                will read from top to bottom, but will write to the dictonary bottom to top.
+            **/
+            string inputString = new(dynValue.String
+                .Where(c => !char.IsWhiteSpace(c) && c != '\"')
                 .ToArray());
-            var outputStrings = Enumerable.Range(0, inputString.Length / PixelScreen.GridSideSize)
+            
+            var outputStrings = Enumerable
+                .Range(0, inputString.Length / PixelScreen.GridSideSize)
                 .Select(i => inputString.Substring(i * PixelScreen.GridSideSize, PixelScreen.GridSideSize));
 
             string[] stringArray = outputStrings.ToArray();
-
+            
             Array.Reverse(stringArray); 
             StringBuilder sb = new StringBuilder();
 
@@ -60,10 +70,11 @@ namespace PixelGame
 
             // char[] charArray = reversedString.ToCharArray();
             // Array.Reverse(charArray);
-            string finalString = new string(reversedString);
-            return add(finalString);
+            // string finalString = new(charArray);
+
+            return add(reversedString);
         }
-        public PixelSprite add(string SpriteString)
+        internal PixelSprite add(string SpriteString)
         {
             if(SpriteString != "")
             {
@@ -87,7 +98,9 @@ namespace PixelGame
             // );
 
             for(int index = 0; index < SpriteString.Length; index++)
+            {
                 CharToPixel(screen.grid[index], SpriteString[index]);
+            }
             return screen;
         }
         // Use pseudo signed bit of 1
@@ -112,6 +125,7 @@ namespace PixelGame
             //                                                           'c',                                'w',                                    'd',                                     'f',                                     'u',                                      'm'
             image.AddRange(new List<Sprite>{(Resources.Load<Sprite>("Art/Coots")), Resources.Load<Sprite>("Art/Wall"), Resources.Load<Sprite>("Art/Door_Closed"), Resources.Load<Sprite>("Art/Door_Open"), Resources.Load<Sprite>("Art/Camera_On"), Resources.Load<Sprite>("Art/Camera_Off")}); 
         }
+        // cannot for the life of me tell you why i did it this way, i forgor
         public static Color RGBToColor(long rgb)
         {  
             //    r   g   b

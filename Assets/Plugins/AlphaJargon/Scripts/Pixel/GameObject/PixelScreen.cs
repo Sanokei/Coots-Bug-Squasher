@@ -24,7 +24,7 @@ public class PixelScreen : MonoBehaviour, IPixelObject
     public InspectableDictionary<int, Pixel> grid;
     public static int CellSize;
     public static int GridSideSize;
-
+    
     public Pixel this[int index]
     {
         get

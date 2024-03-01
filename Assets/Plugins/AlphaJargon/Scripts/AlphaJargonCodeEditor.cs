@@ -6,7 +6,7 @@ using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
 
 [MoonSharpUserData]
-public class AlhaJargonCodeEditor : MonoBehaviour
+public class AlphaJargonCodeEditor : MonoBehaviour
 {
     [HideInInspector] public string FileData;
 

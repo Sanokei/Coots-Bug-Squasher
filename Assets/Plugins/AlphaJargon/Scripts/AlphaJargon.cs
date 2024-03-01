@@ -52,11 +52,11 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         }
     }
     [HideInInspector] public JargonCompiler Compiler;
-    [HideInInspector] public AlhaJargonCodeEditor CodeEditor;
+    [HideInInspector] public AlphaJargonCodeEditor CodeEditor;
     public void Ready()
     {
         Compiler = gameObject.AddComponent<JargonCompiler>();
-        CodeEditor = gameObject.AddComponent<AlhaJargonCodeEditor>(); 
+        CodeEditor = gameObject.AddComponent<AlphaJargonCodeEditor>(); 
         Compiler.Init(this);
         Compiler.add(FileData);
         CurrAJState = AJState.Set;

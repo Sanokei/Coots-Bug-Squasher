@@ -6,6 +6,7 @@ using UnityEngine;
 using InGameCodeEditor;
 
 using PixelGame;
+[MoonSharp.Interpreter.MoonSharpUserData]
 public class SneakGame : MonoBehaviour
 {
     public static SneakGame Instance{private set; get;}

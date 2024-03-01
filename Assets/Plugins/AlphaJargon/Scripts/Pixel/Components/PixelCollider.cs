@@ -52,19 +52,40 @@ namespace PixelGame
             Destroy(screen);
             Destroy(this);
         }
-        public PixelComponent add(DynValue ColliderString, DynValue Boolean)
+        public PixelCollider add(DynValue ColliderString, DynValue Boolean)
         {
             return add(ColliderString, Boolean.CastToBool());
         }
         
-        public PixelComponent add(DynValue ColliderString, bool isTrigger = false)
+        public PixelCollider add(DynValue dynValue, bool isTrigger = false)
         {
-            string collstr = ColliderString.ToString();
-            collstr = new string(collstr.Where(c => !char.IsWhiteSpace(c)).ToArray()).Replace("\"","");
-            return add(collstr, isTrigger);
+            string inputString = new(dynValue.String
+                .Where(c => !char.IsWhiteSpace(c) && c != '\"')
+                .ToArray());
+            
+            var outputStrings = Enumerable
+                .Range(0, inputString.Length / PixelScreen.GridSideSize)
+                .Select(i => inputString.Substring(i * PixelScreen.GridSideSize, PixelScreen.GridSideSize));
+
+            string[] stringArray = outputStrings.ToArray();
+            
+            Array.Reverse(stringArray); 
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var str in stringArray)
+            {
+                sb.Append(str);
+            }
+            string reversedString = sb.ToString();
+            
+            // char[] charArray = reversedString.ToCharArray();
+            // Array.Reverse(charArray);
+            // string finalString = new(charArray);
+
+            return add(reversedString, isTrigger);
         }
 
-        public PixelComponent add(string ColliderString, bool isTrigger = false)
+        internal PixelCollider add(string ColliderString, bool isTrigger = false)
         {
             List<PixelPosition> pixelPositions = new List<PixelPosition>();
             char[] str = ColliderString.ToCharArray();
@@ -80,39 +101,18 @@ namespace PixelGame
             AddColliderToScreen(ColliderString, isTrigger);
             return this;
         }
-        public PixelScreen AddColliderToScreen(string ColliderString, bool isTrigger = false)
+        internal PixelScreen AddColliderToScreen(string ColliderString, bool isTrigger = false)
         {
-            // foreach(PixelPosition pp in pixelPositions)
-            //     ColliderToPixel(screen.grid[pp.ToIndex()], this);
-            // return screen;
-
-            var outputStrings = Enumerable.Range(0, ColliderString.Length / PixelScreen.GridSideSize)
-                .Select(i => ColliderString.Substring(i * PixelScreen.GridSideSize, PixelScreen.GridSideSize));
-
-            string[] stringArray = outputStrings.ToArray();
-
-            Array.Reverse(stringArray); 
-            StringBuilder sb = new StringBuilder();
-
-            foreach (var str in stringArray)
+            for(int i = 0; i <  ColliderString.Count(); i++)
             {
-                sb.Append(str);
-            }
-            string reversedString = sb.ToString();
-
-            // char[] charArray = reversedString.ToCharArray();
-            // Array.Reverse(charArray);
-            string finalString = new string(reversedString);
-            for(int i = 0; i < finalString.Count(); i++)
-            {
-                if(finalString[i] != 'o')
+                if(ColliderString[i] != 'o')
                     ColliderToPixel(screen.grid[i], this, isTrigger);
             }
             return screen;
         }
 
         // did this for condormity sake with pixelsprite
-        public void ColliderToPixel(Pixel pixel, PixelCollider pc, bool isTrigger = false)
+        internal void ColliderToPixel(Pixel pixel, PixelCollider pc, bool isTrigger = false)
         {
             pixel.Collider = pc;
             pixel.Collider.isTrigger = isTrigger;

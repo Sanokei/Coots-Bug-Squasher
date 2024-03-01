@@ -48,6 +48,15 @@ namespace BuildingBlocks.DataTypes {
             }
         }
 
+        public Dictionary<TKey,TValue> Dictionary
+        {
+            get
+            {
+                InspectorToDictionary();
+                return lookup;
+            }
+        }
+
         //---
         // Synchronization Methods
 
@@ -73,7 +82,7 @@ namespace BuildingBlocks.DataTypes {
         private void InspectorToDictionary() {
             if (inspectableSync is false) {
                 lookup.Clear();
-                for (int i = ItemKeys.Count - 1; i >= 0; i--) {
+                for (int i = 0; i < ItemKeys.Count; i++) {
                     var item = ItemKeys[i];
                     var value = ItemValues[i];
                     if (item != null && value != null) {

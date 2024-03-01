@@ -37,11 +37,11 @@ public class PixelScreenManager : MonoBehaviour
 
     void AddToPixelScreen(PixelGameObject parent, PixelScreen pixelScreen)
     {
-        Layers.Add(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.ToDictionary()));
+        Layers.Add(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.Dictionary));
     }
     void RemoveFromPixelScreen(PixelGameObject parent, PixelScreen pixelScreen)
     {
-        Layers.Remove(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.ToDictionary()));
+        Layers.Remove(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.Dictionary));
     }
 
     //

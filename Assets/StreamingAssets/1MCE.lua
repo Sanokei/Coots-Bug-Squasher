@@ -1,7 +1,6 @@
 -- I just realized did he really use a terminal theme for his code..
     -- what a nerd
 
--- Opening the door has to a button????
--- dum portal clone
+-- Opening the door is easy since it seems like it doesn't require any parameters
 
--- door['DoorBehave'].something?
+door['DoorBehave'].run('Open','please') -- Wonder why it wont let me ask nicely
