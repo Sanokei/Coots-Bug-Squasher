@@ -114,6 +114,10 @@ namespace PixelGame
         // did this for condormity sake with pixelsprite
         internal void ColliderToPixel(Pixel pixel, PixelCollider pc, bool isTrigger = false)
         {
+            // localScale gets set to a seemingly random number otherwise.
+            // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
+            pixel.transform.localScale = Vector3.one;
+            
             pixel.Collider = pc;
             pixel.Collider.isTrigger = isTrigger;
         }

@@ -43,11 +43,15 @@ namespace PixelGame
         {
             // This is all done because the written 
             /**
-                000
-                000
-                000
-
+            [[
+                0000
+                0c00
+                0000
+            ]]
                 will read from top to bottom, but will write to the dictonary bottom to top.
+                This can be changed by the gridlayouts Start Corner.
+                
+                All its doing is spliting the  
             **/
             string inputString = new(dynValue.String
                 .Where(c => !char.IsWhiteSpace(c) && c != '\"')
@@ -67,6 +71,8 @@ namespace PixelGame
                 sb.Append(str);
             }
             string reversedString = sb.ToString();
+
+            // This mirrors each string slice so its commented out
 
             // char[] charArray = reversedString.ToCharArray();
             // Array.Reverse(charArray);
@@ -106,6 +112,10 @@ namespace PixelGame
         // Use pseudo signed bit of 1
         public void CharToPixel(Pixel pixel, char letter)
         {
+            // localScale gets set to a seemingly random number otherwise.
+            // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
+            pixel.transform.localScale = Vector3.one;
+
             if(imageChars.Contains(letter))
             {
                 pixel.Image.sprite = image[Array.IndexOf(imageChars,letter)];
@@ -123,7 +133,7 @@ namespace PixelGame
         void Awake()
         {
             //                                                           'c',                                'w',                                    'd',                                     'f',                                     'u',                                      'm'
-            image.AddRange(new List<Sprite>{(Resources.Load<Sprite>("Art/Coots")), Resources.Load<Sprite>("Art/Wall"), Resources.Load<Sprite>("Art/Door_Closed"), Resources.Load<Sprite>("Art/Door_Open"), Resources.Load<Sprite>("Art/Camera_On"), Resources.Load<Sprite>("Art/Camera_Off")}); 
+            image.AddRange(new List<Sprite>{Resources.Load<Sprite>("Art/Coots"), Resources.Load<Sprite>("Art/Wall"), Resources.Load<Sprite>("Art/Door_Closed"), Resources.Load<Sprite>("Art/Door_Open"), Resources.Load<Sprite>("Art/Camera_On"), Resources.Load<Sprite>("Art/Camera_Off")}); 
         }
         // cannot for the life of me tell you why i did it this way, i forgor
         public static Color RGBToColor(long rgb)

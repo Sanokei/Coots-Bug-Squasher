@@ -6,7 +6,9 @@ using UnityEditor;
 using BuildingBlocks.DataTypes;
 
 using PixelGame;
+using System;
 
+[Obsolete("Replaced by renderstreaming assets")]
 [CreateAssetMenu(fileName = "NewLevel", menuName = "Custom/Level")]
 public class Level : ScriptableObject
 {

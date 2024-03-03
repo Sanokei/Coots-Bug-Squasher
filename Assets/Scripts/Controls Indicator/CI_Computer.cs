@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CI_Computer : MonoBehaviour
 {
@@ -40,7 +41,9 @@ public class CI_Computer : MonoBehaviour
         {
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));
-            GameState.Instance.CurrGameState = GameStates.InComputer;
+            // GameState.Instance.CurrGameState = GameStates.InComputer;
+
+            SceneManager.LoadScene("Scene_1");
         }
     }
 }

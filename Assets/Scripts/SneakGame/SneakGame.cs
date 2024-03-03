@@ -38,14 +38,12 @@ public class SneakGame : MonoBehaviour
     void OnEnable()
     {
         LevelState.onlevelChangeEvent += LevelStateChange;
-        GameState.ongameStateChangeEvent += GameStateChange;
         PixelTransform.OnWinLevelEvent += WinLevel;
     }
 
     void OnDisable()
     {
         LevelState.onlevelChangeEvent -= LevelStateChange;
-        GameState.ongameStateChangeEvent -= GameStateChange;
         PixelTransform.OnWinLevelEvent -= WinLevel;
     }
     
@@ -101,12 +99,11 @@ public class SneakGame : MonoBehaviour
         AlphaJargon.Set();
         AlphaJargon.Go();
     }
-    void GameStateChange()
+    void Start()
     {
-        if(AlphaJargon.CurrAJState == AJState.Set && GameState.Instance.CurrGameState == GameStates.InComputer)
+        if(AlphaJargon.CurrAJState == AJState.Set)
         {
             AlphaJargon.Set();
-            // StartCoroutine(RunAlphaJargonScripts());
         }
     }
 
