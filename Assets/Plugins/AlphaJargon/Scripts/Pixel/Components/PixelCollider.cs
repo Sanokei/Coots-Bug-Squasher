@@ -18,10 +18,10 @@ namespace PixelGame
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelCollider : PixelComponent
     {
-        public delegate void OnTriggerDelegate(Pixel other, PixelGameObject parent);
-        public static OnTriggerDelegate onTriggerEvent;
-        public delegate void OnCollisionDelegate(Pixel other, PixelGameObject parent);
-        public static OnCollisionDelegate onCollisionEvent;
+        public delegate void OnTrigger(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent);
+        public static OnTrigger onTriggerEvent;
+        public delegate void OnCollision(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent);
+        public static OnCollision onCollisionEvent;
         //
         public bool isTrigger = false;
         //

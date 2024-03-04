@@ -26,8 +26,7 @@ namespace PixelGame
         ScriptFunctionDelegate onUpdate, onStart;
 
         // public ScriptFunctionDelegate's to use as the pixel components
-        ScriptFunctionDelegate onTriggerEnter, onTriggerStay, onTriggerExit;
-        ScriptFunctionDelegate onCollisionEnter, onCollisionStay, onCollisionExit;
+        ScriptFunctionDelegate onTrigger, onCollision;
         
         void OnEnable()
         {
@@ -156,15 +155,9 @@ namespace PixelGame
             onKeyDown = script.Globals.Get("OnKeyDown") != DynValue.Nil ? script.Globals.Get("OnKeyDown").Function.GetDelegate(): null;
 
 
-            onCollisionEnter = script.Globals.Get("OnCollisionEnter") != DynValue.Nil ? script.Globals.Get("OnCollisionEnter").Function.GetDelegate() : null;
-            onCollisionStay = script.Globals.Get("OnCollisionStay") != DynValue.Nil ? script.Globals.Get("OnCollisionStay").Function.GetDelegate() : null;
-            onCollisionExit = script.Globals.Get("OnCollisionExit") != DynValue.Nil ? script.Globals.Get("OnCollisionExit").Function.GetDelegate() : null;
+            onCollision = script.Globals.Get("OnCollision") != DynValue.Nil ? script.Globals.Get("OnCollision").Function.GetDelegate() : null;
 
-
-            onTriggerEnter = script.Globals.Get("OnTriggerEnter") != DynValue.Nil ? script.Globals.Get("OnTriggerEnter").Function.GetDelegate() : null;
-            onTriggerStay = script.Globals.Get("OnTriggerStay") != DynValue.Nil ? script.Globals.Get("OnTriggerStay").Function.GetDelegate() : null;
-            onTriggerExit = script.Globals.Get("OnTriggerExit") != DynValue.Nil ? script.Globals.Get("OnTriggerExit").Function.GetDelegate() : null;
-            
+            onTrigger = script.Globals.Get("OnTrigger") != DynValue.Nil ? script.Globals.Get("OnTrigger").Function.GetDelegate() : null;
             
             // onAwake
             onStart?.Invoke();
@@ -184,14 +177,14 @@ namespace PixelGame
                 onKeyDown?.Invoke(DynValue.NewString(KeyCode));
         }
         //
-        private void TriggerEvent(Pixel other, PixelGameObject parent)
+        private void TriggerEvent(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent)
         {
-            onTriggerEnter?.Invoke(DynValue.NewString(parent.name));
+            onTrigger?.Invoke(DynValue.NewNumber(other.Key[0]),DynValue.NewNumber(other.Key[1]),DynValue.NewString(parent.name));
         }
         //
-        private void CollisionEvent(Pixel other, PixelGameObject parent)
+        private void CollisionEvent(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent)
         {
-            onCollisionEnter?.Invoke(DynValue.NewString(parent.name));
+            onCollision?.Invoke(DynValue.NewNumber(other.Key[0]),DynValue.NewNumber(other.Key[1]),DynValue.NewString(parent.name));
         } 
     }
 }

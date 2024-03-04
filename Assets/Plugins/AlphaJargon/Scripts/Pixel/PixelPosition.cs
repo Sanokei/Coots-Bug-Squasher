@@ -10,6 +10,14 @@ namespace PixelGame
     {
         public int x;
         public int y;
+        public int this[int idx]
+        {
+            get
+            {
+                int[] temp = {x,y};
+                return temp[idx];
+            }
+        }
 
         public PixelPosition()
         {

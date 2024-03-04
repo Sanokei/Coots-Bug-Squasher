@@ -10,9 +10,4 @@ public interface IPixelGame
     {
         yield return LoadLuaFile.GetLuaFile(filePath, callback);
     }
-
-    internal static void RunSelfCode(string script)
-    {
-        AlphaJargon.Instance.CodeEditor.RunScript(script);
-    }
 }

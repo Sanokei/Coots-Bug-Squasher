@@ -8,11 +8,44 @@ using System.Text;
 using MoonSharp.Interpreter;
 
 using PixelGame;
+using Unity.VisualScripting;
 
 [MoonSharpUserData]
 public class AlphaJargon : MonoBehaviour, IPixelObject
 {
-    public static AlphaJargon Instance{get; set;}
+    public GameObject parent;
+    static AlphaJargon _Instance;
+    public static AlphaJargon Instance
+    {
+        get
+        {
+            if(!_Instance)
+                _Instance = CreateInstance();
+            return _Instance;
+        }
+        set
+        {
+            Destroy(_Instance.gameObject);
+            _Instance = value;
+        }
+    }
+    public static AlphaJargon CreateInstance()
+    {
+        AlphaJargon AJ = new GameObject("AlphaJargon").AddComponent<AlphaJargon>();
+        AJ.gameObject.transform.localPosition = Vector3.zero;
+        AJ.gameObject.transform.localScale = Vector3.one;
+        return AJ;
+    }
+    public AlphaJargon CreateInstance(GameObject parent)
+    {
+        AlphaJargon AJ = new GameObject("AlphaJargon").AddComponent<AlphaJargon>();
+        AJ.parent = parent;
+        AJ.gameObject.transform.parent = parent.transform;
+        AJ.gameObject.transform.localPosition = Vector3.zero;
+        AJ.gameObject.transform.localScale = Vector3.one;
+        Instance = AJ;
+        return AJ;
+    }
     // Button Delegates
     public delegate void OnButtonClickDelegate(string KeyCode);
     public static OnButtonClickDelegate onKeyDownEvent;
@@ -52,7 +85,6 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         this.transform.localScale = Vector3.one;
         PixelScreenManager = gameObject.AddComponent<PixelScreenManager>();
     }
-
     void FixedUpdate()
     {
         // Input and FixedUpdate dont play nicely
@@ -67,10 +99,6 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
             if (e.isKey)
                 onKeyDownEvent?.Invoke(e.keyCode.ToString());
         }
-    }
-    void OnDestroy()
-    {
-        Instance = null;
     }
     [HideInInspector] public JargonCompiler Compiler;
     [HideInInspector] public AlphaJargonCodeEditor CodeEditor;

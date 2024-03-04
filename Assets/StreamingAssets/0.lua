@@ -120,3 +120,7 @@ end
 function StartGame()
     coots['MoveCoots'].RunScript();
 end
+
+function TriggerEvent()
+    
+end

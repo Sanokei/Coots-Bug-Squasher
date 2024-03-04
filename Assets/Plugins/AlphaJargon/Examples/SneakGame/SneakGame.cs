@@ -10,24 +10,14 @@ using MoonSharp.Interpreter;
 [MoonSharp.Interpreter.MoonSharpUserData]
 public class SneakGame : MonoBehaviour, IPixelGame
 {
-    private GameObject AJGO;
-    public AlphaJargon AlphaJargon
-    {
-        get
-        {
-            if(!AlphaJargon.Instance)
-            {
-                AJGO = new GameObject("AlphaJargon");
-                AJGO.transform.parent = transform;
-                AJGO.transform.localPosition = Vector3.zero;
-                AlphaJargon.Instance = AJGO.AddComponent<AlphaJargon>();
-            }
-            return AlphaJargon.Instance;
-        }
-    }
     // UI STUFF
     public CodeEditor MyCodeEditor;
     public CodeEditor PrivateCodeEditor;
+    public AlphaJargon AlphaJargon{get;private set;}
+    void Awake()
+    {
+        AlphaJargon = AlphaJargon.Instance.CreateInstance(gameObject);
+    }
     void OnEnable()
     {
         LevelState.onlevelChangeEvent += LevelStateChange;
@@ -42,17 +32,20 @@ public class SneakGame : MonoBehaviour, IPixelGame
     
     void WinLevel()
     {
-        Destroy(AJGO);
+        Destroy(AlphaJargon.Instance.gameObject);
         LevelState.Instance.CurrLevel += 1;
+        AlphaJargon = AlphaJargon.Instance.CreateInstance(gameObject);
     }
     void LevelStateChange()
-    { // FIXME THIS IS AWFUL
-        PrivateCodeEditor.Text = "-- Scroll to see more\n";
+    { 
+        // FIXME THIS IS AWFUL
         string Level_filePath = LevelState.Instance.CurrLevel + ".lua";
-        StartCoroutine(IPixelGame.GetLuaFile(Level_filePath, luaFileContent => { AlphaJargon.FileData = luaFileContent; }));
-        
-        // CodeEditor.Text = LevelState.Instance[((int)LevelState.Instance.CurrLevelState)].FileData;
         string Level_MyCodeEditor_filePath = LevelState.Instance.CurrLevel + "MCE.lua";
+
+        PrivateCodeEditor.Text = "-- Scroll to see more\n";
+        
+
+        StartCoroutine(IPixelGame.GetLuaFile(Level_filePath, luaFileContent => { AlphaJargon.FileData = luaFileContent; }));
         StartCoroutine(IPixelGame.GetLuaFile(Level_MyCodeEditor_filePath, luaFileContent => { MyCodeEditor.Text = luaFileContent; }));
 
         // LINQ is sometimes impossible to freaking read man 
@@ -81,9 +74,9 @@ public class SneakGame : MonoBehaviour, IPixelGame
 
     }
 
-    // for button
+    // for the run button
     public void RunSelfCode()
     {
-        IPixelGame.RunSelfCode(MyCodeEditor.Text);
+        AlphaJargon.CodeEditor.RunScript(MyCodeEditor.Text);
     }
 }

@@ -70,12 +70,12 @@ namespace PixelGame
                                     return false;
                                 }
                             }
-                            PixelCollider.onTriggerEvent?.Invoke(other.Value, parent);
+                            PixelCollider.onTriggerEvent?.Invoke(other, parent);
                             return false;
                         }
                         else
                         {
-                            PixelCollider.onCollisionEvent?.Invoke(other.Value, parent);
+                            PixelCollider.onCollisionEvent?.Invoke(other, parent);
                             return true;
                         }
                     }
