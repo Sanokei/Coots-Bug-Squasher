@@ -115,12 +115,10 @@ function InitializeGame()
         oooooooooooo
         ]]
     )
+    goal.add('CheckWin', 'PixelBehaviourScript').addFile("CheckWin.lua")
 end
 -- add references to scripts that need it and run scripts
 function StartGame()
     coots['MoveCoots'].RunScript();
-end
-
-function TriggerEvent()
-    
+    goal['CheckWin'].RunScript();
 end

@@ -12,8 +12,6 @@ namespace PixelGame
     public class PixelTransform : PixelComponent
     {
         public override PixelGameObject parent{get;set;}
-        public delegate void OnWinLevel();
-        public static OnWinLevel OnWinLevelEvent;
 
         public override void Create(PixelGameObject parent)
         {
@@ -50,35 +48,28 @@ namespace PixelGame
         private bool CheckCollision(PixelPosition translation)
         {
             // List<KeyValuePair<PixelPosition, Pixel>>
-            List<KeyValuePair<PixelPosition, Pixel>> selfpixels = PixelScreenManager.Instance.GetPixelsWithCollider(parent, translation);
-            List<KeyValuePair<PixelPosition, Pixel>> otherpixels = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent);
+            List<KeyValuePair<PixelPosition, Pixel>> selfpixels = PixelScreenManager.Instance.GetPixelsWithColliderAfterTranslation(parent, translation);
+            List<KeyValuePair<PixelGameObject,List<KeyValuePair<PixelPosition, Pixel>>>> otherpixels = PixelScreenManager.Instance.GetPixelsWithColliderOtherThan(parent);
 
 
             foreach(KeyValuePair<PixelPosition, Pixel> self in selfpixels)
             {
-                foreach(KeyValuePair<PixelPosition, Pixel> other in otherpixels)
+                foreach(KeyValuePair<PixelGameObject,List<KeyValuePair<PixelPosition, Pixel>>> otherParent in otherpixels)
                 {
-                    if(self.Key == other.Key)
-                    {
-                        if(other.Value.Collider.isTrigger)
+                    foreach(KeyValuePair<PixelPosition, Pixel> other in otherParent.Value)
+                        if(self.Key == other.Key)
                         {
-                            foreach(Pixel sprite in PixelScreenManager.Instance.GetSpritePixelsAtPosition(other.Key))
+                            if(other.Value.Collider.isTrigger)
                             {
-                                if(sprite.isWin)
-                                {
-                                    PixelTransform.OnWinLevelEvent?.Invoke();
-                                    return false;
-                                }
+                                PixelCollider.onTriggerEvent?.Invoke(parent, otherParent.Key);
+                                return false;
                             }
-                            PixelCollider.onTriggerEvent?.Invoke(other, parent);
-                            return false;
+                            else
+                            {
+                                PixelCollider.onCollisionEvent?.Invoke(parent, otherParent.Key);
+                                return true;
+                            }
                         }
-                        else
-                        {
-                            PixelCollider.onCollisionEvent?.Invoke(other, parent);
-                            return true;
-                        }
-                    }
                 }
             }
             return false;

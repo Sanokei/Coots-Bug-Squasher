@@ -21,13 +21,11 @@ public class SneakGame : MonoBehaviour, IPixelGame
     void OnEnable()
     {
         LevelState.onlevelChangeEvent += LevelStateChange;
-        PixelTransform.OnWinLevelEvent += WinLevel;
     }
 
     void OnDisable()
     {
         LevelState.onlevelChangeEvent -= LevelStateChange;
-        PixelTransform.OnWinLevelEvent -= WinLevel;
     }
     
     void WinLevel()
@@ -39,6 +37,8 @@ public class SneakGame : MonoBehaviour, IPixelGame
     void LevelStateChange()
     { 
         // FIXME THIS IS AWFUL
+        // the way i am storing levels and such is so bad.
+
         string Level_filePath = LevelState.Instance.CurrLevel + ".lua";
         string Level_MyCodeEditor_filePath = LevelState.Instance.CurrLevel + "MCE.lua";
 

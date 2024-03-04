@@ -5,14 +5,13 @@ using UnityEngine;
 using BuildingBlocks.DataTypes;
 
 using PixelGame;
-using Unity.VisualScripting;
-using Unity.Collections.LowLevel.Unsafe;
 
-// this file makes me want to die inside
-// please.. please dont touch it...
+// just dont touch.
+    // this file makes me want to die inside
+    // please.. please dont touch it...
 
-// Eventually convert to using Sutherland-Hodgman algo to check
-// for polygon on polygon clipping (not Griner-Hormann cuz slow and not really needed for squares)
+    // Eventually convert to using Sutherland-Hodgman algo to check
+    // for polygon on polygon clipping (not Griner-Hormann cuz slow and not really needed for squares)
 
 public class PixelScreenManager : MonoBehaviour
 {
@@ -59,32 +58,35 @@ public class PixelScreenManager : MonoBehaviour
             foreach(var pxs in Layers)
                 if(pxs.Key == parent)
                     return pxs.Value;
-            throw new MoonSharp.Interpreter.ScriptRuntimeException("Screen for parent doesn't exist");
+            throw new MoonSharp.Interpreter.ScriptRuntimeException("Screen for parent doesn't exist. Probably means you forgot an <end> somewhere.");
         }
     }
 
-    //
-    public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithColliderOtherThan(PixelGameObject pgo)
+    // i am so sorry...
+    public List<KeyValuePair<PixelGameObject,List<KeyValuePair<PixelPosition, Pixel>>>> GetPixelsWithColliderOtherThan(PixelGameObject pgo)
     {
-        List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
+        List<KeyValuePair<PixelGameObject,List<KeyValuePair<PixelPosition, Pixel>>>> pixels = new();
 
         foreach (KeyValuePair<PixelGameObject, PixelScreen> layer in Layers)
         {
             if (!layer.Key.Equals(pgo))
             {
+                List<KeyValuePair<PixelPosition, Pixel>> p = new();
                 foreach (KeyValuePair<int, Pixel> pixel in layer.Value.grid.Dictionary)
                 {
                     if (pixel.Value.Collider != null)
                     {
-                        pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + layer.Key.position, pixel.Value));
+                        p.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + layer.Key.position, pixel.Value));
                     }
                 }
+                pixels.Add(new KeyValuePair<PixelGameObject,List<KeyValuePair<PixelPosition, Pixel>>>(layer.Key,p));
+                
             }
         }
         return pixels;
     }
 
-    public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithCollider(PixelGameObject pgo, PixelPosition translation)
+    public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithColliderAfterTranslation(PixelGameObject pgo, PixelPosition translation)
     {
         List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
         

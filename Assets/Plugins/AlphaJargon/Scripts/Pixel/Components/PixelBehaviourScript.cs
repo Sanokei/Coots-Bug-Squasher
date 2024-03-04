@@ -177,14 +177,23 @@ namespace PixelGame
                 onKeyDown?.Invoke(DynValue.NewString(KeyCode));
         }
         //
-        private void TriggerEvent(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent)
+        private void TriggerEvent(PixelGameObject self, PixelGameObject other)
         {
-            onTrigger?.Invoke(DynValue.NewNumber(other.Key[0]),DynValue.NewNumber(other.Key[1]),DynValue.NewString(parent.name));
+            onTrigger?.Invoke(DynValue.NewString(self.name), DynValue.NewString(other.name));
         }
         //
-        private void CollisionEvent(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent)
+        private void CollisionEvent(PixelGameObject self, PixelGameObject other)
         {
-            onCollision?.Invoke(DynValue.NewNumber(other.Key[0]),DynValue.NewNumber(other.Key[1]),DynValue.NewString(parent.name));
+            onCollision?.Invoke(DynValue.NewString(self.name), DynValue.NewString(other.name));
         } 
+        // private void TriggerEvent(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent)
+        // {
+        //     onTrigger?.Invoke(DynValue.NewNumber(other.Key[0]),DynValue.NewNumber(other.Key[1]),DynValue.NewString(parent.name));
+        // }
+        // //
+        // private void CollisionEvent(KeyValuePair<PixelPosition, Pixel> other, PixelGameObject parent)
+        // {
+        //     onCollision?.Invoke(DynValue.NewNumber(other.Key[0]),DynValue.NewNumber(other.Key[1]),DynValue.NewString(parent.name));
+        // } 
     }
 }
