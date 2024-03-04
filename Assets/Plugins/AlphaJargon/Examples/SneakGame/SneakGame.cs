@@ -33,8 +33,8 @@ public class SneakGame : MonoBehaviour, IPixelGame
     void WinLevel()
     {
         Destroy(AlphaJargon.Instance.gameObject);
-        LevelState.Instance.CurrLevel += 1;
         AlphaJargon = AlphaJargon.Instance.CreateInstance(gameObject);
+        LevelState.Instance.CurrLevel += 1;
     }
     void LevelStateChange()
     { 
