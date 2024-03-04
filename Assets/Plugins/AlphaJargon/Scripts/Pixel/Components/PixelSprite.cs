@@ -28,6 +28,7 @@ namespace PixelGame
         {
             this.parent = parent;
             screen = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
+            screen.transform.localPosition = Vector3.one;
         }
         public void AddScreenToScreenManager()
         {
@@ -112,10 +113,6 @@ namespace PixelGame
         // Use pseudo signed bit of 1
         public void CharToPixel(Pixel pixel, char letter)
         {
-            // localScale gets set to a seemingly random number otherwise.
-            // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
-            pixel.transform.localScale = Vector3.one;
-
             if(imageChars.Contains(letter))
             {
                 pixel.Image.sprite = image[Array.IndexOf(imageChars,letter)];

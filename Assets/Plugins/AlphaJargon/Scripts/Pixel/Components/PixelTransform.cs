@@ -37,11 +37,11 @@ namespace PixelGame
 
         public PixelPosition move(int x, int y)
         {
-            Vector3 trans = new Vector3(x * PixelScreen.CellSize,y * PixelScreen.CellSize);
+            Vector3 trans = new Vector3(x * PixelScreenManager.Instance[parent].CellSize, y * PixelScreenManager.Instance[parent].CellSize);
             PixelPosition translation = new PixelPosition(x,y);
             if(!CheckCollision(translation))
             {
-                transform.Translate(trans);
+                transform.Translate(trans,PixelScreenManager.Instance[parent].transform);
                 parent.position += translation;
             }
             return parent.position;

@@ -5,6 +5,8 @@ using UnityEngine;
 using BuildingBlocks.DataTypes;
 
 using PixelGame;
+using Unity.VisualScripting;
+using Unity.Collections.LowLevel.Unsafe;
 
 // this file makes me want to die inside
 // please.. please dont touch it...
@@ -33,15 +35,32 @@ public class PixelScreenManager : MonoBehaviour
         PixelScreen.onPixelScreenDeleteEvent -= RemoveFromPixelScreen;
     }
 
-    public List<KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>> Layers = new List<KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>>();
+    // public List<KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>> Layers = new List<KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>>();
+    public List<KeyValuePair<PixelGameObject, PixelScreen>> Layers = new();
+
 
     void AddToPixelScreen(PixelGameObject parent, PixelScreen pixelScreen)
     {
-        Layers.Add(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.Dictionary));
+        // Layers.Add(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.Dictionary));
+        Layers.Add(new KeyValuePair<PixelGameObject, PixelScreen>(parent, pixelScreen));
     }
     void RemoveFromPixelScreen(PixelGameObject parent, PixelScreen pixelScreen)
     {
-        Layers.Remove(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.Dictionary));
+        // Layers.Remove(new KeyValuePair<PixelGameObject, Dictionary<int, Pixel>>(parent, pixelScreen.grid.Dictionary));
+        Layers.Remove(new KeyValuePair<PixelGameObject, PixelScreen>(parent, pixelScreen));
+    }  
+
+
+    // return FIRST pixel screen found for pixelgameobject.
+    public PixelScreen this[PixelGameObject parent]
+    {
+        get
+        {
+            foreach(var pxs in Layers)
+                if(pxs.Key == parent)
+                    return pxs.Value;
+            throw new MoonSharp.Interpreter.ScriptRuntimeException("Screen for parent doesn't exist");
+        }
     }
 
     //
@@ -49,11 +68,11 @@ public class PixelScreenManager : MonoBehaviour
     {
         List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
 
-        foreach (KeyValuePair<PixelGameObject, Dictionary<int, Pixel>> layer in Layers)
+        foreach (KeyValuePair<PixelGameObject, PixelScreen> layer in Layers)
         {
             if (!layer.Key.Equals(pgo))
             {
-                foreach (KeyValuePair<int, Pixel> pixel in layer.Value)
+                foreach (KeyValuePair<int, Pixel> pixel in layer.Value.grid.Dictionary)
                 {
                     if (pixel.Value.Collider != null)
                     {
@@ -69,11 +88,11 @@ public class PixelScreenManager : MonoBehaviour
     {
         List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
         
-        foreach (KeyValuePair<PixelGameObject, Dictionary<int, Pixel>> layer in Layers)
+        foreach (KeyValuePair<PixelGameObject, PixelScreen> layer in Layers)
         {
             if (layer.Key.Equals(pgo))
             {
-                foreach (KeyValuePair<int, Pixel> pixel in layer.Value)
+                foreach (KeyValuePair<int, Pixel> pixel in layer.Value.grid.Dictionary)
                 {
                     if (pixel.Value.Collider != null)
                     {
@@ -89,9 +108,9 @@ public class PixelScreenManager : MonoBehaviour
     {
         List<Pixel> pixels = new List<Pixel>();
 
-        foreach(KeyValuePair<PixelGameObject, Dictionary<int, Pixel>> layer in Layers)
+        foreach(KeyValuePair<PixelGameObject, PixelScreen> layer in Layers)
         {
-            foreach(KeyValuePair<int, Pixel> pixel in layer.Value)
+            foreach(KeyValuePair<int, Pixel> pixel in layer.Value.grid.Dictionary)
             {
                 if ((layer.Key.position + pixel.Key) == (translation))
                 {

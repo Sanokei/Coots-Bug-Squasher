@@ -26,7 +26,9 @@ namespace PixelGame
         public bool isTrigger = false;
         //
         public override PixelGameObject parent{get;set;}
-        public List<PolygonCollider2D> pixelCollider;
+
+        // Used to use Unity's built-in Collider and a quick hull algo, however, switched over to PixelScreen. Forgetting why. 
+        // public List<PolygonCollider2D> pixelCollider;
         public PixelScreen screen; // Only use this to show on screen
         void OnEnable()
         {
@@ -40,7 +42,8 @@ namespace PixelGame
         {
             this.parent = parent;
             screen = Instantiate<PixelScreen>(Resources.Load<PixelScreen>("Prefabs/Game/PixelScreen"),parent.gameObject.transform);
-            pixelCollider = new List<PolygonCollider2D>();
+            screen.transform.localPosition = Vector3.one;
+            // pixelCollider = new List<PolygonCollider2D>();
         }
         public void AddScreenToScreenManager()
         {
@@ -114,10 +117,6 @@ namespace PixelGame
         // did this for condormity sake with pixelsprite
         internal void ColliderToPixel(Pixel pixel, PixelCollider pc, bool isTrigger = false)
         {
-            // localScale gets set to a seemingly random number otherwise.
-            // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
-            pixel.transform.localScale = Vector3.one;
-            
             pixel.Collider = pc;
             pixel.Collider.isTrigger = isTrigger;
         }

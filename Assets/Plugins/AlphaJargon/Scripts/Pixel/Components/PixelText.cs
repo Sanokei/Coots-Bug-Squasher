@@ -25,7 +25,7 @@ namespace PixelGame
         public PixelText add(string content, int x, int y)
         {
             this.content = content;
-            pixelTextBox.InstantiateContent(content, x, y);
+            pixelTextBox.InstantiateContent(parent, content, x, y);
             return this;
         }
         public override void Remove()

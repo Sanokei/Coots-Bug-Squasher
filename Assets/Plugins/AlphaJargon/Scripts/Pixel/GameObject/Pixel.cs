@@ -7,6 +7,12 @@ using PixelGame;
 // Physical Pixels
 public class Pixel : MonoBehaviour, IPixelObject
 {
+    void OnEnable()
+    {
+        // localScale gets set to a seemingly random number otherwise.
+        // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
+        this.transform.localScale = Vector3.one;
+    }
     public bool isOn
     {
         get

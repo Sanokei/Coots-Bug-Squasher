@@ -12,12 +12,27 @@ using PixelGame;
 [MoonSharpUserData]
 public class AlphaJargon : MonoBehaviour, IPixelObject
 {
+    public static AlphaJargon Instance{get; set;}
     // Button Delegates
     public delegate void OnButtonClickDelegate(string KeyCode);
     public static OnButtonClickDelegate onKeyDownEvent;
     public AJState CurrAJState = AJState.PreSet;  
-    [TextArea(15,20)]
-    public string FileData;
+    [SerializeField,TextArea(15,20)]
+    private string _FileData;
+    public string FileData
+    {
+        get
+        {
+            return _FileData;
+        }
+        set
+        {
+            _FileData = value;
+            Ready();
+            Set();
+            Go();
+        }
+    }
 
     // Totality Execution Order
         // Awake, start, onenable and ondisable need to be native to the script
@@ -30,9 +45,11 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
 
     // Managers
     PixelScreenManager PixelScreenManager;
-
     void OnEnable()
     {
+        // localScale gets set to a seemingly random number otherwise.
+        // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
+        this.transform.localScale = Vector3.one;
         PixelScreenManager = gameObject.AddComponent<PixelScreenManager>();
     }
 
@@ -41,7 +58,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         // Input and FixedUpdate dont play nicely
         onUpdateEvent?.Invoke();
     }
-
+    
     public void OnGUI()
     {
         if (Input.anyKeyDown)
@@ -50,6 +67,10 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
             if (e.isKey)
                 onKeyDownEvent?.Invoke(e.keyCode.ToString());
         }
+    }
+    void OnDestroy()
+    {
+        Instance = null;
     }
     [HideInInspector] public JargonCompiler Compiler;
     [HideInInspector] public AlphaJargonCodeEditor CodeEditor;
@@ -127,6 +148,10 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         {
             PixelGameObject value = Instantiate<PixelGameObject>(Resources.Load<PixelGameObject>("Prefabs/Game/PixelGameObject"), parentTransform);
             value.name = key;
+            // localScale gets set to a seemingly random number otherwise.
+            // refer to: https://forum.unity.com/threads/grid-layout-group-completely-ignores-canvas-scaler-solved.440520/
+            value.transform.localScale = Vector3.one;
+
             Compiler.addPixelGameObjectToJargonScriptGlobals(key,value);
             CodeEditor.addPixelGameObjectToJargonScriptGlobals(key,value);
             PixelGameObjects.Add(key, value);
@@ -161,3 +186,4 @@ public enum AJState
     Set,
     Running
 }
+

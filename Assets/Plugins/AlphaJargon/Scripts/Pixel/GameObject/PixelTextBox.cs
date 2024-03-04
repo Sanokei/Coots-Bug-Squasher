@@ -4,18 +4,20 @@ using UnityEngine;
 using TMPro;
 
 using PixelGame;
+using System;
 
 [MoonSharp.Interpreter.MoonSharpUserData]
-public class PixelTextBox : PixelGameObject
+public class PixelTextBox : MonoBehaviour, IPixelObject
 {
     public TextMeshProUGUI[,] Textbox = new TextMeshProUGUI[8,8];
 
-    public TextMeshProUGUI InstantiateContent(string content, int x, int y)
+    public TextMeshProUGUI InstantiateContent(PixelGameObject parent, string content, int x, int y)
     {
         TextMeshProUGUI box = Textbox[x,y];
-        PixelTransform pixelTransform = add("Transform","PixelTransform");
+        PixelTransform pixelTransform = parent.hasPixelComponent("Transform") ? parent.GetComponent<PixelTransform>() : parent.add("Transform","PixelTransform");
         
-        x *= PixelScreen.CellSize; y *= PixelScreen.CellSize;
+        x = y *= (int)PixelScreenManager.Instance[parent].CellSize;
+        // y *= (int)PixelScreen.CellSize;
 
         box = gameObject.AddComponent<TextMeshProUGUI>();
         box.font = Resources.Load<TMP_FontAsset>("TextMeshPro/AprilSans");

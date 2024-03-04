@@ -22,22 +22,22 @@ namespace PixelGame
         {
             Destroy(this);
         }
-        public static PixelPosition GetPixelAnchorForCollider(PolygonCollider2D collider)
-        {
-            // Get the bounds of the collider
-            Bounds bounds = collider.bounds;
+        // public static PixelPosition GetPixelAnchorForCollider(PolygonCollider2D collider)
+        // {
+        //     // Get the bounds of the collider
+        //     Bounds bounds = collider.bounds;
 
-            // Get the center of the bounds
-            Vector3 center = bounds.center;
+        //     // Get the center of the bounds
+        //     Vector3 center = bounds.center;
 
-            // Convert center to pixel coordinates
-            float cellSize = PixelScreen.CellSize;
-            float gridSideSize = PixelScreen.GridSideSize;
-            int x = Mathf.RoundToInt((center.x + (gridSideSize * cellSize) / 2f) / cellSize);
-            int y = Mathf.RoundToInt(((gridSideSize * cellSize) / 2f - center.y) / cellSize);
+        //     // Convert center to pixel coordinates
+        //     float cellSize = PixelScreen.CellSize;
+        //     float gridSideSize = PixelScreen.GridSideSize;
+        //     int x = Mathf.RoundToInt((center.x + (gridSideSize * cellSize) / 2f) / cellSize);
+        //     int y = Mathf.RoundToInt(((gridSideSize * cellSize) / 2f - center.y) / cellSize);
 
-            // Create a new PixelPosition using the rounded pixel coordinates
-            return new PixelPosition(x, y);
-        }
+        //     // Create a new PixelPosition using the rounded pixel coordinates
+        //     return new PixelPosition(x, y);
+        // }
     }
 }

@@ -12,6 +12,9 @@ Probably will break something in the future but its fine for now.
 <requirements>
     dynamic = '.NET 4'
 </requirements>
+
+
+this is so stupid, why isnt this just using generics.
 */
 namespace PixelGame
 {
@@ -26,6 +29,7 @@ namespace PixelGame
             UserData.RegisterAssembly();
 
         }
+        
         public dynamic this[string key] {
             get 
             {
@@ -36,7 +40,14 @@ namespace PixelGame
                 PixelComponents.Add(key,value);
             }
         }
-
+        public bool hasPixelComponent(string pixelComponent)
+        {
+            return PixelComponents.Values.ToString().Contains(pixelComponent);
+        }
+        public bool hasPixelComponent(PixelComponent pixelComponent)
+        {
+            return PixelComponents.Values.Contains(pixelComponent);
+        }
         public dynamic add(string key, string value)
         {
             return add(key,value,gameObject);
