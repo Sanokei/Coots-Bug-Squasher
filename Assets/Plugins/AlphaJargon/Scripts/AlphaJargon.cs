@@ -8,7 +8,8 @@ using System.Text;
 using MoonSharp.Interpreter;
 
 using PixelGame;
-using Unity.VisualScripting;
+using PixelGame.Component;
+using PixelGame.Object;
 
 [MoonSharpUserData]
 public class AlphaJargon : MonoBehaviour, IPixelObject

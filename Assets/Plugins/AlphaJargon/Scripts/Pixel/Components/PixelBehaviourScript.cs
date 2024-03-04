@@ -8,13 +8,15 @@ using MoonSharp.Interpreter.Loaders;
 using MoonSharp.Interpreter.Interop;
 using MoonSharp.Interpreter.Execution.VM;
 
+using PixelGame.Object;
+
 /*
 script.Globals["test"] = new Action<string, MyEnum>(this.TestMethod);
 ```lua
 test('hello world', MyEnum.Value1)
 ```
 */
-namespace PixelGame
+namespace PixelGame.Component
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelBehaviourScript : PixelComponent

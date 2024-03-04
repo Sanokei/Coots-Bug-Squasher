@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPixelObject
+namespace PixelGame.Object
 {
+    public interface IPixelObject
+    {
+    }
 }

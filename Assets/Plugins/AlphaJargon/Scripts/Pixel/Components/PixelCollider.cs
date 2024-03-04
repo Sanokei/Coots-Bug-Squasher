@@ -7,13 +7,13 @@ using System.Text;
 
 using UnityEngine;
 
-using Habrador_Computational_Geometry;
 using MoonSharp.Interpreter;
+using PixelGame.Object;
 /*
     I think this will only work for this specific layout of Anchors
     So if you are going to change the rect transforms and stuff keep that in mind
 */
-namespace PixelGame
+namespace PixelGame.Component
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelCollider : PixelComponent
@@ -121,15 +121,15 @@ namespace PixelGame
             pixel.Collider.isTrigger = isTrigger;
         }
 
-        List<Vector2> MyVector2ToVector2(List<MyVector2> myVector2List)
-        {
-            List<Vector2> vector2List = new List<Vector2>();
-            foreach (MyVector2 myVector2 in myVector2List)
-            {
-                vector2List.Add(new Vector2(myVector2.x, myVector2.y));
-            }
-            return vector2List;
-        }
+        // List<Vector2> MyVector2ToVector2(List<MyVector2> myVector2List)
+        // {
+        //     List<Vector2> vector2List = new List<Vector2>();
+        //     foreach (MyVector2 myVector2 in myVector2List)
+        //     {
+        //         vector2List.Add(new Vector2(myVector2.x, myVector2.y));
+        //     }
+        //     return vector2List;
+        // }
     }
 }
 

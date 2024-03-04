@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace PixelGame
+using PixelGame.Object;
+
+namespace PixelGame.Component
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelText : PixelComponent

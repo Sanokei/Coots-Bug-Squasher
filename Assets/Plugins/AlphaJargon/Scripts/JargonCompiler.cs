@@ -5,6 +5,10 @@ using UnityEngine;
 using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
 
+using PixelGame;
+using PixelGame.Component;
+using PixelGame.Object;
+
 [MoonSharpUserData]
 public class JargonCompiler : MonoBehaviour
 {

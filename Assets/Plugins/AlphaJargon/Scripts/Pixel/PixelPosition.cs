@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using PixelGame.Object;
+
 namespace PixelGame
 {
     [MoonSharp.Interpreter.MoonSharpUserData]

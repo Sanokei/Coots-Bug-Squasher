@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PixelGame
+namespace PixelGame.Component
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelRigidBody : PixelComponent

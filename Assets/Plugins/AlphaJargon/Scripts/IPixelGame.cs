@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPixelGame
+namespace PixelGame
 {
-    public AlphaJargon AlphaJargon{get;}
-
-    public static IEnumerator GetLuaFile(string filePath, System.Action<string> callback)
+    public interface IPixelGame
     {
-        yield return LoadLuaFile.GetLuaFile(filePath, callback);
+        public AlphaJargon AlphaJargon{get;}
+
+        public static IEnumerator GetLuaFile(string filePath, System.Action<string> callback)
+        {
+            yield return LoadLuaFile.GetLuaFile(filePath, callback);
+        }
     }
 }

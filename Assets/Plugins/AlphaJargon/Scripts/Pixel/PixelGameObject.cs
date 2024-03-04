@@ -5,6 +5,10 @@ using BuildingBlocks.DataTypes;
 using MoonSharp.Interpreter;
 
 using System;
+
+using PixelGame.Component;
+using PixelGame.Object;
+
 /*
 C# is statically typed
 but supports dynamic return type and parameter
@@ -58,7 +62,7 @@ namespace PixelGame
            PixelComponent newValue;
             try
             {
-                newValue = (PixelComponent)go.AddComponent(System.Type.GetType($"PixelGame.{value}",true,true));
+                newValue = (PixelComponent)go.AddComponent(System.Type.GetType($"PixelGame.Component.{value}",true,true));
             }
             catch(Exception e)
             {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PixelGame
+namespace PixelGame.Component
 {
     [System.Obsolete("Dont use these")]
     public class PixelAnchor : PixelComponent

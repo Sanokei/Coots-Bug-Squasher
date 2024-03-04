@@ -8,7 +8,9 @@ using MoonSharp.Interpreter;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PixelGame
+using PixelGame.Object;
+
+namespace PixelGame.Component
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelSprite : PixelComponent

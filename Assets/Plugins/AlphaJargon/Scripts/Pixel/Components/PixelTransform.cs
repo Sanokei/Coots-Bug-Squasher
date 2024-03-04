@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Habrador_Computational_Geometry;
+using PixelGame.Object;
 
-namespace PixelGame
+namespace PixelGame.Component
 {
     [MoonSharp.Interpreter.MoonSharpUserData]
     public class PixelTransform : PixelComponent
