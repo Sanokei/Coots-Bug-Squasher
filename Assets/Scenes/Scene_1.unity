@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: main.lua
+  m_text: AlphaJargon.lua
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cb4a1c14bb7718c4ca18736bed4579d5, type: 2}
   m_sharedMaterial: {fileID: -7735210014958938614, guid: cb4a1c14bb7718c4ca18736bed4579d5, type: 2}
@@ -1716,8 +1716,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 23
+  m_fontSizeBase: 23
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1867,11 +1867,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2aa8ec6cd5d9f1499177c9c5f495584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PCE_Files_Int: 000000000100000001000000
+  PCE_Files_Int: 0000000000000000010000000100000001000000
   PCE_Files_String:
   - MoveCoots.lua
+  - CheckWin.lua
   - MoveCoots.lua
   - DoorBehave.lua
+  - CheckWin.lua
 --- !u!1 &802405939
 GameObject:
   m_ObjectHideFlags: 0
@@ -3611,8 +3613,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SneakGame, Assembly-CSharp
+      - m_Target: {fileID: 407048467}
+        m_TargetAssemblyTypeName: SneakGame, Assembly-CSharp-firstpass
         m_MethodName: RunSelfCode
         m_Mode: 1
         m_Arguments:
