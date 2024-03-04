@@ -41,7 +41,7 @@ namespace PixelGame
             PixelPosition translation = new PixelPosition(x,y);
             if(!CheckCollision(translation))
             {
-                transform.Translate(trans,PixelScreenManager.Instance[parent].transform);
+                transform.localPosition += trans;
                 parent.position += translation;
             }
             return parent.position;

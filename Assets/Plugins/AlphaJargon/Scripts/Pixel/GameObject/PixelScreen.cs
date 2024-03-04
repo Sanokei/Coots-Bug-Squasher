@@ -20,18 +20,7 @@ public class PixelScreen : MonoBehaviour, IPixelObject
         _GridLayout = gameObject.GetComponent<GridLayoutGroup>();
         GridSideSize = _GridLayout.constraintCount;
     }
-    void Start()
-    {
-        // _GridLayout.cellSize = _DefaultGridCellSize * SneakGame.Instance.gameObject.transform.localScale;
-        // int xy = (int)SneakGame.Instance.gameObject.GetComponent<RectTransform>().rect.width / GridSideSize;
-        // _GridLayout.cellSize = new Vector2(xy,xy);
-        // CellSize = (int)_GridLayout.cellSize.x; // Asume aspect ratio of 1
-    }
-    void OnRectTransformDimensionsChange()
-    {
-        // int xy = (int)SneakGame.Instance.gameObject.GetComponent<RectTransform>().rect.width / GridSideSize;
-        // _GridLayout.cellSize = new Vector2(xy,xy);
-    }
+    
     // Every Physical Pixel 
     GridLayoutGroup _GridLayout;
     // DO NOT EDIT THIS VARIABLE, IT WILL RESET ITS DATA.
