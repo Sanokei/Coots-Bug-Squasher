@@ -116,7 +116,8 @@ function InitializeGame()
         oooooooooooo
         ]]
     )
-
+    goal.add('CheckWin', 'PixelBehaviourScript').addFile("CheckWin.lua")
+    
     door.add('door', 'PixelSprite')
     door['door'].add(
         [[
@@ -159,6 +160,7 @@ end
 function StartGame()
     coots['MoveCoots'].RunScript();
     door['DoorBehave'].RunScript();
+    goal['CheckWin'].RunScript();
 end
 
 -- [[

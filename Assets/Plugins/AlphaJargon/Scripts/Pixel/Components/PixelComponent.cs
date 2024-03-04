@@ -10,7 +10,5 @@ namespace PixelGame.Component
         public abstract PixelGameObject parent{get;set;}
         public abstract void Create(PixelGameObject parent);
         public abstract void Remove();
-
-        
     }
 }

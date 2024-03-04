@@ -1,5 +1,5 @@
 function OnTrigger(parent,other)
     if parent == 'coots' and other == 'goal' then
-        print("Yay")
+        Event.Invoke("win")
     end
 end

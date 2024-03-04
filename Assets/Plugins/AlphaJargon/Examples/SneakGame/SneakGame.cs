@@ -21,11 +21,13 @@ public class SneakGame : MonoBehaviour, IPixelGame
     void OnEnable()
     {
         LevelState.onlevelChangeEvent += LevelStateChange;
+        PixelEvent.onEvent += OnPixelGameEvent;
     }
 
     void OnDisable()
     {
         LevelState.onlevelChangeEvent -= LevelStateChange;
+        PixelEvent.onEvent -= OnPixelGameEvent;
     }
     
     void WinLevel()
@@ -72,6 +74,16 @@ public class SneakGame : MonoBehaviour, IPixelGame
             }));
         }
 
+    }
+
+    public void OnPixelGameEvent(string Name,params string[] args)
+    {
+        switch(Name)
+        {
+            case "win":
+                WinLevel();
+            break;
+        }
     }
 
     // for the run button

@@ -31,7 +31,6 @@ namespace PixelGame
         {
             PixelComponents = new InspectableDictionary<string, PixelComponent>(); 
             UserData.RegisterAssembly();
-
         }
         
         public dynamic this[string key] {

@@ -53,9 +53,8 @@ namespace PixelGame.Component
         // FIXME: This has too much undefined behaviour
         internal DynValue run(DynValue function, params DynValue[] args)
 		{
-            
+            UserData.RegisterAssembly();
             int numOfArgs = script.Globals.Get(function.String).Function.GetUpvaluesCount() - 1; // it counts from 1 because lua.
-            Debug.Log($"Func: {numOfArgs}\nLen: {args.Length}");
             if(args.Length > numOfArgs)
                 throw new ScriptRuntimeException($"Too many arguments for this function. Expected {numOfArgs} got {args.Length}.");
             return script.Call(script.Globals.Get(function.String),args);
@@ -118,12 +117,6 @@ namespace PixelGame.Component
             UserData.RegisterAssembly();
             script.Globals[key] = value;
         }
-        public void addAllPixelGameObjectToScriptGlobals(string key, IPixelObject value)
-        {
-            // Debug.Log($"key: {key} + value: {value}");
-            UserData.RegisterAssembly();
-            script.Globals[key] = value;
-        }
         public override void Create(PixelGameObject parent)
         {
             this.parent = parent;
@@ -145,6 +138,7 @@ namespace PixelGame.Component
             
             // adds a lot of the internal commands
             // script.Globals["internal"] = new Internal();
+            script.Globals["Event"] = new PixelEvent();
 
             DynValue fn = script.DoString(FileData);
             // fn.Function.Call();
