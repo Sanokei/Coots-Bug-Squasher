@@ -50,14 +50,22 @@ namespace PixelGame.Component
             PixelCollider.onCollisionEvent  -= CollisionEvent;
         }
 
-        // FIXME: This has too much undefined behaviour
         internal DynValue run(DynValue function, params DynValue[] args)
 		{
             UserData.RegisterAssembly();
-            int numOfArgs = script.Globals.Get(function.String).Function.GetUpvaluesCount() - 1; // it counts from 1 because lua.
+            DynValue func;
+            try
+            {
+                func = script.Globals.Get(function.String);
+            }
+            catch
+            {
+                throw new ScriptRuntimeException($"Function \"{function.String}\" does not exist in this context. Check spelling.");
+            }
+            int numOfArgs = func.Function.GetUpvaluesCount() - 1; // it counts from 1 because lua.
             if(args.Length > numOfArgs)
-                throw new ScriptRuntimeException($"Too many arguments for this function. Expected {numOfArgs} got {args.Length}.");
-            return script.Call(script.Globals.Get(function.String),args);
+                throw new ScriptRuntimeException($"Too many arguments for function \"{function.String}\". Expected {numOfArgs} got {args.Length}.");
+            return script.Call(func,args);
         }
         public DynValue run(DynValue function)
 		{
@@ -141,7 +149,6 @@ namespace PixelGame.Component
             script.Globals["Event"] = new PixelEvent();
 
             DynValue fn = script.DoString(FileData);
-            // fn.Function.Call();
 
             // cant do null checks cuz .Get returns DynValue.Nil not null
             // onStart = script.Globals.Get("Start").Function.GetDelegate() ?? null;

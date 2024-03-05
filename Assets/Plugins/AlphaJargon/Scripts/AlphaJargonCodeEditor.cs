@@ -4,6 +4,7 @@ using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
 
 using PixelGame.Object;
+using PixelGame;
 
 [MoonSharpUserData]
 public class AlphaJargonCodeEditor : MonoBehaviour
@@ -33,25 +34,16 @@ public class AlphaJargonCodeEditor : MonoBehaviour
         script.Globals["Event"] = new TrollEvent(); // :3
 
         // sets default options
-        script.Options.DebugPrint = (x) => {Debug.Log(x);};
+        script.Options.DebugPrint = (x) => {PixelGame.Console.Instance.add(x, Color.white);};
         ((ScriptLoaderBase)script.Options.ScriptLoader).IgnoreLuaPathGlobal = true;
 
-        // ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = ScriptLoaderBase.UnpackStringPaths(System.IO.Path.Combine(Application.persistentDataPath,"/modules/","?") + ".lua");
-        try
-        {
-            DynValue fn = script.LoadString(FileData);
-            fn.Function.Call();
-        }
-        catch (ScriptRuntimeException e)
-        {
-            Debug.LogError(e.DecoratedMessage);
-        }
+        DynValue fn = script.DoString(FileData);
     }
 
     [MoonSharpUserData]
     struct TrollEvent
     {
-        public void Invoke(string Name)
+        public void Invoke(string Name, params string[] args)
         {
             if(Name == "win")
             {

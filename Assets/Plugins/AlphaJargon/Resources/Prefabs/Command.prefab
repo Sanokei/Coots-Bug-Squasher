@@ -31,6 +31,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5639560979927396556}
+  m_RootOrder: -2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -58,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 0.46666667}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -87,7 +88,7 @@ GameObject:
   - component: {fileID: 5026450287955092683}
   - component: {fileID: 4949834141804290743}
   m_Layer: 6
-  m_Name: ChoiceText
+  m_Name: CommandText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,6 +107,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5639560979927396556}
+  m_RootOrder: -2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.49480045, y: 0.5}
   m_AnchorMax: {x: 0.49480045, y: 0.5}
@@ -142,15 +144,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 195bf74639ad19542b531c8786e3f5ba, type: 2}
-  m_sharedMaterial: {fileID: -7735210014958938614, guid: 195bf74639ad19542b531c8786e3f5ba, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cb4a1c14bb7718c4ca18736bed4579d5, type: 2}
+  m_sharedMaterial: {fileID: -7735210014958938614, guid: cb4a1c14bb7718c4ca18736bed4579d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4280427042
-  m_fontColor: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}
+    rgba: 4278192127
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -174,8 +176,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 2048
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -203,7 +205,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -0.9281006, w: 0}
+  m_margin: {x: 6.3522034, y: 0, z: 6.3315735, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -222,7 +224,7 @@ GameObject:
   - component: {fileID: 3530214132134211151}
   - component: {fileID: 1423358524524787386}
   m_Layer: 6
-  m_Name: Option
+  m_Name: Command
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,9 +242,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2379698866806452219}
   - {fileID: 1834302882298174646}
+  - {fileID: 2379698866806452219}
   m_Father: {fileID: 0}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -278,12 +281,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8694531152003340390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf184cd63983c6f4d8f9f46d18516f89, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ea16bbdc8ee8324db06e79d0af33095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ForegroundImage: {fileID: 4471232224998590303}
-  index: 0
-  OptionTextGO: {fileID: 4949834141804290743}
+  CommandTextGO: {fileID: 4949834141804290743}
 --- !u!61 &1423358524524787386
 BoxCollider2D:
   m_ObjectHideFlags: 0

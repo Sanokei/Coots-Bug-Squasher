@@ -6,19 +6,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ConsoleCommandPrefab : MonoBehaviour
+namespace PixelGame
 {
-    [HideInInspector] public int index;
-    public TMP_Text OptionTextGO;
-    public string OptionText
+    public class ConsoleCommandPrefab : MonoBehaviour
     {
-        get
+        public TMP_Text CommandTextGO;
+        public string CommandText
         {
-            return OptionTextGO.text;
-        }
-        set
-        {
-            OptionTextGO.text = value;
+            get
+            {
+                return CommandTextGO.text;
+            }
+            set
+            {
+                CommandTextGO.text = value;
+            }
         }
     }
 }

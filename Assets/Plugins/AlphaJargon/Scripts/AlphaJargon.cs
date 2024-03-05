@@ -21,7 +21,8 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
         get
         {
             if(!_Instance)
-                _Instance = CreateInstance();
+                // The way this is set up, it means AlphaJargon gets created twice. Once as a husk and then again for real. idk if this is fine or can be changed tbh
+                _Instance = new GameObject("Temporary").AddComponent<AlphaJargon>();
             return _Instance;
         }
         set
@@ -29,13 +30,6 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
             Destroy(_Instance.gameObject);
             _Instance = value;
         }
-    }
-    public static AlphaJargon CreateInstance()
-    {
-        AlphaJargon AJ = new GameObject("AlphaJargon").AddComponent<AlphaJargon>();
-        AJ.gameObject.transform.localPosition = Vector3.zero;
-        AJ.gameObject.transform.localScale = Vector3.one;
-        return AJ;
     }
     public AlphaJargon CreateInstance(GameObject parent)
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using MoonSharp.Interpreter.Interop;
 using MoonSharp.Interpreter.Interop.BasicDescriptors;
 
@@ -13,6 +14,8 @@ namespace MoonSharp.Interpreter
 #endif
 	public class ScriptRuntimeException : InterpreterException
 	{
+		public delegate void OnException(string message);
+        public static OnException onException;
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ScriptRuntimeException"/> class.
 		/// </summary>
@@ -20,6 +23,7 @@ namespace MoonSharp.Interpreter
 		public ScriptRuntimeException(Exception ex)
 			: base(ex)
 		{
+			onException?.Invoke(Message);
 		}       
 
 		/// <summary>
@@ -31,6 +35,8 @@ namespace MoonSharp.Interpreter
 		{
 			this.DecoratedMessage = Message;
 			this.DoNotDecorateMessage = true;
+
+			onException?.Invoke(Message);
 		}
 
 
@@ -41,7 +47,7 @@ namespace MoonSharp.Interpreter
 		public ScriptRuntimeException(string message)
 			: base(message)
 		{
-
+			onException?.Invoke(Message);
 		}
 
 		/// <summary>
