@@ -23,7 +23,7 @@ namespace MoonSharp.Interpreter
 		public ScriptRuntimeException(Exception ex)
 			: base(ex)
 		{
-			onException?.Invoke(Message);
+			onException?.Invoke($"ScriptRuntimeException: {Message}");
 		}       
 
 		/// <summary>
@@ -36,7 +36,7 @@ namespace MoonSharp.Interpreter
 			this.DecoratedMessage = Message;
 			this.DoNotDecorateMessage = true;
 
-			onException?.Invoke(Message);
+			onException?.Invoke($"ScriptRuntimeException: {Message}");
 		}
 
 
@@ -47,7 +47,8 @@ namespace MoonSharp.Interpreter
 		public ScriptRuntimeException(string message)
 			: base(message)
 		{
-			onException?.Invoke(Message);
+			// FIXME 
+			onException?.Invoke($"ScriptRuntimeException: {Message}");
 		}
 
 		/// <summary>
@@ -58,7 +59,7 @@ namespace MoonSharp.Interpreter
 		public ScriptRuntimeException(string format, params object[] args)
 			: base(format, args)
 		{
-
+			onException?.Invoke($"ScriptRuntimeException: {Message}");
 		}
 
 		/// <summary>

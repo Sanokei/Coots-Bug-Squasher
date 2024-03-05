@@ -1,4 +1,5 @@
-﻿using MoonSharp.Interpreter.Execution;
+﻿using System;
+using MoonSharp.Interpreter.Execution;
 using MoonSharp.Interpreter.Execution.VM;
 
 namespace MoonSharp.Interpreter.Tree
@@ -19,10 +20,14 @@ namespace MoonSharp.Interpreter.Tree
 
 		protected static Token UnexpectedTokenType(Token t)
 		{
+			// FIXME
+			ScriptRuntimeException.onException?.Invoke($"SyntaxErrorException: unexpected symbol near '{t.Text}'");
 			throw new SyntaxErrorException(t, "unexpected symbol near '{0}'", t.Text)
 			{
+				
 				IsPrematureStreamTermination = (t.Type == TokenType.Eof)
 			};
+			
 		}
 
 		protected static Token CheckTokenType(ScriptLoadingContext lcontext, TokenType tokenType)

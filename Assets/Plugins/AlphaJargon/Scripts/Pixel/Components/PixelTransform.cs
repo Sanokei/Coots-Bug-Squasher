@@ -27,7 +27,10 @@ namespace PixelGame.Component
         {
             return add(new PixelPosition(x,y));
         }
-
+        public void move()
+        {
+            new MoonSharp.Interpreter.ScriptRuntimeException("move function needs positional args");
+        }
         public PixelPosition move(PixelPosition pixelPosition)
         {
             return move(pixelPosition.x, pixelPosition.y);
