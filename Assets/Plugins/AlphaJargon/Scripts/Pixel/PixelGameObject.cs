@@ -36,7 +36,14 @@ namespace PixelGame
         public dynamic this[string key] {
             get 
             {
-                return PixelComponents[key];
+                try
+                { 
+                    return PixelComponents[key];
+                }
+                catch
+                {
+                    throw new ScriptRuntimeException($"The Component {key} could not be found.");
+                }
             }
             set
             {
@@ -66,7 +73,7 @@ namespace PixelGame
             catch(Exception e)
             {
                 Debug.Log(e);
-                throw new MoonSharp.Interpreter.ScriptRuntimeException("Tried to add component that does not exist in namespace PixelGame. Check spelling.");
+                throw new MoonSharp.Interpreter.ScriptRuntimeException($"Tried to add component {value} that does not exist in namespace \"PixelGame.Component\". Possibly check spelling.");
             }
             if(newValue)
             {
@@ -75,7 +82,7 @@ namespace PixelGame
                 ((PixelComponent)newValue).Create(this);
                 return newValue;
             }
-            throw new MoonSharp.Interpreter.ScriptRuntimeException("Could Not Add Dynamic Value");
+            throw new MoonSharp.Interpreter.ScriptRuntimeException($"Could Not Add Component {value}");
         }
     }
 }

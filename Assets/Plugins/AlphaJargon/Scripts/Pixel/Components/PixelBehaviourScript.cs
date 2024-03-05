@@ -53,16 +53,17 @@ namespace PixelGame.Component
         internal DynValue run(DynValue function, params DynValue[] args)
 		{
             UserData.RegisterAssembly();
-            DynValue func;
+            DynValue func = script.Globals.Get(function.String);
+            Closure closure;
             try
             {
-                func = script.Globals.Get(function.String);
+                closure = func.Function;
             }
             catch
             {
                 throw new ScriptRuntimeException($"Function \"{function.String}\" does not exist in this context. Check spelling.");
             }
-            int numOfArgs = func.Function.GetUpvaluesCount() - 1; // it counts from 1 because lua.
+            int numOfArgs = closure.GetUpvaluesCount() - 1; // it counts from 1 because lua.
             if(args.Length > numOfArgs)
                 throw new ScriptRuntimeException($"Too many arguments for function \"{function.String}\". Expected {numOfArgs} got {args.Length}.");
             return script.Call(func,args);

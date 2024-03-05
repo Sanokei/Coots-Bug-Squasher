@@ -180,7 +180,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
             PixelGameObjects.Add(key, value);
             return value;
         }
-        throw new ScriptRuntimeException("Key already used to make PixelGameObject");
+        throw new ScriptRuntimeException($"Key \"{key}\" already used to make PixelGameObject");
     }
 
 /*****************************************************/
