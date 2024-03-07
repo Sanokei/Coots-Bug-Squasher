@@ -2,7 +2,7 @@
 function AwakeGame()
     jargon.add('coots')
     jargon.add('wall')
-    jargon.add('goal')
+    jargon.add('portal')
     jargon.add('door')
 end
 -- Add pixelComponents to the objects
@@ -81,8 +81,8 @@ function InitializeGame()
         ]]
     )
 
-    goal.add('pc','PixelCollider') -- needs a pixelsprite to work
-    goal['pc'].add(
+    portal.add('pc','PixelCollider') -- needs a pixelsprite to work
+    portal['pc'].add(
         [[
         oooooooooooo
         oooooooooooo
@@ -99,8 +99,8 @@ function InitializeGame()
         ]]
         , true
     )
-    goal.add('still', 'PixelSprite')
-    goal['still'].add(
+    portal.add('ps', 'PixelSprite')
+    portal['ps'].add(
         [[
         oooooooooooo
         oooooooooooo
@@ -116,7 +116,7 @@ function InitializeGame()
         oooooooooooo
         ]]
     )
-    goal.add('CheckWin', 'PixelBehaviourScript').addFile("CheckWin.lua")
+    portal.add('CheckAuth', 'PixelBehaviourScript').addFile("CheckAuth.lua")
     
     door.add('door', 'PixelSprite')
     door['door'].add(
@@ -158,22 +158,7 @@ function InitializeGame()
 end
 -- add references to scripts that need it and run scripts
 function StartGame()
-    coots['MoveCoots'].RunScript();
-    door['DoorBehave'].RunScript();
-    goal['CheckWin'].RunScript();
+    coots['MoveCoots'].RunScript()
+    door['DoorBehave'].RunScript()
+    portal['CheckAuth'].RunScript()
 end
-
--- [[
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- oooooooooooo
--- ]]

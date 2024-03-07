@@ -164,7 +164,7 @@ public class AlphaJargon : MonoBehaviour, IPixelObject
     {
         return add(key,transform);
     }
-    // add components to gameobjects
+    // add gameobjects to jargon
     public PixelGameObject add(string key, Transform parentTransform)
     {
         if(!PixelGameObjects.Keys.Contains(key))  

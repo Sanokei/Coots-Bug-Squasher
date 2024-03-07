@@ -9,10 +9,10 @@
 <br/>
 [Keyboard Prompts by Nicolae (Xelu) Berbece](https://thoseawesomeguys.com/prompts/)
 <br/>
-[ingame code editor by Trivial Interactive](https://unityassetcollection.com/ingame-code-editor-free-download/)
+[ingame code editor by Trivial Interactive]()
 <br/>
 [Moonsharp by Moonsharp Dev Team](https://www.moonsharp.org/)
 <br/>
-[AlphaJargon by Sideways Turtle]()
+[AlphaJargon by Sideways Turtle](https://www.sidewaysturtle.com)
 <br/>
 [PrettyHierarchy]()

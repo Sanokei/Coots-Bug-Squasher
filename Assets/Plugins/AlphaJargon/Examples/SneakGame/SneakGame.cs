@@ -29,14 +29,17 @@ public class SneakGame : MonoBehaviour, IPixelGame
         LevelState.onlevelChangeEvent -= LevelStateChange;
         PixelEvent.onEvent -= OnPixelGameEvent;
     }
-    
-    void WinLevel()
+    void DestroyAndCreate()
     {
-        // Destroy all
         Destroy(AlphaJargon.Instance.gameObject);
         Console.Instance.removeAll();
         
         AlphaJargon = AlphaJargon.Instance.CreateInstance(gameObject);
+    }
+    void WinLevel()
+    {
+        // Destroy all
+        DestroyAndCreate();
         LevelState.Instance.CurrLevel += 1;
     }
     void LevelStateChange()
@@ -83,7 +86,7 @@ public class SneakGame : MonoBehaviour, IPixelGame
     {
         switch(Name)
         {
-            case "win":
+            case "oAuthClear":
                 WinLevel();
             break;
         }
@@ -93,5 +96,11 @@ public class SneakGame : MonoBehaviour, IPixelGame
     public void RunSelfCode()
     {
         AlphaJargon.CodeEditor.RunScript(MyCodeEditor.Text);
+    }
+
+    public void ResetCode()
+    {
+        DestroyAndCreate();
+        LevelState.ResetLevel();
     }
 }

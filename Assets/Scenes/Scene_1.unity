@@ -1406,7 +1406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &597849809
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1447,7 +1447,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rename
+  m_text: Reset
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cb4a1c14bb7718c4ca18736bed4579d5, type: 2}
   m_sharedMaterial: {fileID: -7735210014958938614, guid: cb4a1c14bb7718c4ca18736bed4579d5, type: 2}
@@ -1537,12 +1537,12 @@ GameObject:
   - component: {fileID: 645707687}
   - component: {fileID: 645707686}
   m_Layer: 5
-  m_Name: Rename
+  m_Name: Reset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &645707685
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1559,10 +1559,10 @@ RectTransform:
   m_Father: {fileID: 2030707381}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 267.5, y: -19.5}
-  m_SizeDelta: {x: 75, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645707686
 MonoBehaviour:
@@ -1607,7 +1607,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 645707687}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 407048467}
+        m_TargetAssemblyTypeName: SneakGame, Assembly-CSharp-firstpass
+        m_MethodName: ResetCode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &645707687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1882,13 +1894,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2aa8ec6cd5d9f1499177c9c5f495584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PCE_Files_Int: 0000000000000000010000000100000001000000
+  PCE_Files_Int: 000000000000000001000000010000000100000002000000020000000200000003000000
   PCE_Files_String:
   - MoveCoots.lua
-  - CheckWin.lua
+  - CheckAuth.lua
   - MoveCoots.lua
   - DoorBehave.lua
-  - CheckWin.lua
+  - CheckAuth.lua
+  - MoveCoots.lua
+  - AirlockBehave.lua
+  - CheckAuth.lua
+  - 3.lua
 --- !u!1 &802405939
 GameObject:
   m_ObjectHideFlags: 0
@@ -4148,8 +4164,8 @@ RectTransform:
   m_Children:
   - {fileID: 219872984}
   - {fileID: 2000915507}
-  - {fileID: 645707685}
   - {fileID: 1984688926}
+  - {fileID: 645707685}
   - {fileID: 2117037727}
   m_Father: {fileID: 1093178087}
   m_RootOrder: 0

@@ -135,10 +135,13 @@ namespace PixelGame.Component
             image.AddRange(new List<Sprite>{Resources.Load<Sprite>("Art/Coots"), Resources.Load<Sprite>("Art/Wall"), Resources.Load<Sprite>("Art/Door_Closed"), Resources.Load<Sprite>("Art/Door_Open"), Resources.Load<Sprite>("Art/Camera_On"), Resources.Load<Sprite>("Art/Camera_Off")}); 
         }
         // cannot for the life of me tell you why i did it this way, i forgor
+        // I remember now. its because im using custom enums to be able to store data
         public static Color RGBToColor(long rgb)
         {  
-            //    r   g   b
-            // 1 000 000 000
+            //    r   g   b   a
+            // 1 000 000 000 000
+            // long Max Value: Can add more data if needed
+            // 9 223 372 036 854 775 807
             byte r = byte.Parse(rgb.ToString().Substring(1,3), System.Globalization.NumberStyles.Integer);
             byte g = byte.Parse(rgb.ToString().Substring(4,3), System.Globalization.NumberStyles.Integer);
             byte b = byte.Parse(rgb.ToString().Substring(7,3), System.Globalization.NumberStyles.Integer);

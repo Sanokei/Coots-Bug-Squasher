@@ -47,6 +47,19 @@ namespace PixelGame.Component
             }
             return parent.position;
         }
+        [Obsolete("Please Do not use this. The problem is that the localposition and the Layer dont match.")]
+        // I think it would honestly be better to instead just rotate the individual cell. Still not a good solution
+        public void rotate(int x, int y, int angle)
+        {
+            var cell = PixelScreenManager.Instance[parent].CellSize;
+            var newX =  x * cell - (cell * PixelScreen.GridSideSize / 2f) + (cell / 2f);
+            var newY =  y * cell - (cell * PixelScreen.GridSideSize / 2f) + (cell / 2f);
+            Debug.Log($"({x},{y})\nx:{newX} y:{newY}\npos:{transform.position}");
+            Vector3 point = new Vector2(newX, newY);
+            // coots['trans'].rotate(0,0,1)
+            transform.RotateAround(point + transform.position,Vector3.forward,angle * 90f);
+            //transform.rotation = Quaternion.Euler(new Vector3(0,0,transform.rotation.z));
+        }
 
         private bool CheckCollision(PixelPosition translation)
         {

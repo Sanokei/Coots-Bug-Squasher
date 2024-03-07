@@ -105,6 +105,46 @@ namespace PixelGame
             
             return pixels;
         }
+        public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithCollider(PixelGameObject pgo)
+        {
+            List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
+            
+            foreach (KeyValuePair<PixelGameObject, PixelScreen> layer in Layers)
+            {
+                if (layer.Key.Equals(pgo))
+                {
+                    foreach (KeyValuePair<int, Pixel> pixel in layer.Value.grid.Dictionary)
+                    {
+                        if (pixel.Value.Collider != null)
+                        {
+                            pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + pgo.position, pixel.Value));
+                        }
+                    }
+                }
+            }
+            
+            return pixels;
+        }
+        public List<KeyValuePair<PixelPosition, Pixel>> GetPixelsWithSprite(PixelGameObject pgo)
+        {
+            List<KeyValuePair<PixelPosition, Pixel>> pixels = new List<KeyValuePair<PixelPosition, Pixel>>();
+            
+            foreach (KeyValuePair<PixelGameObject, PixelScreen> layer in Layers)
+            {
+                if (layer.Key.Equals(pgo))
+                {
+                    foreach (KeyValuePair<int, Pixel> pixel in layer.Value.grid.Dictionary)
+                    {
+                        if (pixel.Value.Sprite != null)
+                        {
+                            pixels.Add(new KeyValuePair<PixelPosition, Pixel>(pixel.Key + pgo.position, pixel.Value));
+                        }
+                    }
+                }
+            }
+            
+            return pixels;
+        }
         public List<Pixel> GetSpritePixelsAtPosition(PixelPosition translation)
         {
             List<Pixel> pixels = new List<Pixel>();

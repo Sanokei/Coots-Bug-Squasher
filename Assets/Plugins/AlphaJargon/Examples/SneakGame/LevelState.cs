@@ -27,7 +27,7 @@ public class LevelState : MonoBehaviour
     //     private set{}
     // }
     public static LevelState Instance{get; private set;}
-    private int _CurrLevelState;
+    private int _CurrLevelState = 0;
     public int CurrLevel
     {
         get
@@ -36,8 +36,10 @@ public class LevelState : MonoBehaviour
         }
         set
         {
+            var temp = _CurrLevelState; // this is so the order of execution dont change.
             _CurrLevelState = value;
-            onlevelChangeEvent?.Invoke();
+            if(temp != value)
+                onlevelChangeEvent?.Invoke();
         }
     }
     [SerializeField] List<int> PCE_Files_Int;
@@ -79,11 +81,13 @@ public class LevelState : MonoBehaviour
             Instance = this; 
         } 
     }
-
     void Start()
     {
-        // CurrLevelState = LevelStates.Tutorial;
-        CurrLevel = 0;
+        ResetLevel();
+    }
+    public static void ResetLevel()
+    {
+        onlevelChangeEvent?.Invoke();
     }
 }
 

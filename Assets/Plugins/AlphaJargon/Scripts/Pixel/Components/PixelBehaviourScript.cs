@@ -9,6 +9,7 @@ using MoonSharp.Interpreter.Interop;
 using MoonSharp.Interpreter.Execution.VM;
 
 using PixelGame.Object;
+using System.IO;
 
 /*
 script.Globals["test"] = new Action<string, MyEnum>(this.TestMethod);
@@ -22,6 +23,7 @@ namespace PixelGame.Component
     public class PixelBehaviourScript : PixelComponent
     {
         public string FileData;
+        bool _AddParentToGlobal = true;
         public override PixelGameObject parent{get;set;}
         public Script script = new Script();
         ScriptFunctionDelegate onKeyDown, onKeyUp;
@@ -97,16 +99,32 @@ namespace PixelGame.Component
         {
             return run(function,new DynValue[6]{arg1,arg2,arg3,arg4,arg5,arg6});
         }
-
         public void add(DynValue FileData)
         {
-            string multiliteralString = FileData.ToString(); // Get the multiliteral string from the DynValue
-            string normalString = multiliteralString.Substring(1, multiliteralString.Length - 2); // Remove the first and last quotes enclosing the string
-            this.FileData = normalString;
+            // Im not sure if the best practice is to use the variable, or to just make it true
+            // since the variable is set to true, but also maybe the redunancy is good?
+            // add(FileData, _AddParentToGlobal);
+
+            // because it sets _AddParentToGlobal, imma play it safe and just make it true instead
+            add(FileData,true);
         }
+        public void add(DynValue FileData, bool AddParentToGlobal)
+        {
+            // string multiliteralString = FileData.ToString(); // Get the multiliteral string from the DynValue
+            // string normalString = multiliteralString.Substring(1, multiliteralString.Length - 2); // Remove the first and last quotes enclosing the string
+            // this.FileData = normalString;
+            this.FileData = FileData.String;
+            _AddParentToGlobal = AddParentToGlobal;
+        }
+        //
         public void addFile(DynValue FileData)
         {
-            StartCoroutine(GetLuaFile(FileData.ToPrintString()));
+            addFile(FileData, true);
+        }
+        public void addFile(DynValue FileData, bool AddParentToGlobal)
+        {
+            StartCoroutine(GetLuaFile(FileData.String));
+            _AddParentToGlobal = AddParentToGlobal;
         }
         private IEnumerator GetLuaFile(string filePath)
         {
@@ -120,6 +138,15 @@ namespace PixelGame.Component
         {
             Destroy(this);
         }
+        public void addPixelGameObjectToScriptGlobals(DynValue key)
+        {
+            addPixelGameObjectToScriptGlobals(key.String);
+        }
+        public void addPixelGameObjectToScriptGlobals(string key)
+        {
+            // Bad Solution
+            addPixelGameObjectToScriptGlobals(key,AlphaJargon.Instance[key]);
+        }
         public void addPixelGameObjectToScriptGlobals(string key, IPixelObject value)
         {
             // Debug.Log($"key: {key} + value: {value}");
@@ -129,7 +156,8 @@ namespace PixelGame.Component
         public override void Create(PixelGameObject parent)
         {
             this.parent = parent;
-            addPixelGameObjectToScriptGlobals(parent.name,parent); 
+            if(_AddParentToGlobal)
+                addPixelGameObjectToScriptGlobals(parent.name,parent); 
         }
 
         public void RunScript()

@@ -45,9 +45,9 @@ public class AlphaJargonCodeEditor : MonoBehaviour
     {
         public void Invoke(string Name, params string[] args)
         {
-            if(Name == "win")
+            if(Name == "oAuthClear")
             {
-                throw new ScriptRuntimeException("Nice try dummy");
+                throw new ScriptRuntimeException("UNLAWFUL USE OF \"Event.Invoke\" COMMAND DETECTED");
             }
         }
     }
