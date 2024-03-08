@@ -46,6 +46,7 @@ public enum GameStates
     // Start, // On start playing
     Playing,
     NearComputer,
+    NearBookShelf,
     InComputer,
     Played,
     Finish
