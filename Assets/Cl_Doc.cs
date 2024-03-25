@@ -35,11 +35,11 @@ public class Cl_Doc : MonoBehaviour
                 StartCoroutine(sr.FadeOut(Time));
             _SeenControlIndicator = false;
         }
-        if(GameState.Instance.CurrGameState != GameStates.InComputer && _SeenControlIndicator && inDocBounds.SeenControlIndicator)
+        if(Input.GetKeyDown(KeyCode.W) && GameState.Instance.CurrGameState != GameStates.InComputer && _SeenControlIndicator && inDocBounds.SeenControlIndicator)
         {
             foreach(var sr in SpriteRenderers)
                 StartCoroutine(sr.FadeOut(Time));
-            Application.OpenURL("https://github.com/Sanokei/Coots-Bug-Squasher/Documentation.md");
+            Application.OpenURL("https://github.com/Sanokei/Coots-Bug-Squasher/tree/main/Assets/Plugins/AlphaJargon/Examples/SneakGame/Documentation.md");
 
         }
     }
